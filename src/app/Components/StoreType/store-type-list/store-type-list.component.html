@@ -14,7 +14,6 @@
     <ng-container *ngIf="!isShow">
        <app-store-type-form></app-store-type-form>
     </ng-container>
-   
     <ng-container *ngIf="isShow">
        <section class="section">
           <div class="row">
@@ -22,13 +21,9 @@
                 <div class="card">
                    <div class="card-body">
                       <div class="d-flex justify-content-between">
-
-
                          <div class="pagetitle">
                             <h5 class="card-title"><i class="ri-list-check"></i> &nbsp;Store Type</h5>
                           </div>
-
-                          
                           <div  class="mt-2">      
                               <button (click)="ShowHideEvent()" type="button" class="btn btn-primary"><a class="text-light"><i class="ri-add-circle-line"></i>Create</a></button>
                           </div>
