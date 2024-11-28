@@ -14,9 +14,8 @@ import { GridButtonShow, GridCaption, GridDataShow } from 'src/app/Models/GridMo
   styleUrl: './store-type-list.component.scss'
 })
 export class StoreTypeListComponent {
-  isShow: boolean = true;
   dataList: StoreType[] = [];
-  FormData:StoreType = new StoreType();
+
   ///routerData:any;
 
   constructor(
@@ -34,19 +33,15 @@ export class StoreTypeListComponent {
   });
 
   }
-  ShowHideEvent() {
-
-    this.isShow = !this.isShow;
-
-    this.FormData = new StoreType();
-  }
   getData = () => {
     this.dataService.GetData("Administrator/GetDropdownData?flag=2").subscribe((data:any)=>{
+      debugger
       this.dataList=data;
       console.log(this.dataList);
       this.sendDataCommonGrid();
     },
     (error:any)=>{
+      debugger;
       console.log(error);
       this.toastr.error("failed to Get Data")
     }
@@ -90,8 +85,6 @@ export class StoreTypeListComponent {
   edit(selectedRecord:any){
     let data=this.findSelectedItem(selectedRecord.row.data.dataField1);
     if(data !=null || data !=undefined){
-      this.FormData=data;
-      this.isShow =!this.isShow;
     }
   }
   findSelectedItem(selectedItem:any){

@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
 import { StoreTypeListComponent } from './Components/StoreType/store-type-list/store-type-list.component';
+import { StoreTypeFormComponent } from './Components/StoreType/store-type-form/store-type-form.component';
 
 const routes: Routes = [
   {
@@ -42,9 +43,14 @@ const routes: Routes = [
         loadComponent: () => import('./demo/sample-page/sample-page.component')
       },
       {
-        path: 'store-type',
+        path: 'store-type-list',
         component:StoreTypeListComponent
+      },
+      {
+        path:'store-type-create',
+        component:StoreTypeFormComponent
       }
+
     ]
   },
   {
