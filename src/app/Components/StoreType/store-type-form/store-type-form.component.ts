@@ -63,5 +63,8 @@ export class StoreTypeFormComponent implements OnInit {
     form.form.reset();
     this.FormData = new StoreType();
   }
+  ShowHideEvent(){
+    
+  }
   onDuplicate() {}
 }
