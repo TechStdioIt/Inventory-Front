@@ -12,10 +12,10 @@ import Swal from 'sweetalert2';
 })
 export class ButtonControlComponent implements OnInit {
 
-  @Input() isAdd:boolean=false;
-  @Input() isEdit:boolean=false;
-  @Input() isDelete:boolean=false;
-  @Input() isDetails:boolean=false;
+  @Input() isAdd:boolean=true;
+  @Input() isEdit:boolean=true;
+  @Input() isDelete:boolean=true;
+  @Input() isDetails:boolean=true;
   @ViewChild('withText') withText!: DxTabsComponent;
 
   @ViewChild('withIconAndText') withIconAndText!: DxTabsComponent;
@@ -68,7 +68,6 @@ export class ButtonControlComponent implements OnInit {
 
 
   selectTab(tab: string): void {
-    debugger;
     if (tab == 'Save' || tab == 'Delete' ){
       if (tab == 'Save') {
         this.commonService.addNew();

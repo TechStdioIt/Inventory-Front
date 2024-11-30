@@ -64,6 +64,7 @@ import { CommonDataGridComponent } from './CommonComponents/CommonDataGrid/commo
 import { CommonDataGridWithCheckBoxComponent } from './CommonComponents/CommonDataGridWithCheckBox/common-data-grid-with-check-box.component';
 import { ButtonControlComponent } from './CommonComponents/button-control/button-control.component';
 import { ToastrModule } from 'ngx-toastr';
+import { SideBarComponent } from './theme/layout/side-bar/side-bar.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { ToastrModule } from 'ngx-toastr';
     StoreTypeFormComponent,
     CommonDataGridComponent,
     CommonDataGridWithCheckBoxComponent,
-    ButtonControlComponent
+    ButtonControlComponent,
+    SideBarComponent
   ],
   imports: [
     BrowserModule,

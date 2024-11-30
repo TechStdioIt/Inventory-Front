@@ -4,7 +4,9 @@ import { NavigationEnd, Router, RouterModule, Event } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 // project import
-import { NavigationItem, NavigationItems } from 'src/app/theme/layout/admin/navigation/navigation';
+import { NavigationItem } from 'src/app/theme/layout/admin/navigation/navigation';
+import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
+import { SharedModule } from '../../shared.module';
 
 interface titleType {
   // eslint-disable-next-line
@@ -24,18 +26,24 @@ interface titleType {
 export class BreadcrumbComponent {
   // public props
   @Input() type!: string;
-
-  navigations: NavigationItem[];
+  navigations: any[]=[];
   breadcrumbList: Array<string> = [];
   navigationList!: titleType[];
 
   // constructor
   constructor(
     private route: Router,
-    private titleService: Title
+    private titleService: Title,
+    private dataService:HttpClientConnectionService
   ) {
-    this.navigations = NavigationItems;
+  
     this.setBreadcrumb();
+    this.getMenuDatas();
+  }
+  getMenuDatas(){
+    this.dataService.GetData("Menu/GetAllMenu").subscribe((data:any)=>{
+      this.navigations=data;
+    })
   }
 
   // public method

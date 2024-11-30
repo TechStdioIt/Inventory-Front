@@ -4,7 +4,8 @@ import { Location, LocationStrategy } from '@angular/common';
 
 // project import
 import { environment } from 'src/environments/environment';
-import { NavigationItem, NavigationItems } from '../navigation';
+import { NavigationItem } from '../navigation';
+import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 
 @Component({
   selector: 'app-nav-content',
@@ -17,7 +18,7 @@ export class NavContentComponent implements OnInit {
   currentApplicationVersion = environment.appVersion;
 
   // public pops
-  navigations: NavigationItem[];
+  navigations: any[]=[];
   wrapperWidth!: number;
   windowWidth: number;
 
@@ -25,10 +26,10 @@ export class NavContentComponent implements OnInit {
   // constructor
   constructor(
     private location: Location,
-    private locationStrategy: LocationStrategy
+    private locationStrategy: LocationStrategy,
+    private dataService:HttpClientConnectionService
   ) {
     this.windowWidth = window.innerWidth;
-    this.navigations = NavigationItems;
   }
 
   // life cycle event
@@ -36,8 +37,14 @@ export class NavContentComponent implements OnInit {
     if (this.windowWidth < 992) {
       document.querySelector('.pcoded-navbar')?.classList.add('menupos-static');
     }
+    this.getMenuDatas();
   }
 
+  getMenuDatas(){
+    this.dataService.GetData("Menu/GetAllMenu").subscribe((data:any)=>{
+      this.navigations=data;
+    })
+  }
   // public method
 
   navMob() {

@@ -7,6 +7,7 @@ import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from '../Mod
   providedIn: 'root'
 })
 export class GridHandlerService {
+  selectedTab:string="Edit";
   checkBoxSelectedData: any[] = [];
   isLoadPanelVisible:boolean=false;
   private dataSubject = new Subject<any>();

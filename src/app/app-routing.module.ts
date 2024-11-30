@@ -41,6 +41,14 @@ const routes: Routes = [
       {
         path: 'sample-page',
         loadComponent: () => import('./demo/sample-page/sample-page.component')
+      },
+      {
+        path: 'store-type-list',
+        component:StoreTypeListComponent
+      },
+      {
+        path:'store-type-create',
+        component:StoreTypeFormComponent
       }
 
     ]
