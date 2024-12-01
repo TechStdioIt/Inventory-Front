@@ -7,6 +7,8 @@ import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
 import { StoreTypeListComponent } from './Components/StoreType/store-type-list/store-type-list.component';
 import { StoreTypeFormComponent } from './Components/StoreType/store-type-form/store-type-form.component';
+import { RoleCreateComponent } from './Components/Role/role-create/role-create.component';
+import { RoleListComponent } from './Components/Role/role-list/role-list.component';
 
 const routes: Routes = [
   {
@@ -49,6 +51,13 @@ const routes: Routes = [
       {
         path:'store-type-create',
         component:StoreTypeFormComponent
+      },{
+        path:'role-create',
+        component:RoleCreateComponent
+      },
+      {
+        path:'role-list',
+        component:RoleListComponent
       }
 
     ]

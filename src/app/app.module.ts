@@ -65,6 +65,8 @@ import { CommonDataGridWithCheckBoxComponent } from './CommonComponents/CommonDa
 import { ButtonControlComponent } from './CommonComponents/button-control/button-control.component';
 import { ToastrModule } from 'ngx-toastr';
 import { SideBarComponent } from './theme/layout/side-bar/side-bar.component';
+import { RoleListComponent } from './Components/Role/role-list/role-list.component';
+import { RoleCreateComponent } from './Components/Role/role-create/role-create.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +91,9 @@ import { SideBarComponent } from './theme/layout/side-bar/side-bar.component';
     CommonDataGridComponent,
     CommonDataGridWithCheckBoxComponent,
     ButtonControlComponent,
-    SideBarComponent
+    SideBarComponent,
+    RoleListComponent,
+    RoleCreateComponent
   ],
   imports: [
     BrowserModule,

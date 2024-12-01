@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { StoreType } from 'src/app/Models/StoreType';
+import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/app/Models/GridModels';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
-// import * as CryptoJS from 'crypto-js';
-import * as CryptoJS from 'crypto-js';
-import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/app/Models/GridModels';
 
 @Component({
-  selector: 'app-store-type-list',
-  templateUrl: './store-type-list.component.html',
-  styleUrl: './store-type-list.component.scss'
+  selector: 'app-role-list',
+  templateUrl: './role-list.component.html',
+  styleUrl: './role-list.component.scss'
 })
-export class StoreTypeListComponent implements OnInit {
-  dataList: StoreType[] = [];
+export class RoleListComponent implements OnInit {
+  dataList: any[] = [];
 
   ///routerData:any;
 
@@ -34,14 +31,11 @@ export class StoreTypeListComponent implements OnInit {
 
   }
   getData = () => {
-    this.dataService.GetData("Administrator/GetDropdownData?flag=2").subscribe((data:any)=>{
-      debugger
+    this.dataService.GetData("Role/GetAllRole").subscribe((data:any)=>{
       this.dataList=data;
-      console.log(this.dataList);
       this.sendDataCommonGrid();
     },
     (error:any)=>{
-      debugger;
       console.log(error);
       this.toastr.error("failed to Get Data")
     }
@@ -53,9 +47,8 @@ export class StoreTypeListComponent implements OnInit {
     this.commonService.dataList=[];
     //Grid Caption 
     this.commonService.caption = new GridCaption();
-       this.commonService.caption.caption1="Floor ID";
-       this.commonService.caption.caption2="Floor Name";
-       this.commonService.caption.caption3="Company ID";
+       this.commonService.caption.caption1="Role Id";
+       this.commonService.caption.caption2="Role Name";
   
       //PermitForShow or Not
       this.commonService.isShowData = new GridDataShow()
@@ -71,7 +64,7 @@ export class StoreTypeListComponent implements OnInit {
       
        //Grid Data 
    for(let item of this.dataList){
-      this.commonService.dataField = new GridDataModel();
+        this.commonService.dataField = new GridDataModel();
         this.commonService.dataField.dataField1=item.id;
         this.commonService.dataField.dataField2=item.name;
   
