@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { StoreType } from 'src/app/Models/StoreType';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
@@ -23,7 +23,9 @@ export class StoreTypeListComponent implements OnInit {
     private dataService:HttpClientConnectionService,
     private toastr:ToastrService,
     private commonService:GridHandlerService,
-    private route:ActivatedRoute) { }
+    private route:ActivatedRoute,
+    private router:Router
+  ) { }
 
   ngOnInit(): void {
 
@@ -35,14 +37,11 @@ export class StoreTypeListComponent implements OnInit {
   }
   getData = () => {
     this.dataService.GetData("Administrator/GetDropdownData?flag=2").subscribe((data:any)=>{
-      debugger
       this.dataList=data;
       console.log(this.dataList);
       this.sendDataCommonGrid();
     },
     (error:any)=>{
-      debugger;
-      console.log(error);
       this.toastr.error("failed to Get Data")
     }
     )
@@ -85,6 +84,10 @@ export class StoreTypeListComponent implements OnInit {
   edit(selectedRecord:any){
     let data=this.findSelectedItem(selectedRecord.row.data.dataField1);
     if(data !=null || data !=undefined){
+      this.commonService.selectedTab='Form';
+        var jsonString=JSON.stringify(data);
+        const encodeValue = CryptoJS.AES.encrypt(jsonString, "values").toString();
+      this.router.navigate(['/storetypeForm'],{ queryParams: { storeType: encodeValue } });
     }
   }
   findSelectedItem(selectedItem:any){

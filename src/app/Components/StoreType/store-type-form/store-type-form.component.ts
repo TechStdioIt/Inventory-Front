@@ -3,7 +3,9 @@ import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnecti
 import { ToastrService } from 'ngx-toastr';
 import { NgForm } from '@angular/forms';
 import { StoreType } from 'src/app/Models/StoreType';
-
+import { ActivatedRoute } from '@angular/router';
+import * as CryptoJS from 'crypto-js';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-store-type-form',
   templateUrl: './store-type-form.component.html',
@@ -17,8 +19,23 @@ export class StoreTypeFormComponent implements OnInit {
   constructor(
     private dataService: HttpClientConnectionService,
     // public service: FloorService,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private router:ActivatedRoute,
+    private location:Location
+  ) {
+    this.router.queryParams.subscribe((data:any)=>{
+      debugger;
+      if(data.storeType !=undefined && data !=null){
+        const bytes = CryptoJS.AES.decrypt(data.storeType, "values");
+        var jsonData= bytes.toString(CryptoJS.enc.Utf8);
+        this.FormData =JSON.parse(jsonData);
+        //this.dateToday=this.commonService.LRPFormData.surveyDate;
+      }else{
+        this.FormData =new StoreType();
+        //this.getLrpNo();
+      }
+    })
+  }
 
   ngOnInit(): void {}
 
@@ -28,7 +45,7 @@ export class StoreTypeFormComponent implements OnInit {
   }
 
   insertRecord(form: NgForm) {
-    this.dataService.PostData('BASFloor/PostCreate', this.FormData).subscribe(
+    this.dataService.PostData('StoreType/CreateOrUpdateStore', this.FormData).subscribe(
       (res) => {
         this.resetForm(form);
         this.toastr.success('Created Successfully', 'Floor Information');
@@ -44,7 +61,7 @@ export class StoreTypeFormComponent implements OnInit {
   }
 
   updateRecord(form: NgForm) {
-    this.dataService.PutData('BASFloor/PutEdit', this.FormData.id, this.FormData).subscribe(
+    this.dataService.PostData('StoreType/CreateOrUpdateStore',this.FormData).subscribe(
       (res) => {
         this.resetForm(form);
 
@@ -63,8 +80,8 @@ export class StoreTypeFormComponent implements OnInit {
     form.form.reset();
     this.FormData = new StoreType();
   }
-  ShowHideEvent(){
-    
-  }
   onDuplicate() {}
+  onBack(){
+    this.location.back();
+  }
 }

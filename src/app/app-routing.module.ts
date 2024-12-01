@@ -45,18 +45,18 @@ const routes: Routes = [
         loadComponent: () => import('./demo/sample-page/sample-page.component')
       },
       {
-        path: 'store-type-list',
+        path: 'storetypeList',
         component:StoreTypeListComponent
       },
       {
-        path:'store-type-create',
+        path:'storetypeForm',
         component:StoreTypeFormComponent
       },{
-        path:'role-create',
+        path:'roleForm',
         component:RoleCreateComponent
       },
       {
-        path:'role-list',
+        path:'roleList',
         component:RoleListComponent
       }
 
