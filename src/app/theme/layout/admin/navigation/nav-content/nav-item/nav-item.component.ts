@@ -3,6 +3,8 @@ import { Component, Input } from '@angular/core';
 
 // project import
 import { NavigationItem } from '../../navigation';
+import { GridHandlerService } from 'src/app/Services/GridHandler.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-item',
@@ -10,6 +12,7 @@ import { NavigationItem } from '../../navigation';
   styleUrls: ['./nav-item.component.scss']
 })
 export class NavItemComponent {
+  constructor(private gridService:GridHandlerService,private router:Router){}
   // public props
   @Input() item!: NavigationItem;
 
@@ -40,5 +43,10 @@ export class NavItemComponent {
     if (document.querySelector('app-navigation.pcoded-navbar')?.classList.contains('mob-open')) {
       document.querySelector('app-navigation.pcoded-navbar')?.classList.remove('mob-open');
     }
+  }
+  onRouting(uri:any){
+    debugger;
+    this.gridService.selectedTab = "List";
+    this.router.navigate([uri]);
   }
 }

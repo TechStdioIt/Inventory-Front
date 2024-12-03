@@ -1,20 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { StoreType } from 'src/app/Models/StoreType';
+import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/app/Models/GridModels';
+import { Suppliers } from 'src/app/Models/Suppliers';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
-// import * as CryptoJS from 'crypto-js';
-import * as CryptoJS from 'crypto-js';
-import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/app/Models/GridModels';
 
 @Component({
-  selector: 'app-store-type-list',
-  templateUrl: './store-type-list.component.html',
-  styleUrl: './store-type-list.component.scss'
+  selector: 'app-suppliers-list',
+  templateUrl: './suppliers-list.component.html',
+  styleUrl: './suppliers-list.component.scss'
 })
-export class StoreTypeListComponent implements OnInit {
-  dataList: StoreType[] = [];
+export class SuppliersListComponent implements OnInit {
+  dataList: any[] = [];
 
   ///routerData:any;
 
@@ -36,8 +34,9 @@ export class StoreTypeListComponent implements OnInit {
 
   }
   getData = () => {
-    this.dataService.GetData("Administrator/GetDropdownData?flag=2").subscribe((data:any)=>{
-      this.dataList=data;
+    this.dataService.GetData("Suppliers/GetAllSuppliers").subscribe((data:any)=>{
+      console.log(data.data);
+      this.dataList=data.data;
       this.sendDataCommonGrid();
     },
     (error:any)=>{
@@ -51,8 +50,8 @@ export class StoreTypeListComponent implements OnInit {
     this.commonService.dataList=[];
     //Grid Caption 
     this.commonService.caption = new GridCaption();
-       this.commonService.caption.caption1="Floor ID";
-       this.commonService.caption.caption2="Floor Name";
+       this.commonService.caption.caption1="Suppliers ID";
+       this.commonService.caption.caption2="Company Name";
        this.commonService.caption.caption3="Company ID";
   
       //PermitForShow or Not
@@ -71,7 +70,7 @@ export class StoreTypeListComponent implements OnInit {
    for(let item of this.dataList){
       this.commonService.dataField = new GridDataModel();
         this.commonService.dataField.dataField1=item.id;
-        this.commonService.dataField.dataField2=item.name;
+        this.commonService.dataField.dataField2=item.companyName;
   
     
   this.commonService.dataList.push(this.commonService.dataField);
@@ -86,7 +85,7 @@ export class StoreTypeListComponent implements OnInit {
       this.commonService.selectedTab='Form';
         var jsonString=JSON.stringify(data);
         const encodeValue = CryptoJS.AES.encrypt(jsonString, "values").toString();
-      this.router.navigate(['/storetypeForm'],{ queryParams: { storeType: encodeValue } });
+      this.router.navigate(['/suppliersForm'],{ queryParams: { suppliers: encodeValue } });
     }
   }
   findSelectedItem(selectedItem:any){

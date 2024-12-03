@@ -14,7 +14,7 @@
 }
 @if (item.url && item.external) {
   <li [ngClass]="item.classes">
-    <a [target]="item.target ? '_blank' : '_self'" [href]="item.url">
+    <a [target]="item.target ? '_blank' : '_self'" (click)="onRouting(item.url)">
       @if (item.icon) {
         <span class="pcoded-micon"><i class="feather" [ngClass]="item.icon"></i></span>
       }

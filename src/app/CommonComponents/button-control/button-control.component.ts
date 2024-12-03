@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DxTabsComponent } from 'devextreme-angular';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
@@ -59,15 +59,19 @@ export class ButtonControlComponent implements OnInit {
   };
 
 
-  constructor(private dataService: HttpClientConnectionService, private router: Router, public commonService: GridHandlerService) {
+  constructor(private dataService: HttpClientConnectionService, private router: Router, public commonService: GridHandlerService,private activatedRoute: ActivatedRoute) {
    
   }
   ngOnInit(): void {
+    const currentRoute = this.activatedRoute.snapshot.url.join('/');
+    debugger;
   }
  
 
 
   selectTab(tab: string): void {
+    const primarySegment = this.activatedRoute.snapshot.routeConfig?.path;
+    debugger;
     if (tab == 'Save' || tab == 'Delete' ){
       if (tab == 'Save') {
         this.commonService.addNew();

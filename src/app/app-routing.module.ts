@@ -9,6 +9,10 @@ import { StoreTypeListComponent } from './Components/StoreType/store-type-list/s
 import { StoreTypeFormComponent } from './Components/StoreType/store-type-form/store-type-form.component';
 import { RoleCreateComponent } from './Components/Role/role-create/role-create.component';
 import { RoleListComponent } from './Components/Role/role-list/role-list.component';
+import { CategoryListComponent } from './Components/Category/category-list/category-list.component';
+import { CategoryFormComponent } from './Components/Category/category-form/category-form.component';
+import { SuppliersListComponent } from './Components/Suppliers/suppliers-list/suppliers-list.component';
+import { SuppliersFormComponent } from './Components/Suppliers/suppliers-form/suppliers-form.component';
 
 const routes: Routes = [
   {
@@ -58,6 +62,18 @@ const routes: Routes = [
       {
         path:'roleList',
         component:RoleListComponent
+      },{
+        path:'categoryList',
+        component:CategoryListComponent
+      },{
+        path:'categoryForm',
+        component:CategoryFormComponent
+      },{
+        path:'suppliersList',
+        component:SuppliersListComponent
+      },{
+        path:'suppliersForm',
+        component:SuppliersFormComponent
       }
 
     ]

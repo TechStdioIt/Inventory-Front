@@ -67,6 +67,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { SideBarComponent } from './theme/layout/side-bar/side-bar.component';
 import { RoleListComponent } from './Components/Role/role-list/role-list.component';
 import { RoleCreateComponent } from './Components/Role/role-create/role-create.component';
+import { CategoryFormComponent } from './Components/Category/category-form/category-form.component';
+import { CategoryListComponent } from './Components/Category/category-list/category-list.component';
+import { SuppliersListComponent } from './Components/Suppliers/suppliers-list/suppliers-list.component';
+import { SuppliersFormComponent } from './Components/Suppliers/suppliers-form/suppliers-form.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +97,11 @@ import { RoleCreateComponent } from './Components/Role/role-create/role-create.c
     ButtonControlComponent,
     SideBarComponent,
     RoleListComponent,
-    RoleCreateComponent
+    RoleCreateComponent,
+    CategoryFormComponent,
+    CategoryListComponent,
+    SuppliersListComponent,
+    SuppliersFormComponent
   ],
   imports: [
     BrowserModule,
