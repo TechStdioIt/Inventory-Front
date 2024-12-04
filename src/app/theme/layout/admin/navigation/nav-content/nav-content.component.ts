@@ -42,7 +42,7 @@ export class NavContentComponent implements OnInit {
 
   getMenuDatas(){
     this.dataService.GetData("Menu/GetAllMenu").subscribe((data:any)=>{
-      this.navigations=data;
+      this.navigations=data.data;
     })
   }
   // public method

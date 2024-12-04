@@ -37,7 +37,7 @@ export class BreadcrumbComponent {
     private dataService:HttpClientConnectionService
   ) {
   
-    this.setBreadcrumb();
+    //this.setBreadcrumb();
     this.getMenuDatas();
   }
   getMenuDatas(){

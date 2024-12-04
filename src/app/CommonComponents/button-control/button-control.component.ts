@@ -60,18 +60,16 @@ export class ButtonControlComponent implements OnInit {
 
 
   constructor(private dataService: HttpClientConnectionService, private router: Router, public commonService: GridHandlerService,private activatedRoute: ActivatedRoute) {
-   
+    const fullUrl = this.router.url.split('?')[0]; 
+    const routeSegment = fullUrl.split('/')[1];
   }
   ngOnInit(): void {
-    const currentRoute = this.activatedRoute.snapshot.url.join('/');
-    debugger;
+   
   }
  
 
 
   selectTab(tab: string): void {
-    const primarySegment = this.activatedRoute.snapshot.routeConfig?.path;
-    debugger;
     if (tab == 'Save' || tab == 'Delete' ){
       if (tab == 'Save') {
         this.commonService.addNew();
@@ -119,9 +117,18 @@ export class ButtonControlComponent implements OnInit {
     } else if(tab =='Details'){
       alert("Please go to List then Select a Record");
     }else {
-      
+      const fullUrl = this.router.url.split('?')[0]; 
+      const routeSegment = fullUrl.split('/')[1];
+      var minorTab='';
+      if(tab =="List"){
+        minorTab='Form';
+      }else{
+        minorTab='List'
+      }
+     var redirectRoute= routeSegment.replace(minorTab, tab);
+      this.router.navigate(['/'+ redirectRoute]);
     }
-
+    this.commonService.selectedTab = tab;
   }
 
 
