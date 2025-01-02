@@ -1,25 +1,35 @@
 // Angular Import
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Location, LocationStrategy } from '@angular/common';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit{
   // public props
   navCollapsed!: boolean;
   navCollapsedMob: boolean;
   windowWidth: number;
-
+  currentRoute: string = '';
   // constructor
   constructor(
     private location: Location,
-    private locationStrategy: LocationStrategy
+    private locationStrategy: LocationStrategy,
+    private router: Router
   ) {
     this.windowWidth = window.innerWidth;
     this.navCollapsedMob = false;
+  }
+  ngOnInit(): void {
+    this.currentRoute = this.router.url;
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.url;
+      }
+    });
   }
 
   @HostListener('window:resize', ['$event'])

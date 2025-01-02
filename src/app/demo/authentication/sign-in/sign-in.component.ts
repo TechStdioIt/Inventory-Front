@@ -1,6 +1,6 @@
 // angular import
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
@@ -12,4 +12,12 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-export default class SignInComponent {}
+
+export default class SignInComponent {
+  constructor(private route:Router){
+
+  }
+  OnSubmit(){
+    this.route.navigate(['/analytics'])
+  }
+}

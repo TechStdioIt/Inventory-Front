@@ -19,7 +19,8 @@
         <div class="main-body">
           <div class="page-wrapper">
             <app-breadcrumb></app-breadcrumb>
-            <app-button-control></app-button-control>
+            <app-button-control *ngIf="this.currentRoute !=='/analytics'"></app-button-control>
+            <router-outlet *ngIf="this.currentRoute ==='/analytics'"></router-outlet>
           </div>
         </div>
       </div>
