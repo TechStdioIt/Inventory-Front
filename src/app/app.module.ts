@@ -71,6 +71,8 @@ import { CategoryFormComponent } from './Components/Category/category-form/categ
 import { CategoryListComponent } from './Components/Category/category-list/category-list.component';
 import { SuppliersListComponent } from './Components/Suppliers/suppliers-list/suppliers-list.component';
 import { SuppliersFormComponent } from './Components/Suppliers/suppliers-form/suppliers-form.component';
+import { MenuListComponent } from './Components/Config/Menu/menu-list/menu-list.component';
+import { MenuFormComponent } from './Components/Config/Menu/menu-form/menu-form.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +103,9 @@ import { SuppliersFormComponent } from './Components/Suppliers/suppliers-form/su
     CategoryFormComponent,
     CategoryListComponent,
     SuppliersListComponent,
-    SuppliersFormComponent
+    SuppliersFormComponent,
+    MenuListComponent,
+    MenuFormComponent
   ],
   imports: [
     BrowserModule,

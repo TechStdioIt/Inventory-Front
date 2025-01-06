@@ -13,6 +13,8 @@ import { CategoryListComponent } from './Components/Category/category-list/categ
 import { CategoryFormComponent } from './Components/Category/category-form/category-form.component';
 import { SuppliersListComponent } from './Components/Suppliers/suppliers-list/suppliers-list.component';
 import { SuppliersFormComponent } from './Components/Suppliers/suppliers-form/suppliers-form.component';
+import { MenuFormComponent } from './Components/Config/Menu/menu-form/menu-form.component';
+import { MenuListComponent } from './Components/Config/Menu/menu-list/menu-list.component';
 
 const routes: Routes = [
   {
@@ -24,7 +26,7 @@ const routes: Routes = [
         redirectTo: '/auth/signin',
         pathMatch: 'full'
       },
-      
+
       {
         path: 'analytics',
         loadComponent: () => import('./demo/dashboard/dash-analytics.component')
@@ -51,31 +53,39 @@ const routes: Routes = [
       },
       {
         path: 'storetypeList',
-        component:StoreTypeListComponent
+        component: StoreTypeListComponent
       },
       {
-        path:'storetypeForm',
-        component:StoreTypeFormComponent
-      },{
-        path:'roleForm',
-        component:RoleCreateComponent
+        path: 'storetypeForm',
+        component: StoreTypeFormComponent
+      }, {
+        path: 'roleForm',
+        component: RoleCreateComponent
       },
       {
-        path:'roleList',
-        component:RoleListComponent
-      },{
-        path:'categoryList',
-        component:CategoryListComponent
-      },{
-        path:'categoryForm',
-        component:CategoryFormComponent
-      },{
-        path:'suppliersList',
-        component:SuppliersListComponent
-      },{
-        path:'suppliersForm',
-        component:SuppliersFormComponent
+        path: 'roleList',
+        component: RoleListComponent
+      }, {
+        path: 'categoryList',
+        component: CategoryListComponent
+      }, {
+        path: 'categoryForm',
+        component: CategoryFormComponent
+      }, {
+        path: 'suppliersList',
+        component: SuppliersListComponent
+      }, {
+        path: 'suppliersForm',
+        component: SuppliersFormComponent
+      }, {
+        path: 'ImsMenuList',
+        component: MenuListComponent
       }
+      , {
+        path: 'ImsMenuForm',
+        component: MenuFormComponent
+      }
+
 
     ]
   },
@@ -100,4 +110,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
