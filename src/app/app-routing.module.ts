@@ -24,6 +24,7 @@ const routes: Routes = [
         redirectTo: '/auth/signin',
         pathMatch: 'full'
       },
+      
       {
         path: 'analytics',
         loadComponent: () => import('./demo/dashboard/dash-analytics.component')
