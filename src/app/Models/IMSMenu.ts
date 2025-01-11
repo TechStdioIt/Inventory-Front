@@ -7,6 +7,8 @@ export class IMSMenu {
     menuPriority:any;
     menuOrder:any;
     parentId:any=null;
+    breadcrumbs:any=null;
+    classes:any=null;
     updatedBy:string="";
     updatedAt:Date=new Date();
     createdBy:string | null="";
@@ -14,6 +16,7 @@ export class IMSMenu {
     isDeleted:boolean=false;
     menuIcon:string=""; 
     expandable:boolean=false;
+    target:boolean=false;
     isAuthenticated :boolean=false;
     isView:boolean=false;
 }

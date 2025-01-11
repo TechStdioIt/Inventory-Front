@@ -5,49 +5,50 @@
                 <div class="card-body">
                     <h5 class="card-title"><i class="ri-add-circle-fill ri-lg text-success"></i> Create Manual Leave
                     </h5>
-                    <form novalidate #form="ngForm" (submit)="onSubmit(form)">
+                    <form novalidate #form="ngForm">
                         <div class="row">
                             <div class="form-group row mb-3">
                                 <div class="col-sm-3">
-                                    <dx-text-box label="Menu" class="input-label" labelMode="outside" ></dx-text-box>
+                                    <dx-text-box label="Menu" class="input-label" labelMode="outside" name="name"
+                                        #name="ngModel"
+                                        [(ngModel)]="menuListComponent.FormData.name"></dx-text-box>
                                 </div>
                                 <div class="col-sm-3">
-                                    <dx-text-box label="Select Type" labelMode="outside" class="input-label"></dx-text-box>
-                                </div>
-                                
-                                <div class="col-sm-3">
-                                    <dx-text-box label="URL" class="input-label" labelMode="outside" ></dx-text-box>
-                                </div>
-                                <div class="col-sm-3">
-                                    <dx-text-box label="Icon" labelMode="outside" class="input-label"></dx-text-box>
-                                </div>
-                                
-                                <div class="col-sm-3">
-                                    <dx-text-box label="Target" class="input-label" labelMode="outside" ></dx-text-box>
-                                </div>
-                                <div class="col-sm-3">
-                                    <dx-text-box label="Breadcrumbs" labelMode="outside" class="input-label"></dx-text-box>
-                                </div>
-                                
-                                <div class="col-sm-3">
-                                    <dx-text-box label="Classes" labelMode="outside" class="input-label"></dx-text-box>
-                                </div>                                
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            
-                            <div class="col-md-4  mb-3">
-                                <div class="float-end">
-                                    <input type="submit" class="btn btn-primary btn-sm" [value]="submitButtonValue"
-                                        [disabled]="form.invalid" />
-                                    <button (click)="ShowHideEvent()" class="btn btn-warning btn-sm"><i
-                                            class="ri-arrow-go-back-fill"></i> Back</button>
+                                    <dx-select-box [dataSource]="DD_Menu" displayExpr="name" valueExpr="id"
+                                        class="input-label" label="Select Specialise at" [searchEnabled]="true"
+                                        labelMode="outside" name="specialistsId" #specialistsId="ngModel"
+                                        [(ngModel)]="menuListComponent.FormData.parentId"></dx-select-box>
                                 </div>
 
+                                <div class="col-sm-3">
+                                    <dx-text-box label="URL" class="input-label" labelMode="outside" name="menuUrl"
+                                        #menuUrl="ngModel"
+                                        [(ngModel)]="menuListComponent.FormData.menuUrl"></dx-text-box>
+                                </div>
+                                <div class="col-sm-3">
+                                    <dx-text-box label="Icon" labelMode="outside" class="input-label" name="menuIcon"
+                                        #menuIcon="ngModel"
+                                        [(ngModel)]="menuListComponent.FormData.menuIcon"></dx-text-box>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <dx-text-box label="Breadcrumbs" class="input-label" labelMode="outside" name="breadcrumbs"
+                                        #breadcrumbs="ngModel"
+                                        [(ngModel)]="menuListComponent.FormData.breadcrumbs"></dx-text-box>
+                                </div>
+                                <div class="col-sm-3">
+                                    <dx-check-box text="Open On Other Tab?" class="custom-checkbox" name="target"
+                                        #target="ngModel"
+                                        [(ngModel)]="menuListComponent.FormData.target"></dx-check-box>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <dx-text-box label="Classes" labelMode="outside" class="input-label" name="classes"
+                                        #classes="ngModel"
+                                        [(ngModel)]="menuListComponent.FormData.classes"></dx-text-box>
+                                </div>
                             </div>
                         </div>
-
                     </form>
                 </div>
             </div>
