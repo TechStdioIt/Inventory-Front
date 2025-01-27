@@ -12,6 +12,10 @@ export class GridHandlerService {
   isLoadPanelVisible:boolean=false;
   private dataSubject = new Subject<any>();
   data$ = this.dataSubject.asObservable();
+  //this varible for add new records;
+  private addNewSubject = new Subject<any>();
+  addNewData$=this.addNewSubject.asObservable();
+
   isSearch:boolean=false;
   isPagger:boolean=false; 
   isButtonColumn:boolean=true;
@@ -25,6 +29,7 @@ export class GridHandlerService {
     this.edit=this.edit.bind(this);
     this.addPermission=this.addPermission.bind(this)
     this.details=this.details.bind(this);
+    this.addNew = this.addNew.bind(this);
     
   }
   edit(selectedRecord:any){
@@ -34,7 +39,7 @@ export class GridHandlerService {
     this.dataSubject.next(this.checkBoxSelectedData);
   }
   addNew() {
-    this.dataSubject.next(NgForm);
+    this.addNewSubject.next(NgForm);
   }
 
 details(selectedRecord:any){
