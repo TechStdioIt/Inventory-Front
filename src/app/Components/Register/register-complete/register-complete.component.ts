@@ -104,8 +104,8 @@ selectedLogo?:File
        formData.append('contactNumber',this.FormData.contactNumber);
       formData.append('id',this.masterId.toString())
         setTimeout(() => {
-          debugger;
           this.dataService.PostData('BusinessMaster/CreateOrUpdateBusinessMaster',formData).subscribe((data:any)=>{
+            this.getBusinessMasterData();
             this.getUserRedirectInfo();
             
             this.isLoading =false;
@@ -118,7 +118,6 @@ selectedLogo?:File
   }
   getUserRedirectInfo(){
     this.dataService.GetData(`?id=${this.masterId}`).subscribe((data:any)=>{
-      debugger;
       if(data.data == 'NormalUser'){
         this.router.navigate(['/auth/signin']);
       }else{
@@ -129,5 +128,15 @@ selectedLogo?:File
       console.log(error.message);
     }
   )
+  }
+  getBusinessMasterData(){
+    this.dataService.GetData(`BusinessMaster/GetByIdBusinessMaster?id=${this.masterId}`).subscribe((data:any)=>{
+      this.SaveUser(data.data);
+    })
+  }
+  SaveUser(userData:any){
+    this.dataService.PostData('',userData).subscribe((data:any)=>{
+      console.log(userData);
+    })
   }
 }
