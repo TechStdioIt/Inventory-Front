@@ -15,6 +15,9 @@ import { SuppliersListComponent } from './Components/Suppliers/suppliers-list/su
 import { SuppliersFormComponent } from './Components/Suppliers/suppliers-form/suppliers-form.component';
 import { MenuFormComponent } from './Components/Config/Menu/menu-form/menu-form.component';
 import { MenuListComponent } from './Components/Config/Menu/menu-list/menu-list.component';
+import { RegisterLandingComponent } from './Components/Register/register-landing/register-landing.component';
+import { RegisterPackageComponent } from './Components/Register/register-package/register-package.component';
+import { RegisterCompleteComponent } from './Components/Register/register-complete/register-complete.component';
 
 const routes: Routes = [
   {
@@ -100,6 +103,16 @@ const routes: Routes = [
       {
         path: 'auth/signin',
         loadComponent: () => import('./demo/authentication/sign-in/sign-in.component')
+      },{
+        path:'auth/register-landing',
+        component: RegisterLandingComponent
+      }
+      ,{
+        path:'auth/register-package',
+        component: RegisterPackageComponent
+      },{
+        path:'auth/register-complete',
+        component: RegisterCompleteComponent
       }
     ]
   }

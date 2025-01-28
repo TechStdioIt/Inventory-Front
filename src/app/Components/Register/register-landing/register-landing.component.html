@@ -1,0 +1,44 @@
+<div class="auth-wrapper">
+        <div class="container">
+            <div class="title">Business Registration</div>
+            <form action="#">
+                
+                <div class="input-group">
+                    <label for="business-name">Business Name</label>
+                    <input type="text" id="business-name" name="business-name" placeholder="Enter your business name" required>
+                </div>
+                <div class="input-group">
+                    <label for="name">Owner Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">Business Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+             
+                <div class="input-group">
+                    <label for="branch">Total Branch</label>
+                    <input type="number" id="branch" name="branch" placeholder="Enter your Branch" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="business-type">Business Type</label>
+                    <ng-multiselect-dropdown
+                    [placeholder]="'Select One'"
+                    [settings]="dropdownSettings"
+                    [data]="buisnessList"
+                    [(ngModel)]="selectedItems"
+                    (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="onItemDeSelect($event)"
+                    (onSelectAll)="onSelectAll($event)"
+                    (onDeSelectAll)="onDeSelectAll($event)"
+                  >
+                  </ng-multiselect-dropdown>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" (click)="onSubmit()">Get Started</button>
+                </div>
+            </form>
+        </div>
+</div>

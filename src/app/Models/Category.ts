@@ -5,3 +5,9 @@ export class Category {
     isDelete: string='';
     isActive: boolean=false;
   }
+
+  export class Login{
+    userName:string ='';
+    password :string ='';
+    rememberMe:boolean = false;
+  }

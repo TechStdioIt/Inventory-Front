@@ -1,0 +1,43 @@
+<div class="container-fluid bg-primary vh-100 d-flex justify-content-center align-items-center">
+  <div class="text-center bg-light p-5 rounded shadow-lg">
+    <h2 class="display-1 font-weight-bold text-primary mb-4">Package Selection</h2>
+    
+    <div class="row justify-content-center">
+      <div *ngFor="let item of packageData" class="col-md-4 mb-4">
+        <div class="card shadow-lg border-light rounded" style="height: 350px; overflow-y: auto;"> <!-- Fixed height, overflow-y for vertical scrolling -->
+          <div class="card-body d-flex flex-column justify-content-between">
+            <h5 class="card-title text-center font-weight-bold text-dark">{{ item.name }}</h5>
+
+            <!-- Package Details -->
+            <div *ngFor="let det of item.detailsInfo; let i = index" class="mb-3">
+              <ul class="list-unstyled">
+                <li class="mb-2">
+                  <span class="font-weight-bold text-primary">{{ det.Label }}:</span>
+                  <span class="text-muted">{{ det.Value }}</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Radio Button for Selection (Centered and Beautiful Toggle) -->
+            <div class="d-flex justify-content-center align-items-center mt-auto">
+              <input class="form-check-input fs-2" type="radio" name="packageSelect" id="package{{ item.name }}" [value]="item.id">
+              <label class="form-check-label" for="package{{ item.name }}">
+                <i class="bi bi-check-circle-fill fs-3 text-primary hover-shadow"></i> <!-- Larger toggle icon with hover effect -->
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prev and Next Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <a routerLink="/previous-page" class="btn btn-danger btn-lg px-5 py-3 shadow-sm hover-shadow">
+        <i class="bi bi-arrow-left-circle-fill"></i> Prev
+      </a>
+      <a routerLink="/auth/register-complete" class="btn btn-success btn-lg px-5 py-3 shadow-sm hover-shadow">
+        Next <i class="bi bi-arrow-right-circle-fill"></i>
+      </a>
+    </div>
+  </div>
+</div>

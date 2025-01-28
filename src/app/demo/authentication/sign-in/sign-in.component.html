@@ -8,20 +8,36 @@
             <h4 class="mb-3 f-w-400">SignIn</h4>
             <div class="input-group mb-3">
               <span class="input-group-text" id="basic-addon1"><i class="feather icon-mail"></i></span>
-              <input type="email" class="form-control" placeholder="Email address" aria-label="Username" aria-describedby="basic-addon1" />
+              <input type="text" class="form-control" placeholder="User Name" aria-label="Username" aria-describedby="basic-addon1" name="userName" #userName="ngModel"
+              [(ngModel)]="loginFormData.userName" />
             </div>
             <div class="input-group mb-4">
               <span class="input-group-text" id="basic-addon3"><i class="feather icon-lock"></i></span>
-              <input type="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon3" />
+              <input type="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon3" name="password"  #password="ngModel"
+              [(ngModel)]="loginFormData.password"/>
             </div>
             <div class="form-group text-start mt-2">
               <div class="checkbox checkbox-primary d-inline">
-                <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" checked="" />
+                <input type="checkbox" name="rememberMe" id="checkbox-fill-a1"  #rememberMe="ngModel"
+                [(ngModel)]="loginFormData.rememberMe"/>
                 <label for="checkbox-fill-a1" class="cr">Save credentials</label>
               </div>
             </div>
+            <div class="form-group text-start mt-2">
+              <div class="checkbox checkbox-primary d-inline">
+                <input type="checkbox" name="checkbox-fill-2" id="checkbox-fill-2" />
+                <label for="checkbox-fill-2" class="cr">
+                  Send me the
+                  <a href="javascript:">Newsletter</a>
+                  weekly.
+                </label>
+              </div>
+            </div>
             <div class="d-grid">
-              <button (click)="OnSubmit()" class="btn btn-block btn-primary mb-4">SignIn</button>
+              <button (click)="OnSubmit()" class="btn btn-block btn-primary mb-4">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span *ngIf="!isLoading">Sign In</span>
+              </button>
             </div>
             <p class="mb-2 text-muted">
               Forgot password?
@@ -29,7 +45,7 @@
             </p>
             <p class="mb-0 text-muted">
               Don’t have an account?
-              <a [routerLink]="['/auth/signup']" class="f-w-400">Signup</a>
+              <a [routerLink]="['/auth/register-landing']" class="f-w-400">Signup</a>
             </p>
           </div>
         </div>

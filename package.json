@@ -39,6 +39,7 @@
     "lodash-es": "^4.17.21",
     "mousetrap": "^1.6.5",
     "ng-apexcharts": "^1.11.0",
+    "ng-multiselect-dropdown": "^1.0.0",
     "ngx-color-picker": "^16.0.0",
     "ngx-scrollbar": "^15.0.1",
     "ngx-toastr": "^14.3.0",
