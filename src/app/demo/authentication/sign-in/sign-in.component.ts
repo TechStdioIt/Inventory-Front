@@ -17,12 +17,17 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 })
 
 export default class SignInComponent implements OnInit{
+  showPassword = false;
   isLoading :boolean=false;
   loginFormData:Login= new Login();
   constructor(private route:Router,private dataService:HttpClientConnectionService){
 
   }
   ngOnInit(): void {
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;  // Toggle the value
   }
   OnSubmit(){
     this.isLoading =true;

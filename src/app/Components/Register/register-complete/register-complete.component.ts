@@ -105,9 +105,8 @@ selectedLogo?:File
       formData.append('id',this.masterId.toString())
         setTimeout(() => {
           this.dataService.PostData('BusinessMaster/CreateOrUpdateBusinessMaster',formData).subscribe((data:any)=>{
-            this.getBusinessMasterData();
             this.getUserRedirectInfo();
-            
+            this.getBusinessMasterData();
             this.isLoading =false;
           },
           (error:HttpErrorResponse)=>{
@@ -117,8 +116,9 @@ selectedLogo?:File
         }, 2000);
   }
   getUserRedirectInfo(){
-    this.dataService.GetData(`?id=${this.masterId}`).subscribe((data:any)=>{
-      if(data.data == 'NormalUser'){
+    this.dataService.GetData(`Administrator/CheckSpecialUserByBusinessId?businessMasterId=${Number(this.masterId)}`).subscribe((data:any)=>{
+  
+      if(data.data.UserType == 'NormalUser'){
         this.router.navigate(['/auth/signin']);
       }else{
         this.router.navigate(['/auth/register-verify']);
@@ -131,12 +131,32 @@ selectedLogo?:File
   }
   getBusinessMasterData(){
     this.dataService.GetData(`BusinessMaster/GetByIdBusinessMaster?id=${this.masterId}`).subscribe((data:any)=>{
-      this.SaveUser(data.data);
+      const saveUserData = {
+        email : data.data.email,
+        userFName :data.data.ownerName,
+        userTypeId :1,
+        mobile : data.data.contactNumber,
+        userName :data.data.email
+
+
+      }
+      this.SaveUser(saveUserData);
     })
   }
   SaveUser(userData:any){
-    this.dataService.PostData('',userData).subscribe((data:any)=>{
-      console.log(userData);
+    var datass = new FormData();
+    datass.append('email',userData.email);
+    datass.append('userFName',userData.userFName);
+    datass.append('userTypeId',userData.userTypeId);
+    datass.append('mobile',userData.mobile);
+    datass.append('userName',userData.userName);
+    this.dataService.PostData('Administrator/SaveUser',datass).subscribe((data:any)=>{
+      this.UpdateBusinessMaster(data.data.id);
+    })
+  }
+  UpdateBusinessMaster(userId:any){
+    this.dataService.GetData(`Administrator/UpdateBusinessMaster?userId=${userId}&businessMasterUId=${this.masterId}`).subscribe((data:any)=>{
+      console.log(data);
     })
   }
 }
