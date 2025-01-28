@@ -18,6 +18,10 @@ import { MenuListComponent } from './Components/Config/Menu/menu-list/menu-list.
 import { RegisterLandingComponent } from './Components/Register/register-landing/register-landing.component';
 import { RegisterPackageComponent } from './Components/Register/register-package/register-package.component';
 import { RegisterCompleteComponent } from './Components/Register/register-complete/register-complete.component';
+import { MenuPermissionFormComponent } from './Components/Config/MenuPermission/menu-permission-form/menu-permission-form.component';
+import { RegisterMailVerifyComponent } from './Components/Register/register-mail-verify/register-mail-verify.component';
+import { UserListComponent } from './Components/Config/User/user-list/user-list.component';
+import { UserFormComponent } from './Components/Config/User/user-form/user-form.component';
 
 const routes: Routes = [
   {
@@ -81,15 +85,24 @@ const routes: Routes = [
         path: 'suppliersForm',
         component: SuppliersFormComponent
       }, {
-        path: 'ImsMenuList',
+        path: 'menuList',
         component: MenuListComponent
       }
       , {
-        path: 'ImsMenuForm',
+        path: 'menuForm',
         component: MenuFormComponent
       }
-
-
+      , {
+        path: 'menuPermission',
+        component: MenuPermissionFormComponent
+      }, {
+        path: 'userList',
+        component: UserListComponent
+      }
+      , {
+        path: 'userForm',
+        component: UserFormComponent
+      }
     ]
   },
   {
@@ -108,11 +121,15 @@ const routes: Routes = [
         component: RegisterLandingComponent
       }
       ,{
-        path:'auth/register-package',
+        path:'auth/register-package/:id',
         component: RegisterPackageComponent
       },{
-        path:'auth/register-complete',
+        path:'auth/register-complete/:id',
         component: RegisterCompleteComponent
+      },
+      {
+        path:'auth/register-verify',
+        component:RegisterMailVerifyComponent
       }
     ]
   }

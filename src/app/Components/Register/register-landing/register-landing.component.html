@@ -1,24 +1,32 @@
 <div class="auth-wrapper">
         <div class="container">
             <div class="title">Business Registration</div>
-            <form action="#">
+            <form novalidate #form="ngForm">
                 
                 <div class="input-group">
                     <label for="business-name">Business Name</label>
-                    <input type="text" id="business-name" name="business-name" placeholder="Enter your business name" required>
+                    <input type="text" id="business-name" name="businessName"
+                    #businessName="ngModel"
+                    [(ngModel)]="FormData.businessName"  placeholder="Enter your business name" required>
                 </div>
                 <div class="input-group">
                     <label for="name">Owner Full Name</label>
-                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    <input type="text" id="name" name="ownerName"
+                    #ownerName="ngModel"
+                    [(ngModel)]="FormData.ownerName"  placeholder="Enter your full name" required>
                 </div>
                 <div class="input-group">
                     <label for="email">Business Email</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="email" id="email" name="email"
+                    #email="ngModel"
+                    [(ngModel)]="FormData.email" placeholder="Enter your email" required>
                 </div>
              
                 <div class="input-group">
                     <label for="branch">Total Branch</label>
-                    <input type="number" id="branch" name="branch" placeholder="Enter your Branch" required>
+                    <input type="number" id="branch" name="totalBranch"
+                    #totalBranch="ngModel"
+                    [(ngModel)]="FormData.totalBranch"  placeholder="Enter your Branch" required>
                 </div>
                 
                 <div class="input-group">
@@ -37,7 +45,8 @@
                 </div>
                 
                 <div class="button-group">
-                    <button type="submit" (click)="onSubmit()">Get Started</button>
+                    <button type="submit" (click)="onSubmit()"><span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span *ngIf="!isLoading">Sign In</span></button>
                 </div>
             </form>
         </div>

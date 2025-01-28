@@ -4,6 +4,7 @@ import { catchError, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
 import { DD_Menu } from '../Models/drodown.model';
+import { createUrl } from 'src/utility/common';
 
 @Injectable({
   providedIn: 'root',
@@ -25,17 +26,15 @@ export class CommonService {
     this.location.back();
   }
 
-  async getDropDownData(flag: number, variable: string) {
-    (await this.GetDataById('Administrator/GetDropdownData', flag.toString())).subscribe(
-      (x: any) => {
-        this[variable] = x;
-      }
-    );
+  getDropDownData(flag: number) {
+    return this.GetDataById(`Administrator/GetDropdownData?flag=${flag}`);
   }
 
+
   // Method to fetch data by ID
-  GetDataById(endpoint: string, id: string) {
-    return this.http.get(`${endpoint}/${id}`).pipe(
+  GetDataById(endpoint: string) {
+    endpoint = createUrl(endpoint)
+    return this.http.get(`${endpoint}`).pipe(
       catchError((error) => {
         console.error('API error:', error);
         this.toastr.error('An error occurred while fetching data', 'Error');

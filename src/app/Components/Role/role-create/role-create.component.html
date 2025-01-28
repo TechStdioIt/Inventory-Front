@@ -1,1 +1,39 @@
-<p>role-create works!</p>
+<section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="ri-add-circle-fill ri-lg text-success"></i>
+              {{ FormData.id === '' ? 'Create' : 'Update' }} Role
+            </h5>
+            <form novalidate #form="ngForm">
+              <div class="row mb-3">
+                <label for="roleName" class="col-sm-2 col-form-label">Role Name:</label>
+                <div class="col-sm-7">
+                  <input
+                    type="text"
+                    id="roleName"
+                    class="form-control"
+                    name="roleName"
+                    #roleName="ngModel"
+                    [(ngModel)]="FormData.name"
+                    required
+                    [class.invalid]="roleName.invalid && roleName.touched"
+                    [readOnly]="gridHandleService.selectedTab === 'Details'"
+                  />
+                </div>
+              </div>
+  
+          
+  
+              
+  
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <hr />
+  

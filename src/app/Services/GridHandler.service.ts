@@ -15,6 +15,8 @@ export class GridHandlerService {
   //this varible for add new records;
   private addNewSubject = new Subject<any>();
   addNewData$=this.addNewSubject.asObservable();
+  private editSubject = new Subject<any>();
+  edit$=this.editSubject.asObservable();
 
   isSearch:boolean=false;
   isPagger:boolean=false; 
@@ -33,7 +35,7 @@ export class GridHandlerService {
     
   }
   edit(selectedRecord:any){
-    this.dataSubject.next(selectedRecord);
+    this.editSubject.next(selectedRecord);
   }
   delete() {
     this.dataSubject.next(this.checkBoxSelectedData);

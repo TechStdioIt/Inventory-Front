@@ -5,6 +5,7 @@ export const environment = {
   appVersion: packageInfo.version,
   production: false,
   apiUrl: 'https://ims.techstdio.com/api/',
+  //apiUrl: 'https://192.168.1.249:45455/api/',
   reportUrl:'https://localhost:7136/',
   uploadFileUrl:'D:/project/Inventory-Front/src/assets/images/uploadedImages'
 

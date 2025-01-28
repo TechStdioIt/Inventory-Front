@@ -9,43 +9,40 @@
                         <div class="row">
                             <div class="form-group row mb-3">
                                 <div class="col-sm-3">
-                                    <dx-text-box label="Menu" class="input-label" labelMode="outside" name="name"
-                                        #name="ngModel"
-                                        [(ngModel)]="menuListComponent.FormData.name"></dx-text-box>
+                                    <dx-text-box label="Menu" class="input-label" labelMode="outside" name="title"
+                                        #title="ngModel"
+                                        [(ngModel)]="FormData.title" [readOnly]="gridHandleService.selectedTab === 'Details'"></dx-text-box>
                                 </div>
                                 <div class="col-sm-3">
-                                    <dx-select-box [dataSource]="DD_Menu" displayExpr="name" valueExpr="id"
-                                        class="input-label" label="Select Specialise at" [searchEnabled]="true"
+                                    <dx-select-box [dataSource]="DD_Menu" displayExpr="menuName" valueExpr="id"
+                                        class="input-label" label="Select Parent Menu" [searchEnabled]="true"
+                                        labelMode="outside" name="parentId" #parentId="ngModel"
+                                        [(ngModel)]="FormData.parentId"  [readOnly]="gridHandleService.selectedTab === 'Details'"></dx-select-box>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <dx-text-box label="URL" class="input-label" labelMode="outside" name="url"
+                                        #url="ngModel"
+                                        [(ngModel)]="FormData.url" [readOnly]="gridHandleService.selectedTab === 'Details'"></dx-text-box>
+                                </div>
+                                <div class="col-sm-3">
+                                    <dx-text-box label="Icon" labelMode="outside" class="input-label" name="icon"
+                                        #icon="ngModel"
+                                        [(ngModel)]="FormData.icon" [readOnly]="gridHandleService.selectedTab === 'Details'"></dx-text-box>
+                                </div>
+
+                               
+                                <div class="col-sm-3">
+                                    <dx-select-box [dataSource]="menuTypeList" displayExpr="name" valueExpr="name"
+                                        class="input-label" label="Select Type" [searchEnabled]="true"
                                         labelMode="outside" name="specialistsId" #specialistsId="ngModel"
-                                        [(ngModel)]="menuListComponent.FormData.parentId"></dx-select-box>
-                                </div>
-
-                                <div class="col-sm-3">
-                                    <dx-text-box label="URL" class="input-label" labelMode="outside" name="menuUrl"
-                                        #menuUrl="ngModel"
-                                        [(ngModel)]="menuListComponent.FormData.menuUrl"></dx-text-box>
-                                </div>
-                                <div class="col-sm-3">
-                                    <dx-text-box label="Icon" labelMode="outside" class="input-label" name="menuIcon"
-                                        #menuIcon="ngModel"
-                                        [(ngModel)]="menuListComponent.FormData.menuIcon"></dx-text-box>
-                                </div>
-
-                                <div class="col-sm-3">
-                                    <dx-text-box label="Breadcrumbs" class="input-label" labelMode="outside" name="breadcrumbs"
-                                        #breadcrumbs="ngModel"
-                                        [(ngModel)]="menuListComponent.FormData.breadcrumbs"></dx-text-box>
-                                </div>
-                                <div class="col-sm-3">
-                                    <dx-check-box text="Open On Other Tab?" class="custom-checkbox" name="target"
-                                        #target="ngModel"
-                                        [(ngModel)]="menuListComponent.FormData.target"></dx-check-box>
+                                        [(ngModel)]="FormData.type"  [readOnly]="gridHandleService.selectedTab === 'Details'"></dx-select-box>
                                 </div>
 
                                 <div class="col-sm-3">
                                     <dx-text-box label="Classes" labelMode="outside" class="input-label" name="classes"
                                         #classes="ngModel"
-                                        [(ngModel)]="menuListComponent.FormData.classes"></dx-text-box>
+                                        [(ngModel)]="FormData.classes" [readOnly]="gridHandleService.selectedTab === 'Details'"></dx-text-box>
                                 </div>
                             </div>
                         </div>

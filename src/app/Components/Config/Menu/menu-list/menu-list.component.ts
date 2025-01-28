@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import { CommonDataGridWithCheckBoxComponent } from "../../../../CommonComponents/CommonDataGridWithCheckBox/common-data-grid-with-check-box.component";
-import { CommonDataGridComponent } from "../../../../CommonComponents/CommonDataGrid/common-data-grid.component";
+import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import { IMSMenu } from 'src/app/Models/IMSMenu';
@@ -15,14 +13,13 @@ import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/ap
   
 
 })
-export class MenuListComponent {
+export class MenuListComponent  implements OnInit{
 
 
-  FormData: IMSMenu = new IMSMenu();
-  dataList: IMSMenu[] = [];
+
+  dataList: any[] = [];
 
   constructor(
-    public menuListComponent:MenuListComponent,
     private dataService:HttpClientConnectionService,
     private toastr:ToastrService,
     private gridHandlerService:GridHandlerService,
@@ -32,13 +29,13 @@ export class MenuListComponent {
    ngOnInit(): void {
   
      this.getData();
-     this.gridHandlerService.data$.subscribe(newData => {
+     this.gridHandlerService.edit$.subscribe(newData => {
       this.edit(newData);
     });
   
     }
     getData = () => {
-      this.dataService.GetData("Menu/GetAllMenu").subscribe((data:any)=>{
+      this.dataService.GetData("Menu/GetAllMenuList").subscribe((data:any)=>{
         this.dataList=data.data;
         this.sendDataCommonGrid();
       },
@@ -53,12 +50,20 @@ export class MenuListComponent {
       this.gridHandlerService.dataList=[];
       //Grid Caption 
       this.gridHandlerService.caption = new GridCaption();
-         this.gridHandlerService.caption.caption1="Category Id";
-         this.gridHandlerService.caption.caption2="Category Name";
-    
+         this.gridHandlerService.caption.caption1="Menu Id";
+         this.gridHandlerService.caption.caption2="Menu Name";
+         this.gridHandlerService.caption.caption3="Parent Menu Name";
+         this.gridHandlerService.caption.caption4="Menu Type";
+         this.gridHandlerService.caption.caption5="Menu Url";
+         this.gridHandlerService.caption.caption6="Menu Icon";    
         //PermitForShow or Not
         this.gridHandlerService.isShowData = new GridDataShow()
          this.gridHandlerService.isShowData.caption2=true;
+         this.gridHandlerService.isShowData.caption3=true;
+         this.gridHandlerService.isShowData.caption4=true;
+         this.gridHandlerService.isShowData.caption5=true;
+         this.gridHandlerService.isShowData.caption6=true;
+
   
   
          //Permit For Button Show or Not
@@ -72,7 +77,11 @@ export class MenuListComponent {
      for(let item of this.dataList){
         this.gridHandlerService.dataField = new GridDataModel();
           this.gridHandlerService.dataField.dataField1=item.id;
-          this.gridHandlerService.dataField.dataField2=item.name;
+          this.gridHandlerService.dataField.dataField2=item.menuName;
+          this.gridHandlerService.dataField.dataField3=item.parentName;
+          this.gridHandlerService.dataField.dataField4=item.type;
+          this.gridHandlerService.dataField.dataField5=item.url;
+          this.gridHandlerService.dataField.dataField6=item.icon;
     
       
     this.gridHandlerService.dataList.push(this.gridHandlerService.dataField);
@@ -82,13 +91,8 @@ export class MenuListComponent {
     }
     
     edit(selectedRecord:any){
-      let data=this.findSelectedItem(selectedRecord.row.data.dataField1);
-      if(data !=null || data !=undefined){
-        this.gridHandlerService.selectedTab='Form';
-          var jsonString=JSON.stringify(data);
-          const encodeValue = CryptoJS.AES.encrypt(jsonString, "values").toString();
-        this.router.navigate(['/categoryForm'],{ queryParams: { category: encodeValue } });
-      }
+      this.gridHandlerService.selectedTab='Form';
+      this.router.navigate(['/menuForm'],{ queryParams: { menu: selectedRecord.row.data.dataField1} });
     }
     findSelectedItem(selectedItem:any){
     

@@ -70,6 +70,7 @@ export class ButtonControlComponent implements OnInit {
 
 
   selectTab(tab: string): void {
+    debugger
     if (tab == 'Save' || tab == 'Delete' ){
       if (tab == 'Save') {
         this.commonService.addNew();

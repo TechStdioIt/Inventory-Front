@@ -12,7 +12,7 @@ import { createUrl } from 'src/utility/common';
 })
 export class SideBarComponent implements OnInit {
   
-  dataList:IMSMenu[]=[];
+  dataList:any[]=[];
   isProcessGoingOn : boolean = false;
 
   activeParentItem: any; // Variable to store the active parent item

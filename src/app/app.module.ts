@@ -73,6 +73,10 @@ import { SuppliersListComponent } from './Components/Suppliers/suppliers-list/su
 import { SuppliersFormComponent } from './Components/Suppliers/suppliers-form/suppliers-form.component';
 import { MenuListComponent } from './Components/Config/Menu/menu-list/menu-list.component';
 import { MenuFormComponent } from './Components/Config/Menu/menu-form/menu-form.component';
+import { MenuPermissionFormComponent } from './Components/Config/MenuPermission/menu-permission-form/menu-permission-form.component';
+import { RegisterLandingComponent } from './Components/Register/register-landing/register-landing.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { RegisterMailVerifyComponent } from './Components/Register/register-mail-verify/register-mail-verify.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +109,10 @@ import { MenuFormComponent } from './Components/Config/Menu/menu-form/menu-form.
     SuppliersListComponent,
     SuppliersFormComponent,
     MenuListComponent,
-    MenuFormComponent
+    MenuFormComponent,
+    MenuPermissionFormComponent,
+    RegisterLandingComponent,
+    RegisterMailVerifyComponent
   ],
   imports: [
     BrowserModule,
@@ -148,7 +155,8 @@ import { MenuFormComponent } from './Components/Config/Menu/menu-form/menu-form.
   DxTabPanelModule,
   DxSortableModule,
   HttpClientModule,
-  ToastrModule.forRoot()
+  ToastrModule.forRoot(),
+  NgMultiSelectDropDownModule.forRoot()
 ],
   providers: [],
   bootstrap: [AppComponent]

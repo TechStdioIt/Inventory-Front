@@ -1,22 +1,11 @@
 export class IMSMenu {
-    id:number=0;
-    name:string="";
-    description:string="";
-    active:boolean=true;
-    menuUrl:string="";
-    menuPriority:any;
-    menuOrder:any;
-    parentId:any=null;
-    breadcrumbs:any=null;
-    classes:any=null;
-    updatedBy:string="";
-    updatedAt:Date=new Date();
-    createdBy:string | null="";
-    createdAt:Date=new Date();
-    isDeleted:boolean=false;
-    menuIcon:string=""; 
-    expandable:boolean=false;
-    target:boolean=false;
-    isAuthenticated :boolean=false;
-    isView:boolean=false;
+    id: number=0;
+  parentId: number=0;
+  title: string='';
+  type: string='';
+  url: string='';
+  icon: string='';
+  target: boolean=false;
+  breadcrumbs: boolean=false;
+  classes: string='';
 }

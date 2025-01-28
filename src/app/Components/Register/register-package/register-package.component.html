@@ -20,7 +20,7 @@
 
             <!-- Radio Button for Selection (Centered and Beautiful Toggle) -->
             <div class="d-flex justify-content-center align-items-center mt-auto">
-              <input class="form-check-input fs-2" type="radio" name="packageSelect" id="package{{ item.name }}" [value]="item.id">
+              <input class="form-check-input fs-2" type="radio" name="packageSelect" id="package{{ item.name }}" (change)="onChangeValue(item)" [value]="item.selected">
               <label class="form-check-label" for="package{{ item.name }}">
                 <i class="bi bi-check-circle-fill fs-3 text-primary hover-shadow"></i> <!-- Larger toggle icon with hover effect -->
               </label>
@@ -35,9 +35,11 @@
       <a routerLink="/previous-page" class="btn btn-danger btn-lg px-5 py-3 shadow-sm hover-shadow">
         <i class="bi bi-arrow-left-circle-fill"></i> Prev
       </a>
-      <a routerLink="/auth/register-complete" class="btn btn-success btn-lg px-5 py-3 shadow-sm hover-shadow">
+      <!-- <a routerLink="/auth/register-complete" class="btn btn-success btn-lg px-5 py-3 shadow-sm hover-shadow">
         Next <i class="bi bi-arrow-right-circle-fill"></i>
-      </a>
+      </a> -->
+      <button type="submit" (click)="onSubmit()" class="btn btn-success btn-lg px-5 py-3 shadow-sm hover-shadow"><span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span *ngIf="!isLoading">Next</span></button>
     </div>
   </div>
 </div>
