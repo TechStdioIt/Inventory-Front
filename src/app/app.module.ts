@@ -77,6 +77,7 @@ import { MenuPermissionFormComponent } from './Components/Config/MenuPermission/
 import { RegisterLandingComponent } from './Components/Register/register-landing/register-landing.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { RegisterMailVerifyComponent } from './Components/Register/register-mail-verify/register-mail-verify.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -158,7 +159,7 @@ import { RegisterMailVerifyComponent } from './Components/Register/register-mail
   ToastrModule.forRoot(),
   NgMultiSelectDropDownModule.forRoot()
 ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
