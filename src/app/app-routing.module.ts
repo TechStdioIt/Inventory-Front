@@ -22,6 +22,14 @@ import { MenuPermissionFormComponent } from './Components/Config/MenuPermission/
 import { RegisterMailVerifyComponent } from './Components/Register/register-mail-verify/register-mail-verify.component';
 import { UserListComponent } from './Components/Config/User/user-list/user-list.component';
 import { UserFormComponent } from './Components/Config/User/user-form/user-form.component';
+import { StListComponent } from './Components/MasterSetup/StoreType/st-list/st-list.component';
+import { StFormComponent } from './Components/MasterSetup/StoreType/st-form/st-form.component';
+import { CatagoryFormComponent } from './Components/MasterSetup/Category/catagory-form/catagory-form.component';
+import { CatagoryListComponent } from './Components/MasterSetup/Category/catagory-list/catagory-list.component';
+import { BankListComponent } from './Components/MasterSetup/Bank/bank-list/bank-list.component';
+import { BankFormComponent } from './Components/MasterSetup/Bank/bank-form/bank-form.component';
+import { BmListComponent } from './Components/MasterSetup/BusinessMaster/bm-list/bm-list.component';
+import { BmFormComponent } from './Components/MasterSetup/BusinessMaster/bm-form/bm-form.component';
 
 const routes: Routes = [
   {
@@ -58,27 +66,14 @@ const routes: Routes = [
         path: 'sample-page',
         loadComponent: () => import('./demo/sample-page/sample-page.component')
       },
-      {
-        path: 'storetypeList',
-        component: StoreTypeListComponent
-      },
-      {
-        path: 'storetypeForm',
-        component: StoreTypeFormComponent
-      }, {
+       {
         path: 'roleForm',
         component: RoleCreateComponent
       },
       {
         path: 'roleList',
         component: RoleListComponent
-      }, {
-        path: 'categoryList',
-        component: CategoryListComponent
-      }, {
-        path: 'categoryForm',
-        component: CategoryFormComponent
-      }, {
+      },  {
         path: 'suppliersList',
         component: SuppliersListComponent
       }, {
@@ -102,7 +97,63 @@ const routes: Routes = [
       , {
         path: 'userForm',
         component: UserFormComponent
-      }
+      },
+      {
+        path: 'storetypeList',
+        component: StListComponent
+      },
+      {
+        path: 'storetypeForm',
+        component: StFormComponent
+      },
+      {
+        path: 'categoryList',
+        component: CatagoryListComponent
+      }, {
+        path: 'categoryForm',
+        component: CatagoryFormComponent
+      },
+
+      {
+        path: 'bankList',
+        component: BankListComponent
+      }, {
+        path: 'bankForm',
+        component: BankFormComponent
+      },
+
+      {
+        path: 'bmList',
+        component: BmListComponent
+      }, {
+        path: 'bmForm',
+        component: BmFormComponent
+      },
+
+      {
+        path: 'categoryList',
+        component: CatagoryListComponent
+      }, {
+        path: 'categoryForm',
+        component: CatagoryFormComponent
+      },
+
+      {
+        path: 'categoryList',
+        component: CatagoryListComponent
+      }, {
+        path: 'categoryForm',
+        component: CatagoryFormComponent
+      },
+
+
+
+
+
+
+
+
+
     ]
   },
   {
