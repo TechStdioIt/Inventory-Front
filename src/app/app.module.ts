@@ -57,7 +57,7 @@ import {
   DxTabPanelModule,
   DxSortableModule
 } from 'devextreme-angular';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { StoreTypeListComponent } from './Components/StoreType/store-type-list/store-type-list.component';
 import { StoreTypeFormComponent } from './Components/StoreType/store-type-form/store-type-form.component';
 import { CommonDataGridComponent } from './CommonComponents/CommonDataGrid/common-data-grid.component';
@@ -92,6 +92,9 @@ import { UnitListComponent } from './Components/MasterSetup/Unit/unit-list/unit-
 import { WhFormComponent } from './Components/MasterSetup/WareHouse/wh-form/wh-form.component';
 import { WhListComponent } from './Components/MasterSetup/WareHouse/wh-list/wh-list.component';
 import { CookieService } from 'ngx-cookie-service';
+import { UserListComponent } from './Components/Config/User/user-list/user-list.component';
+import { UserFormComponent } from './Components/Config/User/user-form/user-form.component';
+import { AuthInterceptor } from './Authorization/AuthInterceptor';
 
 @NgModule({
   declarations: [
@@ -128,6 +131,7 @@ import { CookieService } from 'ngx-cookie-service';
     MenuPermissionFormComponent,
     RegisterLandingComponent,
     RegisterMailVerifyComponent,
+<<<<<<< Updated upstream
     CommonSelectBoxComponent,
     DynamicGridWithPaginationComponent,
     BankFormComponent,
@@ -149,6 +153,10 @@ import { CookieService } from 'ngx-cookie-service';
 
 
 
+=======
+    UserListComponent,
+    UserFormComponent
+>>>>>>> Stashed changes
   ],
   imports: [
     BrowserModule,
@@ -194,7 +202,9 @@ import { CookieService } from 'ngx-cookie-service';
   ToastrModule.forRoot(),
   NgMultiSelectDropDownModule.forRoot()
 ],
-  providers: [CookieService],
+  providers: [CookieService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

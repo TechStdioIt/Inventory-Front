@@ -20,7 +20,7 @@ export default class SignInComponent implements OnInit {
   loginError: string = '';
   isLoading: boolean = false;
   loginFormData: Login = new Login();
-  isCheckingAuth: boolean = true; // Prevent UI flashing
+  isCheckingAuth: boolean = false; // Prevent UI flashing
 
   constructor(
     private route: Router,
@@ -29,7 +29,7 @@ export default class SignInComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.checkAuthentication();
+    //this.checkAuthentication();
   }
 
   // Check if user is already authenticated
@@ -71,8 +71,12 @@ export default class SignInComponent implements OnInit {
             this.commonService.setCookie('userName', this.loginFormData.userName, 30);
             this.commonService.setCookie('password', this.loginFormData.password, 30);
             this.commonService.setCookie('userId', data.id, 30);
+            this.commonService.setCookie('businessMasterId', data.businessMasterId, 30);
+          }else{
+            this.commonService.deleteAllCookies();
           }
           localStorage.setItem('userId', data.id);
+          localStorage.setItem('businessMasterId', data.businessMasterId);
           this.route.navigate(['/analytics']);
           this.isLoading = false;
         },

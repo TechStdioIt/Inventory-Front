@@ -151,12 +151,8 @@ selectedLogo?:File
     datass.append('mobile',userData.mobile);
     datass.append('userName',userData.userName);
     this.dataService.PostData('Administrator/SaveUser',datass).subscribe((data:any)=>{
-      this.UpdateBusinessMaster(data.data.id);
+      
     })
   }
-  UpdateBusinessMaster(userId:any){
-    this.dataService.GetData(`Administrator/UpdateBusinessMaster?userId=${userId}&businessMasterUId=${this.masterId}`).subscribe((data:any)=>{
-      console.log(data);
-    })
-  }
+
 }
