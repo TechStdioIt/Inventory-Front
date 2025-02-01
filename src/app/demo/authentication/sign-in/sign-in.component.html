@@ -13,9 +13,24 @@
             </div>
             <div class="input-group mb-4">
               <span class="input-group-text" id="basic-addon3"><i class="feather icon-lock"></i></span>
-              <input type="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon3" name="password"  #password="ngModel"
-              [(ngModel)]="loginFormData.password"/>
+              <input 
+                type="{{ showPassword ? 'text' : 'password' }}" 
+                class="form-control" 
+                placeholder="Password" 
+                aria-label="Username" 
+                aria-describedby="basic-addon3" 
+                name="password" 
+                #password="ngModel"
+                [(ngModel)]="loginFormData.password"/>
+              
+              <button 
+                class="input-group-text" 
+                (click)="togglePasswordVisibility()" 
+                type="button">
+                <i class="feather" [ngClass]="showPassword ? 'icon-eye-off' : 'icon-eye'"></i>
+              </button>
             </div>
+            
             <div class="form-group text-start mt-2">
               <div class="checkbox checkbox-primary d-inline">
                 <input type="checkbox" name="rememberMe" id="checkbox-fill-a1"  #rememberMe="ngModel"
