@@ -68,3 +68,13 @@ File: style.css
 .hoverEffect:hover{
 cursor: pointer;
 }
+
+input:read-only {
+  background-color: #f0f0f0;
+  color: #999999;
+  // cursor: not-allowed;
+  border: 1px dashed #999999;
+  cursor: not-allowed; /* Shows a "not-allowed" cursor */
+    pointer-events: none; /* Disables clicking or focus */
+
+}

@@ -77,6 +77,8 @@ import { MenuPermissionFormComponent } from './Components/Config/MenuPermission/
 import { RegisterLandingComponent } from './Components/Register/register-landing/register-landing.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { RegisterMailVerifyComponent } from './Components/Register/register-mail-verify/register-mail-verify.component';
+import { CommonSelectBoxComponent } from './CommonComponents/common-select-box/common-select-box.component';
+import { DynamicGridWithPaginationComponent } from './CommonComponents/dynamic-grid-with-pagination/dynamic-grid-with-pagination.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +114,9 @@ import { RegisterMailVerifyComponent } from './Components/Register/register-mail
     MenuFormComponent,
     MenuPermissionFormComponent,
     RegisterLandingComponent,
-    RegisterMailVerifyComponent
+    RegisterMailVerifyComponent,
+    CommonSelectBoxComponent,
+    DynamicGridWithPaginationComponent
   ],
   imports: [
     BrowserModule,

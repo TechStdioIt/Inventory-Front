@@ -62,8 +62,8 @@ export class HttpClientConnectionService {
 
     }
 
-    DeleteData(_url: string, _deletedata: any) {
-        _url = createUrl(_url)+"/"+_deletedata;
+    DeleteData(_url: string) {
+        _url = createUrl(_url);
         return this.http.delete(_url, { withCredentials: true }).pipe(catchError(this.handleError));
     }
     private handleError(error: Response) {

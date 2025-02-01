@@ -12,4 +12,3 @@ export class Suppliers {
     phone?: string='';
     email?: string='';
   }
-  
