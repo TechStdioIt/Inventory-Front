@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/app/Models/GridModels';
-import { Suppliers } from 'src/app/Models/Suppliers';
+import { take } from 'rxjs';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-suppliers-list',
@@ -12,84 +11,88 @@ import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnecti
   styleUrl: './suppliers-list.component.scss'
 })
 export class SuppliersListComponent implements OnInit {
-  dataList: any[] = [];
+  fromHeader: string = 'Supplier';
+  formRoute: string = '/suppliersForm';
+  listAPI: string = 'Suppliers/GetAllSuppliers';
+  deleteAPI: string = 'Suppliers/DeleteSuppliers';
+  haveQueryPram: boolean = false;
+  pageSize: number = 10;
+  pageSizes: number[] = [5, 10, 20, 50, 100];
+  reloadCount: number = 0;
 
-  ///routerData:any;
+  userColumns = [
+    { caption: 'ID', key: 'id', width: 50, isShow: false },
+    { caption: 'Name', key: 'companyName' },
+    { caption: 'Contact', key: 'contactName' }
+  ];
+
+  buttonShow = {
+    edit: {
+      isShow: true,
+      emit: (selectedRecord: any) => this.edit(selectedRecord)
+    },
+    viewDetails: {
+      isShow: true,
+      emit: (selectedRecord: any) => this.details(selectedRecord)
+    },
+    delete: {
+      isShow: true,
+      emit: (selectedRecord: any) => this.delete(selectedRecord)
+    },
+  };
 
   constructor(
-    // public service:FloorService,
-    private dataService:HttpClientConnectionService,
-    private toastr:ToastrService,
-    private commonService:GridHandlerService,
-    private route:ActivatedRoute,
-    private router:Router
-  ) { }
+    private dataService: HttpClientConnectionService,
+    private commonService: GridHandlerService,
+    private router: Router,
+  ) {
+    this.commonService.edit$.pipe(take(1)).subscribe(async (data: any) => {
+      this.edit(data);
+    });
+    this.commonService.details$.pipe(take(1)).subscribe(async (data: any) => {
+      this.details(data);
+    });
+  }
 
   ngOnInit(): void {
-
-   this.getData();
-   this.commonService.data$.subscribe(newData => {
-    this.edit(newData);
-  });
-
-  }
-  getData = () => {
-    this.dataService.GetData("Suppliers/GetAllSuppliers").subscribe((data:any)=>{
-      console.log(data.data);
-      this.dataList=data.data;
-      this.sendDataCommonGrid();
-    },
-    (error:any)=>{
-      this.toastr.error("failed to Get Data")
-    }
-    )
+    this.commonService.data$.subscribe((newData) => {
+      this.edit(newData);
+    });
   }
 
+  edit(selectedRecord: any) {
+    this.commonService.selectedTab = 'Form';
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
+  }
+  details(selectedRecord: any) {
+    this.commonService.selectedTab = 'Details';
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
+  }
+  delete(selectedRecord: any) {
+    debugger;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete selected record',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.value) {
+        this.dataService.DeleteData(`${this.deleteAPI}?id=${selectedRecord.id}`).subscribe(
+          (response: any) => {
+            this.reloadCount++;
+            Swal.fire('Done', 'Your record is Deleted :)', 'success');
 
-  sendDataCommonGrid(){
-    this.commonService.dataList=[];
-    //Grid Caption 
-    this.commonService.caption = new GridCaption();
-       this.commonService.caption.caption1="Suppliers ID";
-       this.commonService.caption.caption2="Company Name";
-       this.commonService.caption.caption3="Company ID";
-  
-      //PermitForShow or Not
-      this.commonService.isShowData = new GridDataShow()
-       this.commonService.isShowData.caption2=true;
-
-
-       //Permit For Button Show or Not
-       this.commonService.isShowButton =new GridButtonShow()
-       this.commonService.isShowButton.button1=true //edit
-       this.commonService.isShowButton.button2=true //delete
-       this.commonService.isShowButton.button3=true
-        this.commonService.isShowButton.button4=false;
-      
-       //Grid Data 
-   for(let item of this.dataList){
-      this.commonService.dataField = new GridDataModel();
-        this.commonService.dataField.dataField1=item.id;
-        this.commonService.dataField.dataField2=item.companyName;
-  
-    
-  this.commonService.dataList.push(this.commonService.dataField);
-  this.commonService.dataList=this.commonService.dataList.map((item,index)=>({ ...item,index:index+1}));
-  
-   }
+          },
+          (error: any) => {
+            console.error('Failed to get data:', error);
+          }
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire('Cancelled', 'Your record is safe :)', 'error');
+      }
+    });
   }
   
-  edit(selectedRecord:any){
-    let data=this.findSelectedItem(selectedRecord.row.data.dataField1);
-    if(data !=null || data !=undefined){
-      this.commonService.selectedTab='Form';
-        var jsonString=JSON.stringify(data);
-        const encodeValue = CryptoJS.AES.encrypt(jsonString, "values").toString();
-      this.router.navigate(['/suppliersForm'],{ queryParams: { suppliers: encodeValue } });
-    }
-  }
-  findSelectedItem(selectedItem:any){
-  
-   return this.dataList.find(x=>x.id === selectedItem);
-  }
 }

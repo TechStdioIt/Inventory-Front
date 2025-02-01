@@ -1,0 +1,22 @@
+.table th {
+  position: relative; /* Positioning context for absolute elements, if needed */
+}
+
+.table th i {
+  margin-left: 5px; /* Add some space between the header text and the icon */
+  font-size: 0.8em; /* Adjust icon size */
+  vertical-align: middle; /* Align the icon with the text */
+}
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+}
+input[type='checkbox'],
+input[type='radio'] {
+  pointer-events: auto; /* Check if this exists in your styles */
+  cursor: pointer;
+}
+.myPointer{
+  cursor: pointer;
+
+}

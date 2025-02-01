@@ -16,6 +16,21 @@ import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/ap
 export class StoreTypeListComponent implements OnInit {
   dataList: StoreType[] = [];
 
+  pageSize: number = 5;
+  userColumns = [
+    { caption: 'ID', key: 'id', width: 50, isShow: false },
+    { caption: 'Name', key: 'name' },
+  ];
+  buttonShow = {
+    edit: {
+      isShow: true,
+      emit: (selectedRecord: any) => this.edit(selectedRecord),
+    },
+    // viewDetails: {
+    //   isShow: true,
+    //   emit: (selectedRecord: any) => this.details(selectedRecord),
+    // }
+  };
   ///routerData:any;
 
   constructor(
@@ -81,7 +96,7 @@ export class StoreTypeListComponent implements OnInit {
   }
   
   edit(selectedRecord:any){
-    let data=this.findSelectedItem(selectedRecord.row.data.dataField1);
+    let data=this.findSelectedItem(selectedRecord.id);
     if(data !=null || data !=undefined){
       this.commonService.selectedTab='Form';
         var jsonString=JSON.stringify(data);

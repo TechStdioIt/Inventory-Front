@@ -77,6 +77,20 @@ import { MenuPermissionFormComponent } from './Components/Config/MenuPermission/
 import { RegisterLandingComponent } from './Components/Register/register-landing/register-landing.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { RegisterMailVerifyComponent } from './Components/Register/register-mail-verify/register-mail-verify.component';
+import { CommonSelectBoxComponent } from './CommonComponents/common-select-box/common-select-box.component';
+import { DynamicGridWithPaginationComponent } from './CommonComponents/dynamic-grid-with-pagination/dynamic-grid-with-pagination.component';
+import { BankFormComponent } from './Components/MasterSetup/Bank/bank-form/bank-form.component';
+import { BankListComponent } from './Components/MasterSetup/Bank/bank-list/bank-list.component';
+import { BmFormComponent } from './Components/MasterSetup/BusinessMaster/bm-form/bm-form.component';
+import { BmListComponent } from './Components/MasterSetup/BusinessMaster/bm-list/bm-list.component';
+import { CatagoryFormComponent } from './Components/MasterSetup/Category/catagory-form/catagory-form.component';
+import { CatagoryListComponent } from './Components/MasterSetup/Category/catagory-list/catagory-list.component';
+import { StFormComponent } from './Components/MasterSetup/StoreType/st-form/st-form.component';
+import { StListComponent } from './Components/MasterSetup/StoreType/st-list/st-list.component';
+import { UnitFormComponent } from './Components/MasterSetup/Unit/unit-form/unit-form.component';
+import { UnitListComponent } from './Components/MasterSetup/Unit/unit-list/unit-list.component';
+import { WhFormComponent } from './Components/MasterSetup/WareHouse/wh-form/wh-form.component';
+import { WhListComponent } from './Components/MasterSetup/WareHouse/wh-list/wh-list.component';
 import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
@@ -113,7 +127,28 @@ import { CookieService } from 'ngx-cookie-service';
     MenuFormComponent,
     MenuPermissionFormComponent,
     RegisterLandingComponent,
-    RegisterMailVerifyComponent
+    RegisterMailVerifyComponent,
+    CommonSelectBoxComponent,
+    DynamicGridWithPaginationComponent,
+    BankFormComponent,
+    BankListComponent,
+    BmFormComponent,
+    BmListComponent,
+    // CatagoryFormComponent,
+    CatagoryListComponent,
+    // StFormComponent,
+    StListComponent,
+    // UnitFormComponent,
+    UnitListComponent,
+    // WhFormComponent,
+    WhListComponent
+
+
+
+
+
+
+
   ],
   imports: [
     BrowserModule,
