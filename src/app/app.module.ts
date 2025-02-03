@@ -131,7 +131,7 @@ import { AuthInterceptor } from './Authorization/AuthInterceptor';
     MenuPermissionFormComponent,
     RegisterLandingComponent,
     RegisterMailVerifyComponent,
-<<<<<<< Updated upstream
+
     CommonSelectBoxComponent,
     DynamicGridWithPaginationComponent,
     BankFormComponent,
@@ -145,18 +145,10 @@ import { AuthInterceptor } from './Authorization/AuthInterceptor';
     // UnitFormComponent,
     UnitListComponent,
     // WhFormComponent,
-    WhListComponent
+    WhListComponent,
+    UserFormComponent,
+    UserListComponent
 
-
-
-
-
-
-
-=======
-    UserListComponent,
-    UserFormComponent
->>>>>>> Stashed changes
   ],
   imports: [
     BrowserModule,

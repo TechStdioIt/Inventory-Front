@@ -11,3 +11,14 @@ export class AspnetUsers{
     userRoleId: string = '';
     businessMasterId: number = 0;
 }
+
+
+export class AspNetRole {
+    id: string = "";
+    name: string = "";
+    normalizedName:string="";
+    concurrencyStamp:string="";
+    AspNetRoleClaims:[]=[];
+    selected:boolean=true;
+
+}

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BusinessVM } from 'src/app/Models/Category';
@@ -14,6 +14,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
   styleUrl: './register-complete.component.scss'
 })
 export class RegisterCompleteComponent implements OnInit{
+   @ViewChild('fileInput') fileInput!: ElementRef;
   masterId: any = 0;
   isLoading:boolean=false;
   fileData: string | ArrayBuffer | null = null; // Stores the base64 image data
@@ -34,11 +35,7 @@ selectedLogo?:File
 
   ngOnInit(): void {}
 
-  // Trigger file input click
-  triggerFileInput(): void {
-    const fileInput = document.querySelector<HTMLInputElement>('.file-upload-input');
-    fileInput?.click();
-  }
+ 
 
   // Handle file selection
   onFileSelected(event: Event): void {
@@ -136,8 +133,8 @@ selectedLogo?:File
         userFName :data.data.ownerName,
         userTypeId :1,
         mobile : data.data.contactNumber,
-        userName :data.data.email
-
+        userName :data.data.email,
+        businessMasterId:this.masterId
 
       }
       this.SaveUser(saveUserData);
@@ -150,9 +147,12 @@ selectedLogo?:File
     datass.append('userTypeId',userData.userTypeId);
     datass.append('mobile',userData.mobile);
     datass.append('userName',userData.userName);
+    datass.append('businessMasterId',userData.businessMasterId);
     this.dataService.PostData('Administrator/SaveUser',datass).subscribe((data:any)=>{
       
     })
   }
-
+  triggerFileInput() {
+    this.fileInput.nativeElement.click();
+  }
 }

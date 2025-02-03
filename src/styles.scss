@@ -69,295 +69,163 @@ File: style.css
 cursor: pointer;
 }
 
-<<<<<<< Updated upstream
-input:read-only {
-  background-color: #f0f0f0;
-  color: #999999;
-  // cursor: not-allowed;
-  border: 1px dashed #999999;
-  cursor: not-allowed; /* Shows a "not-allowed" cursor */
-    pointer-events: none; /* Disables clicking or focus */
 
-=======
-
-
+/* General Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
 }
 
-body {
-  background-color: #f4f4f9;
+/* Wrapper */
+.auth-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  background-color: #f4f4f4;
   padding: 20px;
 }
 
+/* Container */
 .container {
-  background-color: white;
+  background: #fff;
   padding: 30px;
+  width: 100%;
+  max-width: 600px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 500px;
 }
 
+/* Title */
 .title {
   text-align: center;
   font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.input-group {
-  margin-bottom: 20px;
-}
-
-.input-group label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #555;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.input-group input, 
-.input-group select {
-  width: 100%;
-  padding: 12px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
-  transition: border-color 0.3s;
-}
-
-.input-group input:focus, 
-.input-group select:focus {
-  border-color: #4CAF50;
-}
-
-.button-group {
-  text-align: center;
-}
-
-.button-group button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s;
-}
-
-.button-group button:hover {
-  background-color: #45a049;
-}
-
-@media(max-width: 480px) {
-  .container {
-      padding: 20px;
-  }
-  .title {
-      font-size: 20px;
-  }
-}
-
-
-.input-group label {
-  font-size: 14px;
-  font-weight: 700; /* Changed from 500 to 700 for bold */
-  color: #555;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.input-group {
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.input-group label {
-  font-size: 14px;
   font-weight: bold;
-  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Input Group */
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
   display: block;
-  margin-bottom: 8px;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-ng-multiselect-dropdown {
-  display: block;
+.input-group input {
   width: 100%;
-  font-size: 14px;
-}
-
-.ng-select-container {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 8px;
-  background-color: #fff;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.ng-select-container:hover {
-  border-color: #4caf50;
-}
-
-.ng-select-container.ng-select-focused {
-  border-color: #4caf50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
-}
-
-.ng-select-dropdown {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-}
-
-.ng-option {
-  padding: 8px 12px;
-  font-size: 14px;
-  color: #333;
-  cursor: pointer;
-}
-
-.ng-option:hover {
-  background-color: #f1f1f1;
-}
-
-.ng-option-selected {
-  background-color: #4caf50;
-  color: #fff;
-}
-
-.ng-option-selected:hover {
-  background-color: #45a049;
-}
-
-
-
-
-
-
-
-.file-upload {
-  background-color: #ffffff;
-  width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.file-upload-btn {
-  width: 100%;
-  margin: 0;
-  color: #fff;
-  background: #1FB264;
-  border: none;
   padding: 10px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  border-bottom: 4px solid #15824B;
-  transition: all .2s ease;
-  outline: none;
-  text-transform: uppercase;
-  font-weight: 700;
-}
-
-.file-upload-btn:hover {
-  background: #1AA059;
-  color: #ffffff;
-  transition: all .2s ease;
-  cursor: pointer;
-}
-
-.file-upload-btn:active {
-  border: 0;
-  transition: all .2s ease;
+  font-size: 16px;
 }
 
 
-.file-upload-content {
-  display: block; /* Ensure it displays the uploaded content */
-  text-align: center;
-}
-.file-upload-input {
-  position: absolute;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  outline: none;
-  opacity: 0;
-  cursor: pointer;
-}
+
+
+
+//For File Upload 
+
 
 .image-upload-wrap {
-  margin-top: 20px;
   border: 4px dashed #1FB264;
   position: relative;
+  border-radius: 50px; /* Add rounded corners */
+  overflow: hidden; /* Ensures inner content respects the border-radius */
 }
 
 .image-dropping,
 .image-upload-wrap:hover {
   background-color: #1FB264;
   border: 4px dashed #ffffff;
+  border-radius: 20px; /* Ensure it stays rounded on hover */
+  cursor: pointer;
 }
 
-.image-title-wrap {
-  padding: 0 15px 15px 15px;
-  color: #222;
+
+
+.file-upload {
+  background-color: #ffffff;
+  width: 250px; /* Ensure the container is square */
+  height: 250px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  border-radius: 50%; /* Make the entire upload container circular */
+  position: relative;
+}
+
+.image-upload-wrap {
+  width: 100%;
+  height: 100%;
+  border: 4px dashed #1FB264;
+  position: relative;
+  border-radius: 50%; /* Fully round drag-and-drop area */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.image-upload-wrap:hover,
+.image-dropping {
+  background-color: #1FB264;
+  border: 4px dashed #ffffff;
 }
 
 .drag-text {
   text-align: center;
+  font-size: 14px;
+  color: #15824B;
+  position: absolute;
 }
 
-.drag-text h3 {
-  font-weight: 100;
-  text-transform: uppercase;
-  color: #15824B;
-  padding: 60px 0;
+.file-upload-input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Uploaded Image Section */
+.file-upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .file-upload-image {
-  max-height: 200px;
-  max-width: 200px;
-  margin: auto;
-  padding: 20px;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; /* Make uploaded image fully circular */
+  object-fit: cover; /* Ensure the image fits perfectly */
+}
+
+.image-title-wrap {
+  margin-top: 10px;
 }
 
 .remove-image {
-  width: 200px;
-  margin: 0;
+  width: 120px;
+  margin-top: 10px;
   color: #fff;
   background: #cd4535;
   border: none;
   padding: 10px;
   border-radius: 4px;
-  border-bottom: 4px solid #b02818;
-  transition: all .2s ease;
-  outline: none;
   text-transform: uppercase;
   font-weight: 700;
 }
 
 .remove-image:hover {
   background: #c13b2a;
-  color: #ffffff;
-  transition: all .2s ease;
   cursor: pointer;
-}
-
-.remove-image:active {
-  border: 0;
-  transition: all .2s ease;
->>>>>>> Stashed changes
 }

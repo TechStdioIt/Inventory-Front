@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mapKeys, camelCase } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs';
-import { AspnetUsers } from 'src/app/Models/AspnetUsers';
+import { AspNetRole, AspnetUsers } from 'src/app/Models/AspnetUsers';
 import { IMSMenu } from 'src/app/Models/IMSMenu';
 import { CommonService } from 'src/app/Services/common.service';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
@@ -16,14 +16,18 @@ import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnecti
   styleUrl: './user-form.component.scss'
 })
 export class UserFormComponent implements OnInit{
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
   fileData: string | ArrayBuffer | null = null; 
   fileName: string = ''; // Stores the name of the uploaded file
  FormData: AspnetUsers = new AspnetUsers();
   submitButtonValue:string='Save';
+  selectedTree: AspNetRole[] = [];
   RoleList:any[]=[];
   isSubmitting: boolean = false;
   isDragging: boolean = false; // Toggles drag-and-drop styles
   selectedLogo?:File
+  emailValidators = [Validators.required, this.emailFormatValidator];
 constructor(
     private toastr:ToastrService,
     private commonService: CommonService,
@@ -42,6 +46,7 @@ constructor(
           }
         });
     this.gridHandleService.addNewData$.pipe(take(1)).subscribe(async (data: NgForm) => {
+      debugger;
           if (!this.isSubmitting) {
             this.isSubmitting = true;
             try {
@@ -105,10 +110,14 @@ constructor(
     datass.append('email',this.FormData.email);
     datass.append('userFName',this.FormData.userFName);
     datass.append('mobile',this.FormData.mobile);
-    datass.append('userName',this.FormData.userName);
+    datass.append('userName',this.FormData.email);
     if (this.selectedLogo) {
       datass.append('ProfileImage', this.selectedLogo);
     }
+    if(this.selectedTree.length >0){
+      datass.append('userRoleId',this.selectedTree.map(item => item.id).join(","));
+    }
+ 
 
     this.dataService.PostData("Administrator/SaveUser", datass).subscribe(
       res => {
@@ -126,9 +135,12 @@ constructor(
     
   }
 
-  triggerFileInput(): void {
-    const fileInput = document.querySelector<HTMLInputElement>('.file-upload-input');
-    fileInput?.click();
+  emailFormatValidator(control: FormControl) {
+    const email = control.value;
+    if (email && !email.includes('@')) {
+      return { invalidEmail: true };
+    }
+    return null;
   }
   
   // Handle drag over
@@ -186,4 +198,17 @@ constructor(
     console.log("ShowHideEvent");
   }
 
+
+  treeViewSelectionChanged(e: any) {
+    this.syncSelection(e.component);
+  }
+  syncSelection(treeView: any) {
+    debugger;
+    this.selectedTree = treeView.getSelectedNodes()
+      .map((node: any) => node.itemData);
+  }
+  
+  triggerFileInput() {
+    this.fileInput.nativeElement.click();
+  }
 }

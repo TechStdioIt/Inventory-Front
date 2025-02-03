@@ -4,8 +4,8 @@ export const environment = {
   //Development Environment on 26-11-2024
   appVersion: packageInfo.version,
   production: false,
-  apiUrl: 'https://ims.techstdio.com/api/',
- // apiUrl: 'https://192.168.1.249:45455/api/',
+  //apiUrl: 'https://ims.techstdio.com/api/',
+  apiUrl: 'https://192.168.1.249:45455/api/',
   reportUrl:'https://localhost:7136/',
   uploadFileUrl:'D:/project/Inventory-Front/src/assets/images/uploadedImages'
 

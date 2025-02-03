@@ -45,7 +45,7 @@ export class GridHandlerService {
     this.dataSubject.next(this.checkBoxSelectedData);
   }
   addNew() {
-    this.addSubject.next(NgForm);
+    this.addNewSubject.next(NgForm);
   }
 
 details(selectedRecord:any){
