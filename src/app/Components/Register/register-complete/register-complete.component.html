@@ -1,64 +1,66 @@
 <div class="auth-wrapper">
-    <div class="container">
-        <div class="title">Completes</div>
-        <form action="#">
+  <div class="container">
+      <div class="title">Completes</div>
+      <form action="#">
+          
+          <div class="input-group">
+              <label for="business-address">Business Address</label>
+              <input type="text" id="business-address" name="businessTypeDetails"
+              #businessTypeDetails="ngModel"
+              [(ngModel)]="FormData.businessTypeDetails"
+              placeholder="Enter your business address" required >
+          </div>
+
+          <div class="input-group">
+              <label for="business-phone">Business Phone</label>
+              <input type="text" id="business-phone" name="contactNumber"
+              #contactNumber="ngModel"
+              [(ngModel)]="FormData.contactNumber"
+              placeholder="Enter your Phone" required>
+          </div>
+         
+          <!-- File Upload Section -->
+          <div class="input-group">
+            <div *ngIf="fileData == null" class="file-upload">
+              <!-- Drag and Drop Section -->
+              <div class="image-upload-wrap"
+                  [class.image-dropping]="isDragging"
+                  (dragover)="onDragOver($event)"
+                  (dragleave)="onDragLeave($event)"
+                  (click)="triggerFileInput()"
+                  (drop)="onDrop($event)">
+                  <input
+                      class="file-upload-input"
+                      type="file"
+                      accept="image/*"
+                      (change)="onFileSelected($event)"
+                      #fileInput />
+                  <div class="drag-text">
+                      <h3>Drag and drop Logo</h3>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Uploaded Image Section -->
+          <div *ngIf="fileData != null" class="file-upload-content file-upload">
+              <img class="file-upload-image" [src]="fileData" alt="Uploaded Image" />
+              <div class="image-title-wrap">
+                  <button type="button" class="remove-image" (click)="removeFile()">
+                      Remove
+                  </button>
+              </div>
+          </div>
             
-            <div class="input-group">
-                <label for="business-Address">Business Address</label>
-                <input type="text" id="business-Address" name="email"
-                #email="ngModel"
-                [(ngModel)]="FormData.email" placeholder="Enter your business address" required>
-            </div>
-            <div class="input-group">
-                <label for="name">Business Phone</label>
-                <input type="text" id="name" name="contactNumber"
-                #contactNumber="ngModel"
-                [(ngModel)]="FormData.contactNumber" placeholder="Enter your Phone" required>
-            </div>
-            <div class="input-group">
-                <div *ngIf="!fileData" class="file-upload">
-                    <!-- Upload Button -->
-                    <button class="file-upload-btn" type="button" (click)="triggerFileInput()">Add Logo</button>
-                  
-                    <!-- Drag and Drop Section -->
-                    <div
-                      class="image-upload-wrap"
-                      [class.image-dropping]="isDragging"
-                      (dragover)="onDragOver($event)"
-                      (dragleave)="onDragLeave($event)"
-                      (drop)="onDrop($event)"
-                    >
-                      <input
-                        class="file-upload-input"
-                        type="file"
-                        accept="image/*"
-                        (change)="onFileSelected($event)"
-                        #fileInput
-                      />
-                      <div class="drag-text">
-                        <h3>Drag and drop Logo</h3>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Uploaded Image Section -->
-                  <div *ngIf="fileData" class="file-upload-content file-upload">
-                    <img class="file-upload-image" [src]="fileData" alt="Uploaded Image" />
-                    <div class="image-title-wrap">
-                      <button type="button" class="remove-image" (click)="removeFile()">
-                        Remove <span class="image-title">{{ fileName }}</span>
-                      </button>
-                    </div>
-                  </div>
-                  
-                  
-                  
-                  
-            </div>
-            <div class="button-group">
-                <button type="submit" (click)="onSubmit()" class="btn btn-success btn-lg px-5 py-3 shadow-sm hover-shadow"><span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    <span *ngIf="!isLoading">Next</span></button>
-            </div>
-        </form>
-    </div>
+            
+            
+            
+      </div>
+
+          <div class="button-group">
+            <button type="submit " class="btn btn-success btn-lg px-5 py-3 shadow-sm hover-shadow" (click)="onSubmit()"><span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span *ngIf="!isLoading">Next</span></button>
+          </div>
+
+      </form>
+  </div>
 </div>

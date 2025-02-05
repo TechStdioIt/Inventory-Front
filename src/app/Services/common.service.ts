@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
 import { DD_Menu } from '../Models/drodown.model';
 import { createUrl } from 'src/utility/common';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class CommonService {
 
   iSButtonManagementComponentFormShow: boolean = true;
 
-  constructor(private location: Location, private http: HttpClient, private toastr: ToastrService) {}
+  constructor(private location: Location, private http: HttpClient, private toastr: ToastrService,private cookieService: CookieService) {}
 
   // Back button logic
   BackButton() {
@@ -41,5 +42,27 @@ export class CommonService {
         return throwError(() => error);
       })
     );
+  }
+  setCookie(name: string, value: string, expiredays: number =0) {
+    const expirationDate = new Date();
+    if(expiredays >0){
+      expirationDate.setDate(expirationDate.getDate() + expiredays);
+    }
+    this.cookieService.set(name, value, expirationDate);
+  }
+
+  // Get a cookie
+  getCookie(name: string) {
+    return this.cookieService.get(name);
+  }
+
+  // Delete a cookie
+  deleteCookie(name: string) {
+    this.cookieService.delete(name);
+  }
+
+  // Delete all cookies
+  deleteAllCookies() {
+    this.cookieService.deleteAll();
   }
 }

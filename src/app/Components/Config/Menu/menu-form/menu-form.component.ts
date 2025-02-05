@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IMSMenu } from 'src/app/Models/IMSMenu';
 import { MenuListComponent } from '../menu-list/menu-list.component';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +17,7 @@ import { camelCase, mapKeys } from 'lodash';
   styleUrl: './menu-form.component.scss'
 })
 
-export class MenuFormComponent {
+export class MenuFormComponent implements OnInit{
   FormData: IMSMenu = new IMSMenu();
   submitButtonValue:string='Save';
   DD_Menu: DD_Menu[] = [];
