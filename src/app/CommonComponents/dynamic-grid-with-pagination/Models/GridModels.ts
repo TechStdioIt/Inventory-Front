@@ -3,6 +3,7 @@ export interface GridColumn<T> {
   key: keyof T; // Key to map to object property
   width?: number; // Optional width
   isShow?: boolean; // Whether to show this column
+  type?: 'date' | 'checkbox' | 'img' | 'string'; // Optional type for formatting
 }
 
 export interface GridButtonAction<T> {
