@@ -12,8 +12,8 @@ import Swal from 'sweetalert2';
 })
 export class UnitListComponent implements OnInit {
   fromHeader: string = 'Supplier';
-  formRoute: string = '/suppliersForm';
-  listAPI: string = 'Suppliers/GetAllSuppliers';
+  formRoute: string = '/unitForm';
+  listAPI: string = 'Unit/GetAllUnit';
   deleteAPI: string = 'Suppliers/DeleteSuppliers';
   haveQueryPram: boolean = false;
   pageSize: number = 10;
@@ -22,8 +22,9 @@ export class UnitListComponent implements OnInit {
 
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
-    { caption: 'Name', key: 'companyName' },
-    { caption: 'Contact', key: 'contactName' }
+    { caption: 'Name', key: 'name' },
+    { caption: 'Short Name', key: 'shortCode' },
+    { caption: 'Description', key: 'description' }
   ];
 
   buttonShow = {
@@ -69,7 +70,6 @@ export class UnitListComponent implements OnInit {
     this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }
   delete(selectedRecord: any) {
-    debugger;
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete selected record',

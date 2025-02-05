@@ -95,6 +95,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserListComponent } from './Components/Config/User/user-list/user-list.component';
 import { UserFormComponent } from './Components/Config/User/user-form/user-form.component';
 import { AuthInterceptor } from './Authorization/AuthInterceptor';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -138,11 +139,11 @@ import { AuthInterceptor } from './Authorization/AuthInterceptor';
     BankListComponent,
     BmFormComponent,
     BmListComponent,
-    // CatagoryFormComponent,
+     CatagoryFormComponent,
     CatagoryListComponent,
     // StFormComponent,
     StListComponent,
-    // UnitFormComponent,
+     UnitFormComponent,
     UnitListComponent,
     // WhFormComponent,
     WhListComponent,
@@ -195,7 +196,8 @@ import { AuthInterceptor } from './Authorization/AuthInterceptor';
   NgMultiSelectDropDownModule.forRoot()
 ],
   providers: [CookieService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

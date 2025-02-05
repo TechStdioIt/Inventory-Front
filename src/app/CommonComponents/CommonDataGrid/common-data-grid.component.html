@@ -39,7 +39,15 @@
 
     
       <dxi-column  [visible]="true" caption="#" dataField="index"[width]="50"></dxi-column>
-
+      
+      <dxi-column [visible]="service.isShowData.isShowPicture" [caption]="service.caption.PictureCaption"
+      dataField="PictureField"
+      cellTemplate="pictureCellTemplate"
+      width="90px"
+    ></dxi-column>
+     <div *dxTemplate="let cell of 'pictureCellTemplate'">
+    <img class="rounded-circle" width="50" height="50" src="{{ cell.value }}" alt="Employee photo" />
+  </div>
       <dxi-column  [visible]="service.isShowData.caption1" [caption]="service.caption.caption1" dataField="dataField1"></dxi-column>
       <dxi-column  [visible]="service.isShowData.caption2" [caption]="service.caption.caption2" dataField="dataField2"></dxi-column>
       <dxi-column  [visible]="service.isShowData.caption3" [caption]="service.caption.caption3" dataField="dataField3" ></dxi-column>

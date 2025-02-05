@@ -9,6 +9,7 @@ export class GridDataShow {
     caption8:boolean=false;
     caption9:boolean=false;
     caption10:boolean=false;
+    isShowPicture:boolean=false;
   }
 
   export class GridButtonShow {
@@ -30,6 +31,7 @@ export class GridDataShow {
     dataField8: any = '';
     dataField9: any = '';
     dataField10: any = '';
+    PictureField : any =''
   }
   export class GridCaption {
     caption1: string = '';
@@ -42,4 +44,5 @@ export class GridDataShow {
     caption8: string = '';
     caption9: string = '';
     caption10: string = '';
+    PictureCaption:string ='';
   }

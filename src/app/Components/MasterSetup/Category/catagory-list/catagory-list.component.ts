@@ -11,10 +11,10 @@ import Swal from 'sweetalert2';
   styleUrl: './catagory-list.component.scss'
 })
 export class CatagoryListComponent implements OnInit {
-  fromHeader: string = 'Supplier';
-  formRoute: string = '/suppliersForm';
-  listAPI: string = 'Suppliers/GetAllSuppliers';
-  deleteAPI: string = 'Suppliers/DeleteSuppliers';
+  fromHeader: string = 'Category';
+  formRoute: string = '/categoryForm';
+  listAPI: string = 'Category/GetAllCategory';
+  deleteAPI: string = 'Category/DeleteCategory';
   haveQueryPram: boolean = false;
   pageSize: number = 10;
   pageSizes: number[] = [5, 10, 20, 50, 100];
@@ -22,8 +22,7 @@ export class CatagoryListComponent implements OnInit {
 
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
-    { caption: 'Name', key: 'companyName' },
-    { caption: 'Contact', key: 'contactName' }
+    { caption: 'Name', key: 'name' }
   ];
 
   buttonShow = {

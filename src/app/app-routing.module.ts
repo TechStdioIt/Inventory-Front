@@ -30,6 +30,8 @@ import { BankListComponent } from './Components/MasterSetup/Bank/bank-list/bank-
 import { BankFormComponent } from './Components/MasterSetup/Bank/bank-form/bank-form.component';
 import { BmListComponent } from './Components/MasterSetup/BusinessMaster/bm-list/bm-list.component';
 import { BmFormComponent } from './Components/MasterSetup/BusinessMaster/bm-form/bm-form.component';
+import { UnitListComponent } from './Components/MasterSetup/Unit/unit-list/unit-list.component';
+import { UnitFormComponent } from './Components/MasterSetup/Unit/unit-form/unit-form.component';
 
 const routes: Routes = [
   {
@@ -145,8 +147,14 @@ const routes: Routes = [
         path: 'categoryForm',
         component: CatagoryFormComponent
       },
-
-
+      {
+        path: 'unitList',
+        component: UnitListComponent
+      },
+      {
+        path: 'unitForm',
+        component: UnitFormComponent
+      },
 
 
 

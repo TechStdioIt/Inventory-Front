@@ -37,8 +37,8 @@ constructor(
     private router:Router
   ) { 
     this.route.queryParams.subscribe((data:any)=>{
-          if(data.menu !=undefined && data !=null){
-           this.getDataById(data.menu);
+          if(data.do !=undefined && data !=null){
+           this.getDataById(data.do);
             
           }else{
             this.FormData =new AspnetUsers();
@@ -67,8 +67,11 @@ constructor(
   }
  getDataById(id:any){
     this.dataService.GetData('Administrator/GetUserById?id='+id).subscribe((data:any)=>{
+      debugger;
       // this.FormData=data.data;
-      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as AspnetUsers;
+      // this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as AspnetUsers;
+      this.FormData.profileImageUrl = data.data.profileImageUrl.result;
+      
     })
   }
   onSubmit() {

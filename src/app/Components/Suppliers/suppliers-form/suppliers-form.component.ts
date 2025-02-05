@@ -57,7 +57,7 @@ export class SuppliersFormComponent implements OnInit {
         this.FormData =new Suppliers();
       }
     });
-    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
+    this.gridHandleService.addNewData$.pipe(take(1)).subscribe(async (data: NgForm) => {
       if (!this.isSubmitting) {
         this.isSubmitting = true;
         try {
