@@ -32,6 +32,12 @@ import { BmListComponent } from './Components/MasterSetup/BusinessMaster/bm-list
 import { BmFormComponent } from './Components/MasterSetup/BusinessMaster/bm-form/bm-form.component';
 import { UnitListComponent } from './Components/MasterSetup/Unit/unit-list/unit-list.component';
 import { UnitFormComponent } from './Components/MasterSetup/Unit/unit-form/unit-form.component';
+import { ProductsListComponent } from './Components/Products/products-list/products-list.component';
+import { ProductsFormComponent } from './Components/Products/products-form/products-form.component';
+import { PurchaseTypeListComponent } from './Components/Config/PurchaseType/purchase-type-list/purchase-type-list.component';
+import { PurchaseTypeFormComponent } from './Components/Config/PurchaseType/purchase-type-form/purchase-type-form.component';
+import { PurchaseOrderListComponent } from './Components/PO/PurchaseOrder/purchase-order-list/purchase-order-list.component';
+import { PurchaseOrderFormComponent } from './Components/PO/PurchaseOrder/purchase-order-form/purchase-order-form.component';
 
 const routes: Routes = [
   {
@@ -155,10 +161,32 @@ const routes: Routes = [
         path: 'unitForm',
         component: UnitFormComponent
       },
-
-
-
-
+      {
+        path:'productsList',
+        component:ProductsListComponent
+      },
+      {
+        path:'productsForm',
+        component:ProductsFormComponent
+      }
+      ,
+      {
+        path:'purchaseTypeList',
+        component:PurchaseTypeListComponent
+      },
+      {
+        path:'purchaseTypeForm',
+        component:PurchaseTypeFormComponent
+      }
+      ,
+      {
+        path:'purchaseOrderList',
+        component:PurchaseOrderListComponent
+      },
+      {
+        path:'purchaseOrderForm',
+        component:PurchaseOrderFormComponent
+      }
 
 
 

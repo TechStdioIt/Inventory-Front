@@ -16,7 +16,6 @@ import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/ap
 export class StoreTypeListComponent implements OnInit {
   dataList: StoreType[] = [];
 
-  pageSize: number = 5;
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
     { caption: 'Name', key: 'name' },

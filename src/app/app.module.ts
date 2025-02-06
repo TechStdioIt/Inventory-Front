@@ -96,6 +96,12 @@ import { UserListComponent } from './Components/Config/User/user-list/user-list.
 import { UserFormComponent } from './Components/Config/User/user-form/user-form.component';
 import { AuthInterceptor } from './Authorization/AuthInterceptor';
 import { DatePipe } from '@angular/common';
+import { ProductsListComponent } from './Components/Products/products-list/products-list.component';
+import { ProductsFormComponent } from './Components/Products/products-form/products-form.component';
+import { PurchaseTypeFormComponent } from './Components/Config/PurchaseType/purchase-type-form/purchase-type-form.component';
+import { PurchaseTypeListComponent } from './Components/Config/PurchaseType/purchase-type-list/purchase-type-list.component';
+import { PurchaseOrderFormComponent } from './Components/PO/PurchaseOrder/purchase-order-form/purchase-order-form.component';
+import { PurchaseOrderListComponent } from './Components/PO/PurchaseOrder/purchase-order-list/purchase-order-list.component';
 
 @NgModule({
   declarations: [
@@ -148,7 +154,13 @@ import { DatePipe } from '@angular/common';
     // WhFormComponent,
     WhListComponent,
     UserFormComponent,
-    UserListComponent
+    UserListComponent,
+    ProductsListComponent,
+    ProductsFormComponent,
+    PurchaseTypeFormComponent,
+    PurchaseTypeListComponent,
+    PurchaseOrderFormComponent,
+    PurchaseOrderListComponent
 
   ],
   imports: [

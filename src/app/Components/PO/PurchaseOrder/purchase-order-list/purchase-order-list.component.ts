@@ -1,27 +1,29 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {  Component, OnInit } from '@angular/core';
+import {  Router } from '@angular/router';
 import { take } from 'rxjs';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-wh-list',
-  templateUrl: './wh-list.component.html',
-  styleUrl: './wh-list.component.scss'
+  selector: 'app-purchase-order-list',
+  templateUrl: './purchase-order-list.component.html',
+  styleUrl: './purchase-order-list.component.scss'
 })
-export class WhListComponent implements OnInit {
-  fromHeader: string = 'Supplier';
-  formRoute: string = '/suppliersForm';
-  listAPI: string = 'Suppliers/GetAllSuppliers';
-  deleteAPI: string = 'Suppliers/DeleteSuppliers';
+export class PurchaseOrderListComponent  implements OnInit {
+  fromHeader: string = 'Purchase Order';
+  formRoute: string = '/purchaseOrderForm';
+  listAPI: string = 'PurchasOrder/GetAllpurchaseOrder';
+  deleteAPI: string = 'PurchasOrder/DeletePurchasOrder';
   haveQueryPram: boolean = false;
   reloadCount: number = 0;
 
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
-    { caption: 'Name', key: 'companyName' },
-    { caption: 'Contact', key: 'contactName' }
+    { caption: 'Purchase Date', key: 'orderDate' },
+    { caption: 'Shipping Cost', key: 'shippingCost' },
+    { caption: 'Supplier Name', key: 'supplierName' },
+    { caption: 'Total Amount', key: 'totalAmount' },
   ];
 
   buttonShow = {
@@ -67,7 +69,6 @@ export class WhListComponent implements OnInit {
     this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }
   delete(selectedRecord: any) {
-    debugger;
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete selected record',

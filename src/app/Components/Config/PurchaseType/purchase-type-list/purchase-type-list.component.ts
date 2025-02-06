@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
@@ -5,23 +6,23 @@ import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import Swal from 'sweetalert2';
 
+
 @Component({
-  selector: 'app-wh-list',
-  templateUrl: './wh-list.component.html',
-  styleUrl: './wh-list.component.scss'
+  selector: 'app-purchase-type-list',
+  templateUrl: './purchase-type-list.component.html',
+  styleUrl: './purchase-type-list.component.scss'
 })
-export class WhListComponent implements OnInit {
-  fromHeader: string = 'Supplier';
-  formRoute: string = '/suppliersForm';
-  listAPI: string = 'Suppliers/GetAllSuppliers';
-  deleteAPI: string = 'Suppliers/DeleteSuppliers';
+export class PurchaseTypeListComponent implements OnInit {
+  fromHeader: string = 'Purchase Type';
+  formRoute: string = '/purchaseTypeForm';
+  listAPI: string = 'PurchaseType/GetAllPurchaseType';
+  deleteAPI: string = 'PurchaseType/DeletePurchaseType';
   haveQueryPram: boolean = false;
   reloadCount: number = 0;
 
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
-    { caption: 'Name', key: 'companyName' },
-    { caption: 'Contact', key: 'contactName' }
+    { caption: 'Purchase Type Name', key: 'name' }
   ];
 
   buttonShow = {
@@ -67,7 +68,6 @@ export class WhListComponent implements OnInit {
     this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }
   delete(selectedRecord: any) {
-    debugger;
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete selected record',

@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges } from '@angular/core';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import { DefaultGridButtonShow, GridButtonShow, GridColumn } from './Models/GridModels';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dynamic-grid-with-pagination',
@@ -11,8 +13,8 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
   // @Input() data: T[] = []; // Input for the data to display
   @Input() data: T[] = [];
   @Input() columns: GridColumn<T>[] = []; // Column definitions
-  @Input() pageSizes: number[] = [5, 10, 15]; // Configurable page sizes
-  @Input() pageSize: number = 10; // Default page size
+  @Input() pageSizes: number[] = [5, 10, 20, 50, 100]; // Configurable page sizes
+  @Input() pageSize: number = 5; // Default page size
   @Input() reloadCount: number = 0; // Default page size
   @Input() maxVisiblePages: number = 3; // Maximum visible pages for pagination
   @Input() totalRecords: number = 0; // Maximum visible pages for pagination
@@ -50,7 +52,7 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     }
   }
 
-  constructor(private dataService: HttpClientConnectionService) {}
+  constructor(private dataService: HttpClientConnectionService,private router:Router) {}
   // Handle sorting
   sortTable(column: keyof T) {
     if (this.sortColumn === column) {
@@ -101,12 +103,12 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     this.getData({ take: take, skip: skip });
   }
   getData = ({ take, skip }: { take: number; skip: number }) => {
-    debugger;
     
     const api = this.haveQueryPram ? `${this.paginationAPI}&take=${take}&skip=${skip}` : `${this.paginationAPI}?take=${take}&skip=${skip}`;
     // Call the API with `take` and `skip` as query parameters
     this.dataService.GetData(api).subscribe(
       (response: any) => {
+        debugger;
         // Handle the successful response
         console.log(response);
         if (response) {
@@ -124,9 +126,11 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
           this.data = []; // Fallback in case of empty response
         }
       },
-      (error: any) => {
-        // Handle errors from the API
+      (error: HttpErrorResponse) => {
         console.error('Failed to get data:', error);
+        if(error.error.message == 'You are not authorized! Please log in to access this resource.'){
+          this.router.navigate(['/']);
+        }
       }
     );
     

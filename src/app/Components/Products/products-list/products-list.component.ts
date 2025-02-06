@@ -1,27 +1,32 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+
+import {Component, OnInit } from '@angular/core';
+import {Router } from '@angular/router';
 import { take } from 'rxjs';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-wh-list',
-  templateUrl: './wh-list.component.html',
-  styleUrl: './wh-list.component.scss'
+  selector: 'app-products-list',
+  templateUrl: './products-list.component.html',
+  styleUrl: './products-list.component.scss'
 })
-export class WhListComponent implements OnInit {
-  fromHeader: string = 'Supplier';
-  formRoute: string = '/suppliersForm';
-  listAPI: string = 'Suppliers/GetAllSuppliers';
-  deleteAPI: string = 'Suppliers/DeleteSuppliers';
+export class ProductsListComponent implements OnInit {
+  fromHeader: string = 'Product';
+  formRoute: string = '/productsForm';
+  listAPI: string = 'Products/GetAllProductData';
+  deleteAPI: string = 'Products/DeleteProductData';
   haveQueryPram: boolean = false;
   reloadCount: number = 0;
 
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
-    { caption: 'Name', key: 'companyName' },
-    { caption: 'Contact', key: 'contactName' }
+    { caption: 'Name', key: 'name' },
+    { caption: 'Stock Unit', key: 'sku' },
+    { caption: 'Description', key: 'description' },
+    { caption: 'Price', key: 'price' },
+    { caption: 'Stock Quantity', key: 'quantityInStock' },
+    { caption: 'Product Category', key: 'categoryName' }
   ];
 
   buttonShow = {
@@ -67,7 +72,6 @@ export class WhListComponent implements OnInit {
     this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }
   delete(selectedRecord: any) {
-    debugger;
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete selected record',

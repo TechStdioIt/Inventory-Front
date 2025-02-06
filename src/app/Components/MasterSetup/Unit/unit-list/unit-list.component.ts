@@ -16,8 +16,6 @@ export class UnitListComponent implements OnInit {
   listAPI: string = 'Unit/GetAllUnit';
   deleteAPI: string = 'Suppliers/DeleteSuppliers';
   haveQueryPram: boolean = false;
-  pageSize: number = 10;
-  pageSizes: number[] = [5, 10, 20, 50, 100];
   reloadCount: number = 0;
 
   userColumns = [
