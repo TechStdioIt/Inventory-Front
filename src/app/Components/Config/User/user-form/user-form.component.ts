@@ -69,8 +69,8 @@ constructor(
     this.dataService.GetData('Administrator/GetUserById?id='+id).subscribe((data:any)=>{
       debugger;
       // this.FormData=data.data;
-      // this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as AspnetUsers;
-      this.FormData.profileImageUrl = data.data.profileImageUrl.result;
+       this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as AspnetUsers;
+      this.fileData= data.data.profileImageUrl;
       
     })
   }
@@ -114,6 +114,7 @@ constructor(
     datass.append('userFName',this.FormData.userFName);
     datass.append('mobile',this.FormData.mobile);
     datass.append('userName',this.FormData.email);
+    datass.append('id',this.FormData.id);
     if (this.selectedLogo) {
       datass.append('ProfileImage', this.selectedLogo);
     }
@@ -178,20 +179,7 @@ constructor(
   }
 
 
-  updateRecord() { 
-    this.dataService.PostData("Menu/CreateOrUpdateMenu", this.FormData).subscribe(
-      res => {
-        this.toastr.info('Updated Successfully', 'Department Information');
-        this.router.navigate(['/menuList']);
-        this.commonService.iSButtonManagementComponentFormShow = !this.commonService.iSButtonManagementComponentFormShow;
-        console.log(res);
-      },
-      err => {
-        this.toastr.error('Please Try Again', 'Invalid Information!!')
-        console.log(err);
-      }
-    );
-  }
+ 
   resetForm() {
     this.FormData = new AspnetUsers();
   }

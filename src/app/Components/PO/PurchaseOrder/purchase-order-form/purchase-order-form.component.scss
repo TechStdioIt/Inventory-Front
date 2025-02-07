@@ -1,4 +1,12 @@
-.select-dropdown {
-    max-height: 200px;  /* Set a fixed height for the select box */
-    overflow-y: auto;   /* Enable vertical scrolling */
+.dropdown-item {
+    white-space: normal;  /* Ensure line breaks */
+    padding: 10px 15px;
+  }
+  
+  .dropdown-item span {
+    margin-right: 5px;
+  }
+
+  .dropdown-item:hover {
+    cursor: pointer;
   }

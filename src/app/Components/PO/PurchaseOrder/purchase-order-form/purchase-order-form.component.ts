@@ -25,7 +25,8 @@ export class PurchaseOrderFormComponent implements OnInit {
   insertOrUpdateAPI: string = 'PurchasOrder/CreateOrUpdatePurchaseOrder';
   getDataByIdAPI: string = 'PurchasOrder/GetUnitById';
   listRoute: string = '/purchaseOrderList';
-
+selectedItemList:any[]=[];
+allProduct:any[]=[];
   formdata: any[] = [
     { type: 'select', name: 'supplierId', label: 'Supplier Name', required: true,column:4,options:[]},
     { type: 'number', name: 'shippingCost', label: 'Shipping Cost', required: true ,column:4},
@@ -66,6 +67,12 @@ export class PurchaseOrderFormComponent implements OnInit {
   ngOnInit(): void {
     this.getSupplierData();
     this.getPaymentMethod();
+    this.getProductList();
+  }
+  getProductList(){
+    this.dataService.GetData('Products/GetAllProductData?take=100&skip=0').subscribe((data:any)=>{
+      this.allProduct = data.data
+    })
   }
   getSupplierData(take:number =10,skip:number =0){
 this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).subscribe((data:any)=>{
@@ -114,5 +121,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
   }
  
   
-  
+  selectProduct(option: any) {
+    this.selectedItemList.push(option);
+  }
 }

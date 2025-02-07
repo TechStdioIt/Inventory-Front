@@ -1,12 +1,60 @@
 <section class="section profile ">
   <div class="row mt-5">
-    <div class="col-xl-4">
+    <div class="col-xl-6">
       <div class="fieldset">
       
         <div class="profile-card pt-4 d-flex flex-column align-items-center ">
           <div class="input-group">
-            
-
+            <div ngbDropdown class="dropdown mb-3">
+              <button class="btn btn-primary dropdown-toggle" ngbDropdownToggle type="button">
+                Select Product
+              </button>
+              <ul class="dropdown-menu" ngbDropdownMenu>
+                <li *ngFor="let option of allProduct">
+                  <a class="dropdown-item"  (click)="selectProduct(option)">
+                    <span class="fw-bold">Name:</span> {{ option.name }} <br>
+                    <span class="fw-bold">Price:</span> {{ option.price }} <br>
+                    <span class="fw-bold">Quantity:</span> {{ option.quantityInStock }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <dx-data-grid
+            id="gridContainer"
+            [dataSource]="selectedItemList"
+            [showBorders]="true"
+            (onRowInserted)="$event.component.navigateToRow($event.key)"
+          >
+            <dxo-editing mode="cell" [allowUpdating]="true" >
+            </dxo-editing>
+           
+          
+            <dxi-column dataField="name">
+              <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-column>
+            <!-- <dxi-column dataField="Status" width="200" [editorOptions]="editorOptions">
+              <dxo-lookup [dataSource]="statuses" displayExpr="name" valueExpr="id">
+              </dxo-lookup>
+              <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-column>
+          
+      
+          
+         
+          
+            <div *dxTemplate="let status of 'statusTemplate'">
+              <div *ngIf="status === null" ; else elseBlock>
+                <span>(All)</span>
+              </div>
+              <div dx-template #elseBlock>
+                <img
+                  src="images/icons/status-{{ status.id }}.svg"
+                  class="status-icon middle"
+                />
+                <span class="middle">{{ status.name }}</span>
+              </div>
+            </div> -->
+          </dx-data-grid>
 
 
 
@@ -15,7 +63,7 @@
 
       </div>
     </div>
-    <div class="col-xl-8">
+    <div class="col-xl-6">
 
       <div class="fieldset">
         

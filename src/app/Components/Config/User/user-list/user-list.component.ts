@@ -26,13 +26,15 @@ export class UserListComponent {
 
   userColumns = [
     { caption: 'User Id', key: 'id', width: 50, isShow: false },
-    { caption: 'User Full Name', key: 'companyName' },
+    { caption: 'Profile Image', key: 'ProfileImageUrl',type :'image' },
+    { caption: 'User Full Name', key: 'userFullName' },
     { caption: 'Email', key: 'email' },
+    { caption: 'Role', key: 'userRoles' },
   ];
 
   buttonShow = {
     edit: {
-      isShow: true,
+      isShow: true, 
       emit: (selectedRecord: any) => this.edit(selectedRecord)
     },
     viewDetails: {
