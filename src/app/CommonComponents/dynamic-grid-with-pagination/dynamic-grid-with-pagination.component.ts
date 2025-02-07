@@ -205,4 +205,7 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     // Update the "Select All" checkbox state
     this.isAllSelected = this.paginatedData.every((item) => this.selectedItems.has(item));
   }
+  getImageSrc(data:any){
+    return data.result;
+  }
 }

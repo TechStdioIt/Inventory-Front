@@ -8,6 +8,8 @@ import { camelCase, mapKeys } from 'lodash';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { take } from 'rxjs';
 import { Unit } from 'src/app/Models/Unit';
+import { PurchaseOrder } from 'src/app/Models/PurchaseItem';
+import { CommonService } from 'src/app/Services/common.service';
 @Component({
   selector: 'app-purchase-order-form',
   templateUrl: './purchase-order-form.component.html',
@@ -17,36 +19,33 @@ export class PurchaseOrderFormComponent implements OnInit {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
-  FormData: any = new Unit();
+  FormData: any = new PurchaseOrder();
   isSubmitting: boolean = false;
-  fromHeader: string = 'Supplier';
-  insertOrUpdateAPI: string = 'Unit/CreateOrUpdateUnit';
-  getDataByIdAPI: string = 'Unit/GetUnitById';
-  listRoute: string = '/unitList';
+  fromHeader: string = 'Purchase Order';
+  insertOrUpdateAPI: string = 'PurchasOrder/CreateOrUpdatePurchaseOrder';
+  getDataByIdAPI: string = 'PurchasOrder/GetUnitById';
+  listRoute: string = '/purchaseOrderList';
 
   formdata: any[] = [
-    { type: 'text', name: 'name', label: 'Unit Name', required: true,column:4},
-    { type: 'text', name: 'shortCode', label: 'Short Name', required: true ,column:4},
-    { type: 'text', name: 'description', label: 'Description', required: true ,column:4},
+    { type: 'select', name: 'supplierId', label: 'Supplier Name', required: true,column:4,options:[]},
+    { type: 'number', name: 'shippingCost', label: 'Shipping Cost', required: true ,column:4},
+    { type: 'select', name: 'paymentMethodId', label: 'Payment Method', required: true ,column:4,options:[]},
     
   ];
-
-
-  
-
   constructor(
     private dataService: HttpClientConnectionService,
     private toastr: ToastrService,
     private router:ActivatedRoute,
     private route:Router,
     private location:Location,
-    public gridHandleService:GridHandlerService
+    public gridHandleService:GridHandlerService,
+    private commonService:CommonService
   ) {
     this.router.queryParams.subscribe((data:any)=>{
       if(data.do !=undefined && data !=null){
         this.getDataById(data.do);
       }else{
-        this.FormData =new Unit();
+        this.FormData =new PurchaseOrder();
       }
     });
     this.gridHandleService.addNewData$.pipe(take(1)).subscribe(async (data: NgForm) => {
@@ -64,21 +63,38 @@ export class PurchaseOrderFormComponent implements OnInit {
       }
     });
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getSupplierData();
+    this.getPaymentMethod();
+  }
+  getSupplierData(take:number =10,skip:number =0){
+this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).subscribe((data:any)=>{
+  this.formdata.find(field => field.name === 'supplierId').options = data.data.map((x:any) => ({ 
+    id: x.id, 
+    name: x.companyName 
+  }));
+  
+})
+  }
+  getPaymentMethod(){
+   this.commonService.getDropDownData(6).subscribe((data:any)=>{
+    this.formdata.find(field => field.name === 'paymentMethodId').options = data;
+   })
+  }
   onSubmit(form: NgForm) {
     this.insertOrUpdate(form);
   }
   getDataById(id:any){
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{
       // this.FormData=data.data;
-      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as Unit;
+      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as PurchaseOrder;
     })
   }
   insertOrUpdate(form: NgForm) {
     this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
       (res) => {
         this.toastr.success('Successfull', `${this.fromHeader} Information`);
-       this.FormData = new Unit();
+       this.FormData = new PurchaseOrder();
        this.route.navigate([this.listRoute]);
        this.gridHandleService.selectedTab = "List";
       },
@@ -96,9 +112,7 @@ export class PurchaseOrderFormComponent implements OnInit {
       console.error(`Function ${functionName} is not defined`);
     }
   }
-
-  
-
+ 
   
   
 }

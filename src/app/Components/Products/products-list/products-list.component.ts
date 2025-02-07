@@ -21,12 +21,16 @@ export class ProductsListComponent implements OnInit {
 
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
+    { caption: 'Product Image', key: 'ProfileImageUrl',type :'image' },
     { caption: 'Name', key: 'name' },
-    { caption: 'Stock Unit', key: 'sku' },
     { caption: 'Description', key: 'description' },
     { caption: 'Price', key: 'price' },
     { caption: 'Stock Quantity', key: 'quantityInStock' },
-    { caption: 'Product Category', key: 'categoryName' }
+    { caption: 'Stock Unit', key: 'unitName' },
+    { caption: 'Product Category', key: 'categoryName' },
+    { caption: 'Status', key: 'isActive',type:'bool' }
+
+    
   ];
 
   buttonShow = {

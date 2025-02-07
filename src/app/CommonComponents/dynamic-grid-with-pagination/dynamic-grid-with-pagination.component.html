@@ -74,8 +74,14 @@
         </td>
         <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
         <ng-container *ngFor="let column of columns">
-          <td *ngIf="column.isShow !== false">
+          <td *ngIf="column.isShow !== false && column.type != 'image' && column.type !='bool'" >
             {{ row[column.key] }}
+          </td>
+          <td *ngIf="column.isShow !== false && column.type == 'image'">
+            <img class="rounded-circle" width="50" height="50" [src]="getImageSrc(row[column.key])"  />
+          </td>
+          <td *ngIf="column.isShow !== false && column.type == 'bool'">
+            <input type="checkbox" class="form-check-input" [checked]="row[column.key]" disabled/>
           </td>
         </ng-container>
       </tr>
