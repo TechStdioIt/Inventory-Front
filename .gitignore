@@ -107,3 +107,8 @@ dist
 .angular
 .vscode/
 yarn.lock
+
+
+# Add environment files
+environment.ts
+environment.prod.ts
