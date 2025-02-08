@@ -23,7 +23,7 @@ export class PurchaseOrderFormComponent implements OnInit {
   isSubmitting: boolean = false;
   fromHeader: string = 'Purchase Order';
   insertOrUpdateAPI: string = 'PurchasOrder/CreateOrUpdatePurchaseOrder';
-  getDataByIdAPI: string = 'PurchasOrder/GetUnitById';
+  getDataByIdAPI: string = 'PurchasOrder/GetPOById';
   listRoute: string = '/purchaseOrderList';
 selectedItemList:any[]=[];
 allProduct:any[]=[];
@@ -93,12 +93,22 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
   }
   getDataById(id:any){
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{
+      debugger;
       // this.FormData=data.data;
       this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as PurchaseOrder;
+      if(data.data.detailsInfo.length >0){
+        this.FormData.purchasList =[];
+        data.data.detailsInfo.forEach((element:any) => {
+        this.updateGridData(element);
+        });
+      }
+    
     })
   }
   insertOrUpdate(form: NgForm) {
+    debugger;
     this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
+      
       (res) => {
         this.toastr.success('Successfull', `${this.fromHeader} Information`);
        this.FormData = new PurchaseOrder();
@@ -119,9 +129,81 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
       console.error(`Function ${functionName} is not defined`);
     }
   }
- 
+ updateGridData(item:any){
+  const data = {
+    id: item.id,
+    purchaseOrderId: item.purchaseOrderId,
+    productId: item.productId,
+    quantity: item.quantity,
+    unitPrice: item.unitPrice,
+    totalPrice: item.totalPrice,
+    name: item.productName,
+    productCode: item.productCode
+  };
+  this.selectedItemList.push(data);
+  this.FormData.purchasList.push(data);
+ }
   
   selectProduct(option: any) {
-    this.selectedItemList.push(option);
+    
+    // Check if the product already exists in selectedItemList based on productId (option.id)
+    const existingProduct = this.selectedItemList.find(item => item.productId === option.id);
+    
+    if (existingProduct) {
+      this.toastr.error('Already Added','Duplicate!')
+    } else {
+      // Product doesn't exist, add it to the selectedItemList
+      const data = {
+        id: 0,
+        purchaseOrderId: 0,
+        productId: option.id,
+        quantity: 1,
+        unitPrice: option.price,
+        totalPrice: option.price,
+        name: option.name,
+        productCode: option.productCode
+      };
+      this.selectedItemList.push(data);
+      this.FormData.purchasList.push(data);
+    }
   }
+
+
+  onCellValueChanged(event: any) {
+    debugger;
+    const updatedData = event.data;
+    
+    // Check if 'quantity' or 'unitPrice' has changed
+    if (event.column.dataField === 'quantity' || event.column.dataField === 'unitPrice') {
+      // Calculate and update the 'totalPrice'
+      var exist = this.FormData.purchasList.find((x:any)=>x.productId == updatedData.productId);
+      if(exist){
+        exist.quantity = updatedData.quantity;
+        exist.unitPrice = updatedData.unitPrice
+        exist.totalPrice = updatedData.quantity * updatedData.unitPrice
+        updatedData.totalPrice = updatedData.quantity * updatedData.unitPrice;
+      }
+     
+    }
+  }
+  onRowUpdated(event: any) {
+    debugger;
+    const updatedData = event.data;
+    
+    // Check if 'quantity' or 'unitPrice' has changed
+    if (updatedData.quantity || updatedData.unitPrice) {
+      var exist = this.FormData.purchasList.find((x:any)=>x.productId == updatedData.productId);
+      if(exist){
+        exist.quantity = updatedData.quantity;
+        exist.unitPrice = updatedData.unitPrice
+        exist.totalPrice = updatedData.quantity * updatedData.unitPrice;
+          // Calculate and update the 'totalPrice'
+      updatedData.totalPrice = updatedData.quantity * updatedData.unitPrice;
+      }
+    }
+    
+    // You can refresh the grid if necessary (although DevExtreme usually handles this automatically)
+    event.component.refresh();
+  }
+
 }

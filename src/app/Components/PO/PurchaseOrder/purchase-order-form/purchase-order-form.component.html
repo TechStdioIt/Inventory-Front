@@ -24,12 +24,27 @@
             [dataSource]="selectedItemList"
             [showBorders]="true"
             (onRowInserted)="$event.component.navigateToRow($event.key)"
+            (onCellValueChanged)="onCellValueChanged($event)"
+            (onRowUpdated)="onRowUpdated($event)"
           >
-            <dxo-editing mode="cell" [allowUpdating]="true" >
+            <dxo-editing mode="cell" [allowUpdating]="true" [allowDeleting]="true">
             </dxo-editing>
            
           
-            <dxi-column dataField="name">
+            <dxi-column dataField="name" [allowEditing]="false">
+              <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="productCode" [allowEditing]="false">
+              <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-column>
+
+            <dxi-column dataField="unitPrice">
+              <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="quantity">
+              <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="totalPrice" [allowEditing]="false">
               <dxi-validation-rule type="required"></dxi-validation-rule>
             </dxi-column>
             <!-- <dxi-column dataField="Status" width="200" [editorOptions]="editorOptions">
