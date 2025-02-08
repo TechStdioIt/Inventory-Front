@@ -103,6 +103,18 @@ import { PurchaseTypeListComponent } from './Components/Config/PurchaseType/purc
 import { PurchaseOrderFormComponent } from './Components/PO/PurchaseOrder/purchase-order-form/purchase-order-form.component';
 import { PurchaseOrderListComponent } from './Components/PO/PurchaseOrder/purchase-order-list/purchase-order-list.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { PurformaInvoiceListComponent } from './Components/Purchase/PI/purforma-invoice-list/purforma-invoice-list.component';
+import { PurformaInvoiceFormComponent } from './Components/Purchase/PI/purforma-invoice-form/purforma-invoice-form.component';
+import { LcRequestFormComponent } from './Components/Purchase/LC/lc-request-form/lc-request-form.component';
+import { LcRequestListComponent } from './Components/Purchase/LC/lc-request-list/lc-request-list.component';
+import { ShipmentListComponent } from './Components/Purchase/shipment/shipment-list/shipment-list.component';
+import { ShipmentFormComponent } from './Components/Purchase/shipment/shipment-form/shipment-form.component';
+import { GoodsReceivedListComponent } from './Components/Purchase/GoodsReceived/goods-received-list/goods-received-list.component';
+import { GoodsReceivedFormComponent } from './Components/Purchase/GoodsReceived/goods-received-form/goods-received-form.component';
+import { BillEntryListComponent } from './Components/Purchase/Bill/bill-entry-list/bill-entry-list.component';
+import { BillEntryFormComponent } from './Components/Purchase/Bill/bill-entry-form/bill-entry-form.component';
+import { PaymentVoucherListComponent } from './Components/Purchase/Payment/payment-voucher-list/payment-voucher-list.component';
+import { PaymentVoucherFormComponent } from './Components/Purchase/Payment/payment-voucher-form/payment-voucher-form.component';
 
 @NgModule({
   declarations: [
@@ -161,7 +173,21 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     PurchaseTypeFormComponent,
     PurchaseTypeListComponent,
     PurchaseOrderFormComponent,
-    PurchaseOrderListComponent
+    PurchaseOrderListComponent,
+    PurformaInvoiceListComponent,
+    PurformaInvoiceFormComponent,
+    LcRequestFormComponent,
+    LcRequestListComponent,
+    ShipmentListComponent,
+    ShipmentFormComponent,
+    GoodsReceivedListComponent,
+    GoodsReceivedFormComponent,
+    BillEntryListComponent,
+    BillEntryFormComponent,
+    PaymentVoucherListComponent,
+    PaymentVoucherFormComponent
+
+
 
   ],
   imports: [
