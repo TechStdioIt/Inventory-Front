@@ -38,6 +38,18 @@ import { PurchaseTypeListComponent } from './Components/Config/PurchaseType/purc
 import { PurchaseTypeFormComponent } from './Components/Config/PurchaseType/purchase-type-form/purchase-type-form.component';
 import { PurchaseOrderListComponent } from './Components/PO/PurchaseOrder/purchase-order-list/purchase-order-list.component';
 import { PurchaseOrderFormComponent } from './Components/PO/PurchaseOrder/purchase-order-form/purchase-order-form.component';
+import { PurformaInvoiceListComponent } from './Components/Purchase/PI/purforma-invoice-list/purforma-invoice-list.component';
+import { PurformaInvoiceFormComponent } from './Components/Purchase/PI/purforma-invoice-form/purforma-invoice-form.component';
+import { LcRequestListComponent } from './Components/Purchase/LC/lc-request-list/lc-request-list.component';
+import { LcRequestFormComponent } from './Components/Purchase/LC/lc-request-form/lc-request-form.component';
+import { ShipmentListComponent } from './Components/Purchase/shipment/shipment-list/shipment-list.component';
+import { ShipmentFormComponent } from './Components/Purchase/shipment/shipment-form/shipment-form.component';
+import { GoodsReceivedListComponent } from './Components/Purchase/GoodsReceived/goods-received-list/goods-received-list.component';
+import { GoodsReceivedFormComponent } from './Components/Purchase/GoodsReceived/goods-received-form/goods-received-form.component';
+import { BillEntryListComponent } from './Components/Purchase/Bill/bill-entry-list/bill-entry-list.component';
+import { BillEntryFormComponent } from './Components/Purchase/Bill/bill-entry-form/bill-entry-form.component';
+import { PaymentVoucherListComponent } from './Components/Purchase/Payment/payment-voucher-list/payment-voucher-list.component';
+import { PaymentVoucherFormComponent } from './Components/Purchase/Payment/payment-voucher-form/payment-voucher-form.component';
 
 const routes: Routes = [
   {
@@ -186,7 +198,59 @@ const routes: Routes = [
       {
         path:'purchaseOrderForm',
         component:PurchaseOrderFormComponent
+      },
+      
+      {
+        path: 'PurformaInvoiceList',
+        component: PurformaInvoiceListComponent
+      }, {
+        path: 'PurformaInvoiceForm',
+        component: PurformaInvoiceFormComponent
+      },
+
+      {
+        path: 'LcRequestList',
+        component: LcRequestListComponent
+      }, {
+        path: 'LcRequestForm',
+        component: LcRequestFormComponent
+      },
+      {
+        path: 'ShipmentList',
+        component: ShipmentListComponent
+      },
+      {
+        path: 'ShipmentForm',
+        component: ShipmentFormComponent
+      },
+      {
+        path:'GoodsReceivedList',
+        component:GoodsReceivedListComponent
+      },
+      {
+        path:'GoodsReceivedForm',
+        component:GoodsReceivedFormComponent
       }
+      ,
+      {
+        path:'BillEntryList',
+        component:BillEntryListComponent
+      },
+      {
+        path:'BillEntryForm',
+        component:BillEntryFormComponent
+      }
+      ,
+      {
+        path:'PaymentVoucherList',
+        component:PaymentVoucherListComponent
+      },
+      {
+        path:'PaymentVoucherForm',
+        component:PaymentVoucherFormComponent
+      }
+
+
 
 
 
