@@ -109,4 +109,6 @@ dist
 yarn.lock
 
 
-
+# Add environment files
+environment.ts
+environment.prod.ts
