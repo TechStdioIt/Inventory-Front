@@ -20,3 +20,53 @@ input[type='radio'] {
   cursor: pointer;
 
 }
+
+
+
+
+.mySearch{
+  -webkit-box-shadow: -4px 2px 26px 4px rgba(0,0,0,0.43); 
+  box-shadow: -4px 2px 26px 4px rgba(0,0,0,0.43);
+  border: 5px inset #1C6EA4;
+border-radius: 40px 7px 40px 7px;
+}
+
+.search-btn {
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.search-btn:hover {
+  transform: scale(1.1);
+}
+
+.search-container {
+  text-align: center;
+  margin-bottom: 20px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.table-move {
+  margin-top: 20px;
+  transition: margin 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+
+

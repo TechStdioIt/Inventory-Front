@@ -118,6 +118,15 @@ import { PaymentVoucherFormComponent } from './Components/Purchase/Payment/payme
 import { OrderListComponent } from './Components/Orders/order-list/order-list.component';
 import { OrderFormComponent } from './Components/Orders/order-form/order-form.component';
 import { PendingorderListComponent } from './Components/Orders/pendingorder-list/pendingorder-list.component';
+import { DoListComponent } from './Components/DeliveryOrder/do-list/do-list.component';
+import { DoFormComponent } from './Components/DeliveryOrder/do-form/do-form.component';
+import { DopendingListComponent } from './Components/DeliveryOrder/dopending-list/dopending-list.component';
+import { IntpendingListComponent } from './Components/Invoice/intpending-list/intpending-list.component';
+import { InvFormComponent } from './Components/Invoice/inv-form/inv-form.component';
+import { InvListComponent } from './Components/Invoice/inv-list/inv-list.component';
+import { MrFormComponent } from './Components/MoneyReceipt/mr-form/mr-form.component';
+import { MrListComponent } from './Components/MoneyReceipt/mr-list/mr-list.component';
+import { MrpendingListComponent } from './Components/MoneyReceipt/mrpending-list/mrpending-list.component';
 
 @NgModule({
   declarations: [
@@ -191,7 +200,16 @@ import { PendingorderListComponent } from './Components/Orders/pendingorder-list
     PaymentVoucherFormComponent,
     OrderListComponent,
     OrderFormComponent,
-    PendingorderListComponent
+    PendingorderListComponent,
+    DoListComponent,
+    DoFormComponent,
+    DopendingListComponent,
+    IntpendingListComponent,
+    InvFormComponent,
+    InvListComponent,
+    MrFormComponent,
+    MrListComponent,
+    MrpendingListComponent
 
 
 

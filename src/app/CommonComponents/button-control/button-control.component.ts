@@ -64,7 +64,6 @@ export class ButtonControlComponent implements OnInit {
         this.router.events.subscribe((event) => {
           if (event instanceof NavigationEnd) {
             this.currentRoute = event.url;
-            debugger;
             if(this.currentRoute == '/orderPList' || this.currentRoute == '/deliveryOrderPList'){
               this.commonService.selectedTab = 'PList'
             }
@@ -149,5 +148,6 @@ export class ButtonControlComponent implements OnInit {
     }
 
   }
+
 
 }

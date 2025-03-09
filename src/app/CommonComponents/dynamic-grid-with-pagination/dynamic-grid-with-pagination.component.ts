@@ -4,16 +4,25 @@ import { DefaultGridButtonShow, GridButtonShow, GridColumn } from './Models/Grid
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-dynamic-grid-with-pagination',
   templateUrl: './dynamic-grid-with-pagination.component.html',
-  styleUrls: ['./dynamic-grid-with-pagination.component.scss']
+  styleUrls: ['./dynamic-grid-with-pagination.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('void', style({ opacity: 0, transform: 'translateY(-10px)' })),
+      transition(':enter', [animate('300ms ease-in', style({ opacity: 1, transform: 'translateY(0)' }))]),
+      transition(':leave', [animate('300ms ease-out', style({ opacity: 0, transform: 'translateY(-10px)' }))])
+    ])
+  ]
 })
 export class DynamicGridWithPaginationComponent<T> implements OnInit {
+  // @Input() data: T[] = []; // Input for the data to display
   @Input() data: T[] = [];
   @Input() columns: GridColumn<T>[] = []; // Column definitions
-  @Input() pageSizes: number[] = [20, 50, 100]; // Configurable page sizes
+  @Input() pageSizes: any[] = [20, 50, 100, 'All']; // Configurable page sizes
   @Input() pageSize: number = 20; // Default page size
   @Input() reloadCount: number = 0; // Default page size
   @Input() maxVisiblePages: number = 3; // Maximum visible pages for pagination
@@ -23,7 +32,11 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
   @Input() haveQueryPram: boolean = false;
   @Input() isUseData: boolean = false;
   @Input() isSearchShow: boolean = true;
-
+  @Input() searchGrid: any[] = [];
+  @Input() searchApi: string = '';
+  @Input() isSearchGrid: boolean = false;
+  @Output() dataEmitter = new EventEmitter<{ value: any; fieldName?: any; emiter?: any }>();
+  @Output() dataChange = new EventEmitter<any>();
 
   currentPage: number = 1;
   totalItems: number = 0;
@@ -39,15 +52,14 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
   isAllSelected: boolean = false;
   selectedItemIds: number[] = [];
 
-
+  searchFormData: any = [];
   ngOnInit() {
     if (!this.pageSizes.includes(this.pageSize)) {
       this.pageSizes.push(this.pageSize);
       this.pageSizes.sort((a, b) => a - b); // Optional: Sort the array
     }
     this.pageChangeDynamic();
-    this.data = Array.isArray(this.data) ? this.data : [];
-
+    this.filteredData = [...this.data];
     this.updatePagination();
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -55,11 +67,15 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
       // Trigger reload when API changes
       this.ngOnInit();
     }
+    if (changes['searchGrid'] && !changes['searchGrid'].isFirstChange()) {
+    }
   }
 
-
-
-  constructor(private dataService: HttpClientConnectionService,private router:Router,public commonService: GridHandlerService) {}
+  constructor(
+    private dataService: HttpClientConnectionService,
+    private router: Router,
+    public commonService: GridHandlerService
+  ) {}
   // Handle sorting
   sortTable(column: keyof T) {
     if (this.sortColumn === column) {
@@ -80,7 +96,6 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     });
     this.updatePagination();
   }
-
 
   isSearchVisible = false;
   isButtonClicked = false;
@@ -116,49 +131,43 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     }
   }
   pageChangeDynamic() {
-    
     const skip = (this.currentPage - 1) * this.pageSize;
     const take = this.pageSize;
-    if(!this.isUseData){
+    if (!this.isUseData) {
       this.getData({ take: take, skip: skip });
-    }else{
+    } else {
       this.totalRecords = this.data.length;
       this.filteredData = this.data.slice(skip, skip + take);
       this.updatePagination();
-
     }
-    
   }
   getData = ({ take, skip }: { take: number; skip: number }) => {
-    
     const api = this.haveQueryPram ? `${this.paginationAPI}&take=${take}&skip=${skip}` : `${this.paginationAPI}?take=${take}&skip=${skip}`;
     // Call the API with `take` and `skip` as query parameters
     this.dataService.GetData(api).subscribe(
       (response: any) => {
         if (response) {
-          if(response.data){
+          if (response.data) {
             this.data = response.data;
             this.totalRecords = response.data[0]?.totalRecords ?? response.data.length;
-          }
-          else{
+          } else {
             this.data = response;
             this.totalRecords = response[0]?.totalRecords ?? response.length;
           }
-          this.data = Array.isArray(this.data) ? this.data : [];
-
+          // this.pageSizes.push('All');
+          this.filteredData = [...this.data];
           this.updatePagination();
         } else {
-          this.data = []; 
+          this.data = [];
         }
       },
       (error: HttpErrorResponse) => {
         console.error('Failed to get data:', error);
-        if(error.error.message == 'You are not authorized! Please log in to access this resource.'){
+        if (error.error.message == 'You are not authorized! Please log in to access this resource.') {
           this.router.navigate(['/']);
         }
       }
     );
-    
   };
   // Navigate to a specific page
   goToPage(page: any) {
@@ -170,6 +179,7 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
   }
   changePageSize(evt: any) {
     this.pageSize = evt.target.value;
+    this.pageSize = typeof this.pageSize === 'string' && this.pageSize === 'All' ? this.totalRecords : this.pageSize;
     this.pageChangeDynamic();
   }
   // Navigate to the next page
@@ -227,17 +237,17 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     const itemId = (item as any)['id'];
 
     if (this.selectedItems.has(item)) {
-        // If the item is already selected, remove it
-        this.selectedItems.delete(item);
-        
-        // Remove the item ID from selectedItemIds
-        this.selectedItemIds = this.selectedItemIds.filter((id) => id !== itemId);
-    } else {
-        // Otherwise, add it to the selected set
-        this.selectedItems.add(item);
+      // If the item is already selected, remove it
+      this.selectedItems.delete(item);
 
-        // Add only the selected item's ID, not all paginated data
-        this.selectedItemIds.push(itemId);
+      // Remove the item ID from selectedItemIds
+      this.selectedItemIds = this.selectedItemIds.filter((id) => id !== itemId);
+    } else {
+      // Otherwise, add it to the selected set
+      this.selectedItems.add(item);
+
+      // Add only the selected item's ID, not all paginated data
+      this.selectedItemIds.push(itemId);
     }
 
     // Update the checkBoxSelectedData to match selectedItemIds
@@ -245,11 +255,28 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
 
     // Update the "Select All" checkbox state
     this.isAllSelected = this.paginatedData.every((item) => this.selectedItems.has(item));
-}
+  }
 
-  getImageSrc(data:any){
-   if(data){
-    return data.result;
-   }
+  getImageSrc(data: any) {
+    if (data) {
+      return data.result;
+    }
+  }
+  onValueReceived(eventData: { value: any; fieldName?: any; emiter?: any }) {
+    eventData.emiter(eventData);
+  }
+
+  onValueChangeOnGread(event: any, emitter: any, fieldName: any) {
+    {
+      emitter({ value: event.target.value, fieldName: fieldName });
+    }
+  }
+  onValueChangeonGrid(event: any, row: any, column: any) {
+    const index = this.paginatedData.findIndex((r: any) => r === row);
+    if (index !== -1) {
+      row[column] = event.target.value;
+      this.paginatedData[index] = row;
+    }
+    this.dataChange.emit({ value: this.paginatedData,index: index, fieldName: column });
   }
 }

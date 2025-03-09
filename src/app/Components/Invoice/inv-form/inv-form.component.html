@@ -1,0 +1,137 @@
+<section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="ri-add-circle-fill ri-lg text-success"></i>
+              {{ FormData.id === 0 ? 'Create' : 'Update' }} Form
+            </h5>
+  
+            <form #form="ngForm" novalidate>
+              <!-- Loop through the form model -->
+              <div class="row mb-3">
+                
+                <div class="mb-3" *ngFor="let field of formdata" [class]="'col-lg-' + (field.column || 6)">
+                   <label [for]="field.name" class="col-sm-12 col-form-label">
+                      {{ field.label }}
+                    </label>
+                    
+                  <!-- Text, Email, Date, Time, Number, File Inputs -->
+                  <input
+                    *ngIf="['text', 'email', 'date', 'time', 'number', 'file'].includes(field.type)"
+                    [type]="field.type"
+                    [id]="field.name"
+                    class="form-control"
+                    [class]="field.class? field.class : null"
+                    [name]="field.name"
+                    [(ngModel)]="FormData[field.name]"
+                    [required]="field.required"
+                    [min]="field.min || null"
+                    [max]="field.max || null"
+                    [accept]="field.type === 'file' ? field.accept || '*' : null"
+                    [class.invalid]="field.name.invalid && field.name.touched"
+                    [readOnly]="gridHandleService.selectedTab === 'Details'"
+                    [placeholder]="field.placeHolder? field.placeHolder : field.name === 'password' ? 'Enter password' : field.label"
+                    (keyup)="field.eventEmit?.keyup ? handleEvent(field.eventEmit.keyup, $event) : null"
+                    (click)="field.eventEmit?.click ? handleEvent(field.eventEmit.click, $event) : null"
+                    (change)="field.eventEmit?.change ? handleEvent(field.eventEmit.change, $event) : null"
+                  />
+
+                  <!-- Multi-Select Dropdown -->
+                    <ng-multiselect-dropdown
+                        *ngIf="field.type === 'multi-select'"
+                        [placeholder]="'Select ' + field.label"
+                        [settings]="dropdownSettings"
+                        [data]="field.options"
+                        [(ngModel)]="FormData[field.name]"
+                        [name]="field.name"
+                        [required]="field.required"
+                        (onSelect)="field.eventEmit?.onSelect ? handleEvent(field.eventEmit.onSelect, $event, field.name,field.optionModel) : onItemSelect($event, field.name,field.optionModel)"
+                        (onDeSelect)="field.eventEmit?.onDeSelect ? handleEvent(field.eventEmit.onDeSelect, $event, field.name,field.optionModel) : onItemDeSelect($event, field.name)"
+                        (onSelectAll)="field.eventEmit?.onSelectAll ? handleEvent(field.eventEmit.onSelectAll, $event, field.name,field.optionModel) : onSelectAll($event, field.name,field.optionModel)"
+                        (onDeSelectAll)="field.eventEmit?.onDeSelectAll ? handleEvent(field.eventEmit.onDeSelectAll, $event, field.name,field.optionModel) : onDeSelectAll($event, field.name)">
+                    </ng-multiselect-dropdown>
+                    
+  
+                      <!-- Select Dropdown -->
+                      <app-common-select-box 
+                      *ngIf="field.type === 'select'"
+                      [dataList]="field.options" 
+                      [id]="field.optionValue" 
+                      [name]="field.optionText" 
+                      (valueChange)="onValueReceived($event)" 
+                      [searchExprOption]="[field.optionText]" 
+                      [disabled]="gridHandleService.selectedTab === 'Details'  || field.isReadOnly == true"
+                      [selectedValue]="FormData[field.name]"
+                      [fieldName] = "field.name"
+                      >
+                    </app-common-select-box>
+
+                  <!-- Radio Buttons -->
+                  <div *ngIf="field.type === 'radio'" class="form-check">
+                    <div
+                      *ngFor="let option of field.options"
+                      class="form-check-inline"
+                    >
+                      <input
+                        [type]="field.type"
+                        [id]="field.name + '_' + option"
+                        class="form-check-input"
+                        [name]="field.name"
+                        [value]="option"
+                        [(ngModel)]="FormData[field.name]"
+                        [required]="field.required"
+                      />
+                      <label
+                        [for]="field.name + '_' + option"
+                        class="form-check-label"
+                      >
+                        {{ option }}
+                      </label>
+                    </div>
+                  </div>
+  
+                  <!-- Checkbox -->
+                  <div *ngIf="field.type === 'checkbox'" class="form-check">
+                    <input
+                      [type]="field.type"
+                      [id]="field.name"
+                      class="form-check-input"
+                      [name]="field.name"
+                      [(ngModel)]="FormData[field.name]"
+                    />
+                    <label [for]="field.name" class="form-check-label">
+                      {{ field.label }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <!-- Only use for the form component. Details Components -->
+              <ng-container *ngIf="DetailsData.length > 0">
+                <hr />
+                <hr />
+                <h5 class="card-title">
+                    Details
+                </h5>
+                <app-dynamic-grid-with-pagination
+                [columns]="userColumns"
+                [isUseData]="true"
+                [data]="DetailsData"
+                [buttonShow]="{}"
+                [isSearchShow]="false"
+                ></app-dynamic-grid-with-pagination>
+
+              </ng-container>
+
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
