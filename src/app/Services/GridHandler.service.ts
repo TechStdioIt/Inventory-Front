@@ -12,15 +12,17 @@ export class GridHandlerService {
   isLoadPanelVisible:boolean=false;
   private dataSubject = new Subject<any>();
   data$ = this.dataSubject.asObservable();
-  //this varible for add new records;
-  private addNewSubject = new Subject<any>();
-  addNewData$=this.addNewSubject.asObservable();
-  private editSubject = new Subject<any>();
-  edit$=this.editSubject.asObservable();
+
   private detailsSubject = new Subject<any>();
-  details$=this.detailsSubject.asObservable();
+  details$ = this.detailsSubject.asObservable();
+  private editSubject = new Subject<any>();
+  edit$ = this.editSubject.asObservable();
   private addSubject = new Subject<any>();
   add$ = this.addSubject.asObservable();
+  private approveSubject = new Subject<any>();
+  approve$ = this.approveSubject.asObservable();
+  private deleteSubject = new Subject<any>();
+  delete$ = this.deleteSubject.asObservable();
   isSearch:boolean=false;
   isPagger:boolean=false; 
   isButtonColumn:boolean=true;
@@ -29,28 +31,30 @@ export class GridHandlerService {
   isShowButton:GridButtonShow = new GridButtonShow();
   dataField:GridDataModel=new GridDataModel();
   caption:GridCaption= new GridCaption();
-
   
   constructor() {
     this.edit=this.edit.bind(this);
     this.addPermission=this.addPermission.bind(this)
     this.details=this.details.bind(this);
     this.addNew = this.addNew.bind(this);
-    
+    this.approve = this.approve.bind(this);
+    this.delete = this.delete.bind(this);
   }
   edit(selectedRecord:any){
     this.editSubject.next(selectedRecord);
   }
   delete() {
-    this.dataSubject.next(this.checkBoxSelectedData);
+    this.deleteSubject.next(this.checkBoxSelectedData);
   }
   addNew() {
-    this.addNewSubject.next(NgForm);
+    this.addSubject.next(NgForm);
   }
-
-details(selectedRecord:any){
-  this.detailsSubject.next(selectedRecord);
-}
+  approve() {
+    this.approveSubject.next(this.checkBoxSelectedData);
+  }
+  details(selectedRecord:any){
+    this.detailsSubject.next(selectedRecord);
+  }
   addPermission(selectedRecord :any){
     selectedRecord.column.command="permission";
     this.dataSubject.next(selectedRecord);

@@ -12,4 +12,8 @@
             (onValueChanged)="onValueChanged($event)"
             [disabled]="disabled"
             [value]="selectedValue"
+            (onInput)="onSearch($event)"
+            [readOnly]="isReadOnly"
     ></dx-select-box>
+
+    <!-- (onInput)="onSearch($event)" -->

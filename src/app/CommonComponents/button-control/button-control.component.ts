@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DxTabsComponent } from 'devextreme-angular';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
@@ -58,19 +58,30 @@ export class ButtonControlComponent implements OnInit {
     'width': '100%'
   };
 
-
+  currentRoute:string ='';
   constructor(private dataService: HttpClientConnectionService, private router: Router, public commonService: GridHandlerService,private activatedRoute: ActivatedRoute) {
-    const fullUrl = this.router.url.split('?')[0]; 
-    const routeSegment = fullUrl.split('/')[1];
+      this.currentRoute = this.router.url;
+        this.router.events.subscribe((event) => {
+          if (event instanceof NavigationEnd) {
+            this.currentRoute = event.url;
+            debugger;
+            if(this.currentRoute == '/orderPList' || this.currentRoute == '/deliveryOrderPList'){
+              this.commonService.selectedTab = 'PList'
+            }
+          }
+        });
+        
   }
   ngOnInit(): void {
-   
+    
+    if(this.currentRoute == '/orderPList' || this.currentRoute == '/deliveryOrderPList'){
+      this.commonService.selectedTab = 'PList'
+    }
   }
  
 
 
   selectTab(tab: string): void {
-    debugger
     if (tab == 'Save' || tab == 'Delete' ){
       if (tab == 'Save') {
         this.commonService.addNew();
@@ -117,20 +128,26 @@ export class ButtonControlComponent implements OnInit {
 
     } else if(tab =='Details'){
       alert("Please go to List then Select a Record");
-    }else {
+    }else if(tab == 'Approve'){
+      this.commonService.approve();
+    }
+    else {
       const fullUrl = this.router.url.split('?')[0]; 
       const routeSegment = fullUrl.split('/')[1];
       var minorTab='';
-      if(tab =="List"){
-        minorTab='Form';
-      }else{
-        minorTab='List'
-      }
+      minorTab = routeSegment.includes("PList") ? 'PList' : routeSegment.includes("Form") ? 'Form' : routeSegment.includes("List") ? 'List' : 'PList';
+      // if(tab =="List"){
+      //   minorTab='Form';
+      // }else{
+      //   minorTab='List'
+      // }
      var redirectRoute= routeSegment.replace(minorTab, tab);
       this.router.navigate(['/'+ redirectRoute]);
     }
-    this.commonService.selectedTab = tab;
-  }
+    if(tab !== 'Approve'){
+      this.commonService.selectedTab = tab;
+    }
 
+  }
 
 }

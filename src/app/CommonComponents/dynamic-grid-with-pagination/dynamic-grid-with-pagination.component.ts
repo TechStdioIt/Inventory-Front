@@ -3,6 +3,7 @@ import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnecti
 import { DefaultGridButtonShow, GridButtonShow, GridColumn } from './Models/GridModels';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 
 @Component({
   selector: 'app-dynamic-grid-with-pagination',
@@ -10,17 +11,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./dynamic-grid-with-pagination.component.scss']
 })
 export class DynamicGridWithPaginationComponent<T> implements OnInit {
-  // @Input() data: T[] = []; // Input for the data to display
   @Input() data: T[] = [];
   @Input() columns: GridColumn<T>[] = []; // Column definitions
-  @Input() pageSizes: number[] = [5, 10, 20, 50, 100]; // Configurable page sizes
-  @Input() pageSize: number = 5; // Default page size
+  @Input() pageSizes: number[] = [20, 50, 100]; // Configurable page sizes
+  @Input() pageSize: number = 20; // Default page size
   @Input() reloadCount: number = 0; // Default page size
   @Input() maxVisiblePages: number = 3; // Maximum visible pages for pagination
   @Input() totalRecords: number = 0; // Maximum visible pages for pagination
   @Input() buttonShow: GridButtonShow<T> = new DefaultGridButtonShow<T>(); // Show buttons based on the configuration\
   @Input() paginationAPI: string = '';
   @Input() haveQueryPram: boolean = false;
+  @Input() isUseData: boolean = false;
+  @Input() isSearchShow: boolean = true;
 
 
   currentPage: number = 1;
@@ -35,6 +37,8 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
   filteredData: T[] = [];
   selectedItems: Set<T> = new Set();
   isAllSelected: boolean = false;
+  selectedItemIds: number[] = [];
+
 
   ngOnInit() {
     if (!this.pageSizes.includes(this.pageSize)) {
@@ -52,7 +56,9 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     }
   }
 
-  constructor(private dataService: HttpClientConnectionService,private router:Router) {}
+
+
+  constructor(private dataService: HttpClientConnectionService,private router:Router,public commonService: GridHandlerService) {}
   // Handle sorting
   sortTable(column: keyof T) {
     if (this.sortColumn === column) {
@@ -72,6 +78,17 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
       return 0;
     });
     this.updatePagination();
+  }
+
+
+  isSearchVisible = false;
+  isButtonClicked = false;
+  expandSearch() {
+    this.isButtonClicked = true;
+  }
+
+  toggleSearch() {
+    this.isSearchVisible = !this.isSearchVisible;
   }
   // Handle pagination
   updatePagination() {
@@ -98,9 +115,18 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     }
   }
   pageChangeDynamic() {
+    
     const skip = (this.currentPage - 1) * this.pageSize;
     const take = this.pageSize;
-    this.getData({ take: take, skip: skip });
+    if(!this.isUseData){
+      this.getData({ take: take, skip: skip });
+    }else{
+      this.totalRecords = this.data.length;
+      this.filteredData = this.data.slice(skip, skip + take);
+      this.updatePagination();
+
+    }
+    
   }
   getData = ({ take, skip }: { take: number; skip: number }) => {
     
@@ -108,9 +134,6 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     // Call the API with `take` and `skip` as query parameters
     this.dataService.GetData(api).subscribe(
       (response: any) => {
-        debugger;
-        // Handle the successful response
-        console.log(response);
         if (response) {
           if(response.data){
             this.data = response.data;
@@ -123,7 +146,7 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
           this.filteredData = [...this.data];
           this.updatePagination();
         } else {
-          this.data = []; // Fallback in case of empty response
+          this.data = []; 
         }
       },
       (error: HttpErrorResponse) => {
@@ -188,24 +211,43 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     if (this.isAllSelected) {
       // Add all currently paginated items to the selected set
       this.paginatedData.forEach((item) => this.selectedItems.add(item));
+      this.paginatedData.forEach((item) => this.selectedItemIds.push((item as any)['id']));
+      this.commonService.checkBoxSelectedData = this.selectedItemIds;
     } else {
       // Remove all currently paginated items from the selected set
       this.paginatedData.forEach((item) => this.selectedItems.delete(item));
+      this.selectedItemIds = [];
+      this.commonService.checkBoxSelectedData = [];
     }
   }
   // Toggle selection of an individual item
   toggleUserSelection(item: T) {
+    const itemId = (item as any)['id'];
+
     if (this.selectedItems.has(item)) {
-      // If the item is already selected, remove it
-      this.selectedItems.delete(item);
+        // If the item is already selected, remove it
+        this.selectedItems.delete(item);
+        
+        // Remove the item ID from selectedItemIds
+        this.selectedItemIds = this.selectedItemIds.filter((id) => id !== itemId);
     } else {
-      // Otherwise, add it to the selected set
-      this.selectedItems.add(item);
+        // Otherwise, add it to the selected set
+        this.selectedItems.add(item);
+
+        // Add only the selected item's ID, not all paginated data
+        this.selectedItemIds.push(itemId);
     }
+
+    // Update the checkBoxSelectedData to match selectedItemIds
+    this.commonService.checkBoxSelectedData = [...this.selectedItemIds];
+
     // Update the "Select All" checkbox state
     this.isAllSelected = this.paginatedData.every((item) => this.selectedItems.has(item));
-  }
+}
+
   getImageSrc(data:any){
+   if(data){
     return data.result;
+   }
   }
 }

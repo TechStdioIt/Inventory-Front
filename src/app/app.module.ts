@@ -115,6 +115,9 @@ import { BillEntryListComponent } from './Components/Purchase/Bill/bill-entry-li
 import { BillEntryFormComponent } from './Components/Purchase/Bill/bill-entry-form/bill-entry-form.component';
 import { PaymentVoucherListComponent } from './Components/Purchase/Payment/payment-voucher-list/payment-voucher-list.component';
 import { PaymentVoucherFormComponent } from './Components/Purchase/Payment/payment-voucher-form/payment-voucher-form.component';
+import { OrderListComponent } from './Components/Orders/order-list/order-list.component';
+import { OrderFormComponent } from './Components/Orders/order-form/order-form.component';
+import { PendingorderListComponent } from './Components/Orders/pendingorder-list/pendingorder-list.component';
 
 @NgModule({
   declarations: [
@@ -185,7 +188,10 @@ import { PaymentVoucherFormComponent } from './Components/Purchase/Payment/payme
     BillEntryListComponent,
     BillEntryFormComponent,
     PaymentVoucherListComponent,
-    PaymentVoucherFormComponent
+    PaymentVoucherFormComponent,
+    OrderListComponent,
+    OrderFormComponent,
+    PendingorderListComponent
 
 
 

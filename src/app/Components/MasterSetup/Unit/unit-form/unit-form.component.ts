@@ -49,7 +49,7 @@ export class UnitFormComponent implements OnInit {
         this.FormData =new Unit();
       }
     });
-    this.gridHandleService.addNewData$.pipe(take(1)).subscribe(async (data: NgForm) => {
+    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
       if (!this.isSubmitting) {
         this.isSubmitting = true;
         try {

@@ -45,7 +45,7 @@ constructor(
             //this.getLrpNo();
           }
         });
-    this.gridHandleService.addNewData$.pipe(take(1)).subscribe(async (data: NgForm) => {
+    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
       debugger;
           if (!this.isSubmitting) {
             this.isSubmitting = true;

@@ -16,6 +16,7 @@ export interface GridButtonShow<T> {
   delete?: GridButtonAction<T>;
   viewDetails?: GridButtonAction<T>;
   print?: GridButtonAction<T>;
+  pen?:GridButtonAction<T>;
 }
 
 export class DefaultGridButtonShow<T> implements GridButtonShow<T> {
@@ -23,4 +24,5 @@ export class DefaultGridButtonShow<T> implements GridButtonShow<T> {
   delete = { isShow: false, emit: undefined }; // Default for delete
   viewDetails = { isShow: false, emit: undefined }; // Default for view details
   print = { isShow: false, emit: undefined }; // Default for print
+  pen = { isShow: false, emit: undefined }; // Default for print
 }

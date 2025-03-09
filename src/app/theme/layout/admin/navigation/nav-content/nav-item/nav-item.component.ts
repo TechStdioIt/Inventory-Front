@@ -43,11 +43,15 @@ export class NavItemComponent {
     if (document.querySelector('app-navigation.pcoded-navbar')?.classList.contains('mob-open')) {
       document.querySelector('app-navigation.pcoded-navbar')?.classList.remove('mob-open');
     }
-   this.gridService.selectedTab = "List";
   }
   onRouting(uri:any){
-    debugger;
-    this.gridService.selectedTab = "List";
+    
+    if(uri == '/orderPlist' || uri == '/deliveryOrderPList' || uri == '/invPList' || uri == '/mrPList'){
+      this.gridService.selectedTab = 'PList'
+    }else{
+      this.gridService.selectedTab = 'List';
+    }
+  
     this.router.navigate([uri]);
   }
 }
