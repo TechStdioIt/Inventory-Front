@@ -51,6 +51,8 @@ import { BillEntryFormComponent } from './Components/Purchase/Bill/bill-entry-fo
 import { PaymentVoucherListComponent } from './Components/Purchase/Payment/payment-voucher-list/payment-voucher-list.component';
 import { PaymentVoucherFormComponent } from './Components/Purchase/Payment/payment-voucher-form/payment-voucher-form.component';
 import { PendingorderListComponent } from './Components/Orders/pendingorder-list/pendingorder-list.component';
+import { OrderListComponent } from './Components/Orders/order-list/order-list.component';
+import { OrderFormComponent } from './Components/Orders/order-form/order-form.component';
 
 const routes: Routes = [
   {
@@ -253,6 +255,14 @@ const routes: Routes = [
       {
         path:"orderPList",
         component:PendingorderListComponent
+      },
+      {
+        path:"orderList",
+        component:OrderListComponent
+      },
+      {
+        path:"orderForm",
+        component:OrderFormComponent
       }
 
 

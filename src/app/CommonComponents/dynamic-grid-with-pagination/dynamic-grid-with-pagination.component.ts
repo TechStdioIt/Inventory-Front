@@ -46,7 +46,8 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
       this.pageSizes.sort((a, b) => a - b); // Optional: Sort the array
     }
     this.pageChangeDynamic();
-    this.filteredData = [...this.data];
+    this.data = Array.isArray(this.data) ? this.data : [];
+
     this.updatePagination();
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -143,7 +144,8 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
             this.data = response;
             this.totalRecords = response[0]?.totalRecords ?? response.length;
           }
-          this.filteredData = [...this.data];
+          this.data = Array.isArray(this.data) ? this.data : [];
+
           this.updatePagination();
         } else {
           this.data = []; 
