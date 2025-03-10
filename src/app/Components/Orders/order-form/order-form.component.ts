@@ -31,14 +31,14 @@ selectedItemList:any[]=[];
 allProduct:any[]=[];
   formdata: any[] = [
     {  type: 'select',
-      name: 'pharmacyId',
-      label: 'Pharmacy',
+      name: 'customerId',
+      label: 'Customer',
       required: true,
       column: 6,
       options: [],
       optionValue: 'id',
       optionText: 'name',
-      flag: 49,
+      flag: 8,
     },
     { 
       type: 'select',
@@ -49,7 +49,7 @@ allProduct:any[]=[];
       options: [],
       optionValue: 'id',
       optionText: 'name',
-      flag: 37, 
+      flag: 9, 
     },
     { type: 'date', name: 'deliveryDate', label: 'Delivery Date', required: true ,column:4},
     { type: 'number', name: 'totalOrder', label: 'Total Amount', required: true ,column:4,isReadOnly:true},
@@ -62,7 +62,7 @@ allProduct:any[]=[];
       options: [],
       optionValue: 'id',
       optionText: 'name',
-      flag: 36, 
+      flag: 10, 
     }
   ];
   constructor(

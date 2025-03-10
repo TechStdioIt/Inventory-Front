@@ -35,7 +35,7 @@ export class CustomerFormComponent implements OnInit,OnDestroy {
     { type: 'text', name: 'address', label: 'Customer Address', required: true,column:4},
     { type: 'text', name: 'phone', label: 'Mobile', required: true,column:4},
     { type: 'text', name: 'email', label: 'Email', required: true,column:4},
-    { type: 'select', name: 'customerTypeId', label: 'Type of Customer', required: true,column:4,options:[],},
+    { type: 'select', name: 'customerTypeId', label: 'Type of Customer', required: true,column:4,options:[],optionValue:'id',optionText:'name'},
     { type: 'text', name: 'city', label: 'City', required: true,column:4},
     { type: 'text', name: 'cp', label: 'Customer CP', required: true,column:4},
     { type: 'text', name: 'zipCode', label: 'ZipCode', required: true,column:4},
@@ -118,5 +118,7 @@ export class CustomerFormComponent implements OnInit,OnDestroy {
       console.error(`Function ${functionName} is not defined`);
     }
   }
-
+  onValueReceived(eventData: { value: any; fieldName?: any }) {
+    this.FormData[eventData.fieldName] = eventData.value;
+  }
 }
