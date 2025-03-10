@@ -53,6 +53,8 @@ import { PaymentVoucherFormComponent } from './Components/Purchase/Payment/payme
 import { PendingorderListComponent } from './Components/Orders/pendingorder-list/pendingorder-list.component';
 import { OrderListComponent } from './Components/Orders/order-list/order-list.component';
 import { OrderFormComponent } from './Components/Orders/order-form/order-form.component';
+import { CustomerListComponent } from './Components/Customer/customer-list/customer-list.component';
+import { CustomerFormComponent } from './Components/Customer/customer-form/customer-form.component';
 
 const routes: Routes = [
   {
@@ -263,6 +265,14 @@ const routes: Routes = [
       {
         path:"orderForm",
         component:OrderFormComponent
+      },
+      {
+        path:"customerList",
+        component:CustomerListComponent
+      },
+      {
+        path:"customerForm",
+        component:CustomerFormComponent
       }
 
 

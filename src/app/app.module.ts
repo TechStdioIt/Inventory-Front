@@ -127,6 +127,9 @@ import { InvListComponent } from './Components/Invoice/inv-list/inv-list.compone
 import { MrFormComponent } from './Components/MoneyReceipt/mr-form/mr-form.component';
 import { MrListComponent } from './Components/MoneyReceipt/mr-list/mr-list.component';
 import { MrpendingListComponent } from './Components/MoneyReceipt/mrpending-list/mrpending-list.component';
+import { CommonAutoCompleteApiComponent } from './CommonComponents/common-auto-complete-api/common-auto-complete-api.component';
+import { CustomerFormComponent } from './Components/Customer/customer-form/customer-form.component';
+import { CustomerListComponent } from './Components/Customer/customer-list/customer-list.component';
 
 @NgModule({
   declarations: [
@@ -209,7 +212,10 @@ import { MrpendingListComponent } from './Components/MoneyReceipt/mrpending-list
     InvListComponent,
     MrFormComponent,
     MrListComponent,
-    MrpendingListComponent
+    MrpendingListComponent,
+    CommonAutoCompleteApiComponent,
+    CustomerFormComponent,
+    CustomerListComponent
 
 
 
