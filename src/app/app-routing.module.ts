@@ -55,6 +55,10 @@ import { OrderListComponent } from './Components/Orders/order-list/order-list.co
 import { OrderFormComponent } from './Components/Orders/order-form/order-form.component';
 import { CustomerListComponent } from './Components/Customer/customer-list/customer-list.component';
 import { CustomerFormComponent } from './Components/Customer/customer-form/customer-form.component';
+import { InvoiceListComponent } from './Components/Invoice/invoice-list/invoice-list.component';
+import { InvoiceFormComponent } from './Components/Invoice/invoice-form/invoice-form.component';
+import { PaymentReceiveListComponent } from './Components/PaymentReceive/payment-receive-list/payment-receive-list.component';
+import { PaymentReceiveFormComponent } from './Components/PaymentReceive/payment-receive-form/payment-receive-form.component';
 
 const routes: Routes = [
   {
@@ -273,12 +277,35 @@ const routes: Routes = [
       {
         path:"customerForm",
         component:CustomerFormComponent
-      }
-
-
-      
-
-
+      },
+      {
+        path:"shipmentList",
+        component:ShipmentListComponent
+        
+      },
+      {
+        path:"shipmentForm",
+        component:ShipmentFormComponent
+        
+      },
+      {
+        path:"InvoiceList",
+        component:InvoiceListComponent
+        
+      },
+      {
+        path:"InvoiceForm",
+        component:InvoiceFormComponent
+        
+      },
+      {
+        path:"PaymentReceiveList",
+        component:PaymentReceiveListComponent
+      },
+      {
+        path:"PaymentReceiveForm",
+        component:PaymentReceiveFormComponent
+      },
 
     ]
   },

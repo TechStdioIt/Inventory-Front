@@ -37,7 +37,7 @@ export class CustomerFormComponent implements OnInit,OnDestroy {
     { type: 'text', name: 'email', label: 'Email', required: true,column:4},
     { type: 'select', name: 'customerTypeId', label: 'Type of Customer', required: true,column:4,options:[],optionValue:'id',optionText:'name'},
     { type: 'text', name: 'city', label: 'City', required: true,column:4},
-    { type: 'text', name: 'cp', label: 'Customer CP', required: true,column:4},
+    { type: 'number', name: 'cp', label: 'Customer CP', required: true,column:4},
     { type: 'text', name: 'zipCode', label: 'ZipCode', required: true,column:4},
     
   ];
