@@ -26,9 +26,9 @@ export class CustomerFormComponent implements OnInit,OnDestroy {
   isSubmitting: boolean = false;
   private destroy$ = new Subject<void>();
   fromHeader: string = 'Customer';
-  insertOrUpdateAPI: string = 'Category/CreateOrUpdate';
-  getDataByIdAPI: string = 'Category/GetCategoryById';
-  listRoute: string = '/categoryList';
+  insertOrUpdateAPI: string = 'Customer/CreateOrUpdateCustomer';
+  getDataByIdAPI: string = 'Customer/GetCustomerById';
+  listRoute: string = '/customerList';
 
   formdata: any[] = [
     { type: 'text', name: 'name', label: 'Customer Name', required: true,column:4},
@@ -79,7 +79,7 @@ export class CustomerFormComponent implements OnInit,OnDestroy {
     });
   }
   ngOnInit(): void {
-    this.commonService.getDropDownData(28).subscribe((data:any)=>{
+    this.commonService.getDropDownData(7).subscribe((data:any)=>{
       this.formdata.find(field => field.name === 'customerTypeId').options = data
     })
   }

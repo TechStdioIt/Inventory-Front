@@ -13,18 +13,21 @@ import Swal from 'sweetalert2';
 export class CustomerListComponent implements OnInit {
 fromHeader: string = 'Customer';
   formRoute: string = '/customerForm';
-  listAPI: string = 'PurchasOrder/GetAllpurchaseOrder';
-  deleteAPI: string = 'PurchasOrder/DeletePurchasOrder';
+  listAPI: string = 'Customer/GetAllCustomer';
+  deleteAPI: string = 'Customer/DeleteCustomer';
   haveQueryPram: boolean = false;
   reloadCount: number = 0;
 
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
-    { caption: 'Purchase Date', key: 'orderDate' },
-    { caption: 'Shipping Cost', key: 'shippingCost' },
-    { caption: 'Supplier Name', key: 'supplierName' },
-    { caption: 'Total Amount', key: 'totalAmount' },
-    { caption: 'Payment Type', key: 'paymentMethod' },
+    { caption: 'Customer Name', key: 'name' },
+    { caption: 'Address', key: 'address' },
+    { caption: 'Phone', key: 'phone' },
+    { caption: 'Email', key: 'email' },
+    { caption: 'City', key: 'city' },
+    { caption: 'Cp', key: 'cp' },
+    { caption: 'Zip Code', key: 'zipCode' },
+    { caption: 'Type of Customer', key: 'customerType' },
   ];
 
   buttonShow = {
