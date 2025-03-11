@@ -24,7 +24,7 @@ export class StoreTypeFormComponent implements OnInit {
     private location:Location
   ) {
     this.router.queryParams.subscribe((data:any)=>{
-      debugger;
+      ;
       if(data.storeType !=undefined && data !=null){
         const bytes = CryptoJS.AES.decrypt(data.storeType, "values");
         var jsonData= bytes.toString(CryptoJS.enc.Utf8);

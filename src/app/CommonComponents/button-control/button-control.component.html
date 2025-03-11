@@ -10,7 +10,7 @@
         <a class="nav-link active" [class.active]="commonService.selectedTab === 'CPList'" >
           <i class="fa fa-list" aria-hidden="true"></i>&nbsp;Pending Credit List</a>
       </li>
-      <li class="nav-item hoverEffect"  (click)="selectTab('Approve')" *ngIf="currentRoute == '/orderPList' || currentRoute == '/orderList' || currentRoute.startsWith('/orderForm') ||currentRoute.startsWith('/orderList') " >
+      <li class="nav-item hoverEffect"  (click)="selectTab('Approve')" *ngIf="currentRoute == '/orderPList' || currentRoute == '/orderList' || currentRoute.startsWith('/orderForm') ||currentRoute.startsWith('/orderList') || currentRoute == '/deliveryOrderPList' || currentRoute == '/deliveryOrderList' || currentRoute == '/deliveryOrderForm'  " >
         <a class="nav-link"  [class.active]="commonService.selectedTab === 'Approve'" >
           <i class="fa fa-edit" aria-hidden="true"></i>&nbsp;Approve
         </a>

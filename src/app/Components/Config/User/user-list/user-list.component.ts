@@ -87,7 +87,6 @@ edit(selectedRecord: any) {
     this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }
   delete(selectedRecord: any) {
-    debugger;
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete selected record',
@@ -117,7 +116,6 @@ edit(selectedRecord: any) {
 
     getData = () => {
       this.dataService.GetData("Administrator/GetUserByBusinessId").subscribe((data:any)=>{
-        debugger;
         this.dataList=data.data;
         this.sendDataCommonGrid();
       },

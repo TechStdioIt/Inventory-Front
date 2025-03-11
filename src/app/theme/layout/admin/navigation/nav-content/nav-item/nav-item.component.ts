@@ -45,7 +45,7 @@ export class NavItemComponent {
     }
   }
   onRouting(uri:any){
-    
+    ;
     if(uri == '/orderPlist' || uri == '/deliveryOrderPList' || uri == '/invPList' || uri == '/mrPList'){
       this.gridService.selectedTab = 'PList'
     }else{

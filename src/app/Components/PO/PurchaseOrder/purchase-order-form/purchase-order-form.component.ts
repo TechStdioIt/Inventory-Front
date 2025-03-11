@@ -93,7 +93,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
   }
   getDataById(id:any){
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{
-      debugger;
+      ;
       // this.FormData=data.data;
       this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as PurchaseOrder;
       if(data.data.detailsInfo.length >0){
@@ -106,7 +106,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     })
   }
   insertOrUpdate(form: NgForm) {
-    debugger;
+    ;
     this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
       
       (res) => {
@@ -170,7 +170,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
 
 
   onCellValueChanged(event: any) {
-    debugger;
+    ;
     const updatedData = event.data;
     
     // Check if 'quantity' or 'unitPrice' has changed
@@ -187,7 +187,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     }
   }
   onRowUpdated(event: any) {
-    debugger;
+    ;
     const updatedData = event.data;
     
     // Check if 'quantity' or 'unitPrice' has changed

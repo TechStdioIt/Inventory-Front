@@ -75,7 +75,7 @@ export default class SignInComponent implements OnInit {
           }else{
             this.commonService.deleteAllCookies();
           }
-          debugger;
+          ;
           localStorage.setItem('token',data.tokenString);
           localStorage.setItem('userId', data.id);
           localStorage.setItem('businessMasterId', data.businessMasterId);

@@ -67,7 +67,6 @@ export class DopendingListComponent implements OnInit {
   }
 
   edit(selectedRecord: any) {
-    debugger;
     this.commonService.selectedTab = 'Form';
     this.router.navigate([this.formRoute], { queryParams: { so: selectedRecord.id } });
   }

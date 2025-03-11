@@ -84,7 +84,7 @@ export class InvFormComponent implements OnInit,OnDestroy {
   ) {
     this.router.queryParams.subscribe((data:any)=>{
       if(data.inv !=undefined && data !=null){
-        debugger;
+
         this.Inv = data.inv;
       }
       // doNo
@@ -135,7 +135,7 @@ export class InvFormComponent implements OnInit,OnDestroy {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
-    debugger;
+
     this.FormData.dOId = Number(this.Inv);
     this.onValueReceived({value:this.FormData.dOId,fieldName:'dOId'});
     this.FormData.invoiceDate = this.formatDate(new Date());
@@ -220,7 +220,6 @@ export class InvFormComponent implements OnInit,OnDestroy {
     this.FormData[fieldName] = [];
   }
   onValueReceived(eventData: { value: any; fieldName?: any }) {
-    debugger;
     this.FormData[eventData.fieldName] = eventData.value;
     let flagdata = [
       { api: 'DeliveryOrder/GetById?id=', fieldName: 'dOId' },
@@ -231,7 +230,7 @@ export class InvFormComponent implements OnInit,OnDestroy {
         .GetData(filterflag.api + eventData.value)
         .subscribe((data: any) => {
           // datagot
-          debugger;
+      
                 this.DetailsData = data.data.detailsInfo;
                 this.FormData.invoiceAmount = this.DetailsData.reduce((a:any,b:any)=>a+b.tpWithVat,0);
                 // this.DetailsData.forEach((item:any)=>{
@@ -245,7 +244,7 @@ export class InvFormComponent implements OnInit,OnDestroy {
   }
 
   formatDate(date: string | Date): string {
-    debugger;
+
     if (!date) return ''; // Handle undefined or null values
 
     // If date is already a Date object, convert it to YYYY-MM-DD format

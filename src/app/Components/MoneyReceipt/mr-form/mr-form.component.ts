@@ -104,7 +104,7 @@ export class MrFormComponent implements OnInit,OnDestroy {
     this.router.queryParams.subscribe((data:any)=>{
 
       if(data.inv !=undefined && data !=null){
-        debugger;
+        ;
         this.Inv = data.inv;
       }
 
@@ -155,7 +155,7 @@ export class MrFormComponent implements OnInit,OnDestroy {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
-    debugger;
+    ;
     this.FormData.invoiceId = Number(this.Inv);
     this.onValueReceived({value:this.FormData.invoiceId,fieldName:'invoiceId'});
     this.FormData.moneReceiptDate = this.formatDate(new Date());
@@ -173,7 +173,7 @@ export class MrFormComponent implements OnInit,OnDestroy {
     })
   }
   formatDate(date: string | Date): string {
-    debugger;
+    ;
     if (!date) return ''; // Handle undefined or null values
 
     // If date is already a Date object, convert it to YYYY-MM-DD format
@@ -274,7 +274,7 @@ export class MrFormComponent implements OnInit,OnDestroy {
         .GetData(filterflag.api + eventData.value)
         .subscribe((data: any) => {
           // datagot
-          debugger;
+          ;
                 this.DetailsData = data.data.detailsInfo;
                 this.totalInvoiceAmount = this.DetailsData.reduce((a:any,b:any)=>a+b.tpWithVat,0);
                 this.paymentAmount = this.totalInvoiceAmount;
@@ -287,7 +287,7 @@ export class MrFormComponent implements OnInit,OnDestroy {
   }
 
   DetailsDataReceived(eventData: { value: any, index: any, fieldName: any }) {
-    debugger;
+    ;
     this.DetailsData = eventData.value;
     
     // Ensure index exists in DetailsData

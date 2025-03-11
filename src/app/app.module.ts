@@ -134,6 +134,9 @@ import { InvoiceListComponent } from './Components/Invoice/invoice-list/invoice-
 import { InvoiceFormComponent } from './Components/Invoice/invoice-form/invoice-form.component';
 import { PaymentReceiveListComponent } from './Components/PaymentReceive/payment-receive-list/payment-receive-list.component';
 import { PaymentReceiveFormComponent } from './Components/PaymentReceive/payment-receive-form/payment-receive-form.component';
+import { DeliveryOrderListComponent } from './Components/DeliveryOrder/delivery-order-list/delivery-order-list.component';
+import { DeliveryOrderFormComponent } from './Components/DeliveryOrder/delivery-order-form/delivery-order-form.component';
+import { DeliveryOrderPendingListComponent } from './Components/DeliveryOrder/delivery-order-pending-list/delivery-order-pending-list.component';
 
 @NgModule({
   declarations: [
@@ -223,9 +226,10 @@ import { PaymentReceiveFormComponent } from './Components/PaymentReceive/payment
     InvoiceListComponent,
     InvoiceFormComponent,
     PaymentReceiveListComponent,
-    PaymentReceiveFormComponent
-
-
+    PaymentReceiveFormComponent,
+    DeliveryOrderListComponent,
+    DeliveryOrderFormComponent,
+    DeliveryOrderPendingListComponent,
 
   ],
   imports: [

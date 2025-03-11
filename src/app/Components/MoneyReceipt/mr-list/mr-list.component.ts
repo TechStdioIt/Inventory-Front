@@ -103,7 +103,7 @@ export class MrListComponent implements OnInit {
     });
   }
   print(selectedRecord: any) {
-    debugger;
+    ;
     const url = this.router.createUrlTree(['/ReportViewer'], { 
       queryParams: { do: selectedRecord.id, reportName: 'rptMoneyReceipt' } 
   }).toString();

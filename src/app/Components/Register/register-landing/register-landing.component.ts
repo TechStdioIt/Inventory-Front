@@ -94,7 +94,7 @@ export class RegisterLandingComponent implements OnInit{
         });
       }
       this.dataService.PostData('BusinessMaster/CreateOrUpdateBusinessMaster',data).subscribe((data:any)=>{
-        debugger;
+        ;
         this.router.navigate(['/auth/register-package',data.data.BusinessId]);
         this.isLoading = false;
       },

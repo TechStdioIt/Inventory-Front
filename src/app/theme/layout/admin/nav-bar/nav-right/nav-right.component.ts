@@ -41,7 +41,7 @@ loggedUserInfo :any;
     var id =localStorage.getItem('userId');
     if(id){
       this.dataService.GetData('Administrator/GetUserById?id='+id).subscribe((data:any)=>{
-        debugger;
+        ;
         this.loggedUserInfo = data.data
       })
     }else{
@@ -54,4 +54,5 @@ loggedUserInfo :any;
     this.friendId = friendID;
     this.chatMessage = !this.chatMessage;
   }
+  
 }

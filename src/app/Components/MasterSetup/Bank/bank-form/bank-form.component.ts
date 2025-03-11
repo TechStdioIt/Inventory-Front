@@ -72,7 +72,7 @@ export class BankFormComponent implements OnInit {
   }
   getDataById(id:any){
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{
-      debugger;
+      ;
       // this.FormData=data.data;
       this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as Suppliers;
     })

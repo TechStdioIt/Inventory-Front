@@ -67,6 +67,9 @@ export class ButtonControlComponent implements OnInit {
             if(this.currentRoute == '/orderPList' || this.currentRoute == '/deliveryOrderPList'){
               this.commonService.selectedTab = 'PList'
             }
+            else if(this.currentRoute.endsWith('List')){
+              this.commonService.selectedTab = "List";
+            }
           }
         });
         

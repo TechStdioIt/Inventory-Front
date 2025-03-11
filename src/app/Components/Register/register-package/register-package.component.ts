@@ -38,13 +38,13 @@ export class RegisterPackageComponent implements OnInit{
   )
   }
   onSubmit(){
-    debugger;
+    ;
     this.isLoading =true;
     var formData = new FormData();
     formData.append('packegeMasterId',this.selectedPackageId.toString());
     formData.append('id',this.masterId.toString())
     setTimeout(() => {
-      debugger;
+      ;
       this.dataService.PostData('BusinessMaster/CreateOrUpdateBusinessMaster',formData).subscribe((data:any)=>{
         this.router.navigate(['/auth/register-complete',this.masterId]);
         this.isLoading =false;

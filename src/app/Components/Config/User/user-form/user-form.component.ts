@@ -46,7 +46,7 @@ constructor(
           }
         });
     this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
-      debugger;
+  
           if (!this.isSubmitting) {
             this.isSubmitting = true;
             try {
@@ -67,7 +67,7 @@ constructor(
   }
  getDataById(id:any){
     this.dataService.GetData('Administrator/GetUserById?id='+id).subscribe((data:any)=>{
-      debugger;
+
       // this.FormData=data.data;
        this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as AspnetUsers;
       this.fileData= data.data.profileImageUrl;
@@ -194,7 +194,6 @@ constructor(
     this.syncSelection(e.component);
   }
   syncSelection(treeView: any) {
-    debugger;
     this.selectedTree = treeView.getSelectedNodes()
       .map((node: any) => node.itemData);
   }

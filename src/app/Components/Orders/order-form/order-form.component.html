@@ -24,8 +24,8 @@
             [dataSource]="selectedItemList"
             [showBorders]="true"
             (onRowInserted)="$event.component.navigateToRow($event.key)"
-            (onCellValueChanged)="onCellValueChanged($event)"
             (onRowUpdated)="onRowUpdated($event)"
+            (onRowRemoved)="onRowRemoved($event)"
           >
             <dxo-editing mode="cell" [allowUpdating]="true" [allowDeleting]="true">
             </dxo-editing>

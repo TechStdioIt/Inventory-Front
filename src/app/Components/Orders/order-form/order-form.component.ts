@@ -10,6 +10,7 @@ import { camelCase, mapKeys } from 'lodash';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonService } from 'src/app/Services/common.service';
+import { SalesOrder } from 'src/app/Models/SalesOrder';
 @Component({
   selector: 'app-order-form',
   templateUrl: './order-form.component.html',
@@ -19,7 +20,7 @@ export class OrderFormComponent implements OnInit,OnDestroy {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
-  FormData: any = {};
+  FormData: any = new SalesOrder();
   isSubmitting: boolean = false;
   private destroy$ = new Subject<void>();
   fromHeader: string = 'Sales Order';
@@ -63,7 +64,12 @@ allProduct:any[]=[];
       optionValue: 'id',
       optionText: 'name',
       flag: 10, 
-    }
+    },
+    { type: 'number', name: 'actualAmount', label: 'Actual Amount', required: true ,column:4,isReadOnly:true},
+    { type: 'number', name: 'discountAmount', label: 'Discount Amount', required: true ,column:4},
+    { type: 'number', name: 'orderStatusId', label: 'Order Status Id', required: true ,column:4},
+    { type: 'number', name: 'activityStatusId', label: 'Activity Status Id', required: true ,column:4},
+
   ];
   constructor(
     private dataService: HttpClientConnectionService,
@@ -78,7 +84,7 @@ allProduct:any[]=[];
       if(data.do !=undefined && data !=null){
         this.getDataById(data.do);
       }else{
-        this.FormData ={}
+        this.FormData =new SalesOrder()
       }
     });
     this.gridHandleService.add$
@@ -132,11 +138,12 @@ allProduct:any[]=[];
 
 
   onSubmit(form: NgForm) {
-    this.insertOrUpdate(form);
+    ;
+    this.insertOrUpdate(form);  
   }
   getDataById(id:any){
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{
-      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) ;
+      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as SalesOrder;
       this.FormData.deliveryDate = this.formatDate(this.FormData.deliveryDate);
       if(data.data.detailsInfo.length >0){
         this.FormData.ordersList =[];
@@ -147,13 +154,14 @@ allProduct:any[]=[];
       }
     
     })
+    
   }
   insertOrUpdate(form: NgForm) {
     this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
       
       (res) => {
         this.toastr.success('Successfull', `${this.fromHeader} Information`);
-       this.FormData = {};
+       this.FormData = new SalesOrder();
        this.route.navigate([this.listRoute]);
        this.gridHandleService.selectedTab = "List";
       },
@@ -172,6 +180,7 @@ allProduct:any[]=[];
     }
   }
  updateGridData(item:any){
+  ;
   const data = {
     productId: item.productId,
     orderQty: Number(item.orderQty),
@@ -188,7 +197,7 @@ allProduct:any[]=[];
  }
   
   selectProduct(option: any) {
-    
+    ;
     // Check if the product already exists in selectedItemList based on productId (option.id)
     const existingProduct = this.selectedItemList.find(item => item.productId === option.id);
     
@@ -221,10 +230,20 @@ allProduct:any[]=[];
     }
   }
   totalAmountCalculate() {
-    this.FormData.totalOrder = this.FormData.ordersList.reduce((total: number, item: any) => {
-      return total + item.totalPrice;
+    
+    this.FormData.actualAmount = this.FormData.ordersList.reduce((total: number, item: any) => {
+      return total +  item.totalPrice;
     }, 0);
+    
   }
+  
+  onRowRemoved(event: any) {
+  ;
+    this.FormData.ordersList = this.selectedItemList;
+    this.totalAmountCalculate();
+  
+  }
+  
   
   onValueReceived(eventData: { value: any; fieldName?: any }) {
     this.FormData[eventData.fieldName] = eventData.value;
@@ -267,7 +286,7 @@ allProduct:any[]=[];
   }
 
   formatDate(date: string | Date): string {
-    debugger;
+    ;
     if (!date) return ''; // Handle undefined or null values
 
     // If date is already a Date object, convert it to YYYY-MM-DD format
@@ -285,8 +304,4 @@ allProduct:any[]=[];
 
     return parsedDate.toISOString().split('T')[0]; // Extract YYYY-MM-DD
   }
-
-
-
-
 }

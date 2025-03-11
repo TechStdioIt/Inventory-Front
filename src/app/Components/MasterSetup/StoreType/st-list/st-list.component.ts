@@ -67,7 +67,7 @@ export class StListComponent implements OnInit {
     this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }
   delete(selectedRecord: any) {
-    debugger;
+    ;
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete selected record',

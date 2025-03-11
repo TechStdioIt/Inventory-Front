@@ -95,7 +95,7 @@ export class ProductsFormComponent implements OnInit {
   }
   getCategoryData() {
     return this.dataService.GetData('Category/GetAllCategory?take=10&skip=0').subscribe((data: any) => {
-      debugger;
+      ;
       this.formdata.find(field => field.name === 'categoryId').options = data.data;
     })
   }
@@ -104,7 +104,7 @@ export class ProductsFormComponent implements OnInit {
     this.dataService.GetData(`${this.getDataByIdAPI}?id=` + id).subscribe((data: any) => {
       // this.FormData=data.data;
       this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as Products;
-      debugger;
+      ;
       this.fileData = data.data.imageUrl.result;
     })
   }

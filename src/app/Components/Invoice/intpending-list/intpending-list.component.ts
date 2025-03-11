@@ -64,7 +64,7 @@ export class IntpendingListComponent implements OnInit {
 
   edit(selectedRecord: any) {
     this.commonService.selectedTab = 'Form';
-    debugger;
+
     this.router.navigate([this.formRoute], { queryParams: { inv: selectedRecord.id } });
   }
   details(selectedRecord: any) {
