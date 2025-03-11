@@ -161,14 +161,14 @@ allProduct:any[]=[];
     this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
       
       (res) => {
-        debugger;
+        ;
         this.toastr.success('Successfull', `${this.fromHeader} Information`);
        this.FormData = new SalesOrder();
        this.route.navigate([this.listRoute]);
        this.gridHandleService.selectedTab = "List";
       },
       (err) => {
-        debugger;
+        ;
         this.toastr.error('Please Try Again', 'Invalid Information!!');
         console.log(err);
       }

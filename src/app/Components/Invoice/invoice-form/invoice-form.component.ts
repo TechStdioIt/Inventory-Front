@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrl: './invoice-form.component.scss'
 })
 export class InvoiceFormComponent {
+  
 
 }
