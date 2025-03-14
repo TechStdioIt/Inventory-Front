@@ -14,9 +14,9 @@ import Swal from 'sweetalert2';
 export class DeliveryOrderPendingListComponent {
 
   fromHeader: string = 'Delivery Order Pending List';
-    formRoute: string = '/productsForm';
+    formRoute: string = '/deliveryOrderForm';
     listAPI: string = 'Products/GetAllProductData';
-    deleteAPI: string = 'Products/DeleteProductData';
+    deleteAPI: string = 'DeliveryOrder/Delete';
     haveQueryPram: boolean = false;
     reloadCount: number = 0;
   

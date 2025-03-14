@@ -1,106 +1,59 @@
-<section class="section profile ">
+<section class="section profile">
   <div class="row mt-5">
-    <div class="col-xl-6">
+    <div class="col-xl-12">
       <div class="fieldset">
-      
-        <div class="profile-card pt-4 d-flex flex-column align-items-center ">
-          <div class="input-group">
-            <div ngbDropdown class="dropdown mb-3">
-              <button class="btn btn-primary dropdown-toggle" ngbDropdownToggle type="button">
-                Select Product
-              </button>
-              <ul class="dropdown-menu" ngbDropdownMenu>
-                <li *ngFor="let option of allProduct">
-                  <a class="dropdown-item"  (click)="selectProduct(option)">
-                    <span class="fw-bold">Name:</span> {{ option.name }} <br>
-                    <span class="fw-bold">Price:</span> {{ option.price }} <br>
-                    <span class="fw-bold">Quantity:</span> {{ option.quantityInStock }}
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <dx-data-grid
-            id="gridContainer"
-            [dataSource]="selectedItemList"
-            [showBorders]="true"
-            (onRowInserted)="$event.component.navigateToRow($event.key)"
-            (onRowUpdated)="onRowUpdated($event)"
-            (onRowRemoved)="onRowRemoved($event)"
-          >
-            <dxo-editing mode="cell" [allowUpdating]="true" [allowDeleting]="true">
-            </dxo-editing>
-           
-          
-            <dxi-column dataField="name" [allowEditing]="false">
-              <dxi-validation-rule type="required"></dxi-validation-rule>
-            </dxi-column>
-            <dxi-column dataField="productCode" [allowEditing]="false">
-              <dxi-validation-rule type="required"></dxi-validation-rule>
-            </dxi-column>
-
-            <dxi-column dataField="unitPrice" [allowEditing]="false">
-              <dxi-validation-rule type="required"></dxi-validation-rule>
-            </dxi-column>
-            <dxi-column dataField="orderQty">
-              <dxi-validation-rule type="required"></dxi-validation-rule>
-            </dxi-column>
-            <dxi-column dataField="totalPrice" [allowEditing]="false">
-              <dxi-validation-rule type="required"></dxi-validation-rule>
-            </dxi-column>
-          </dx-data-grid>
-
-
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-    <div class="col-xl-6">
-
-      <div class="fieldset">
-        
         <div class="row mb-3">
-
           <div class="mb-3" *ngFor="let field of formdata" [class]="'col-lg-' + (field.column || 6)">
             <label [for]="field.name" class="col-sm-12 col-form-label">
               {{ field.label }}
             </label>
             <!-- Text, Email, Date, Time, Number, File Inputs -->
-            <input *ngIf="['text', 'email', 'date', 'time', 'number', 'file'].includes(field.type)" [type]="field.type"
-              [id]="field.name" class="form-control" [class]="field.class? field.class : null" [name]="field.name"
-              [(ngModel)]="FormData[field.name]" [required]="field.required" [min]="field.min || null"
-              [max]="field.max || null" [accept]="field.type === 'file' ? field.accept || '*' : null"
+            <input
+              *ngIf="['text', 'email', 'date', 'time', 'number', 'file'].includes(field.type)"
+              [type]="field.type"
+              [id]="field.name"
+              class="form-control"
+              [class]="field.class ? field.class : null"
+              [name]="field.name"
+              [(ngModel)]="FormData[field.name]"
+              [required]="field.required"
+              [min]="field.min || null"
+              [max]="field.max || null"
+              [accept]="field.type === 'file' ? field.accept || '*' : null"
               [class.invalid]="field.name.invalid && field.name.touched"
               [readOnly]="gridHandleService.selectedTab === 'Details' || field.isReadOnly == true"
-              [placeholder]="field.placeHolder? field.placeHolder : field.name === 'password' ? 'Enter password' : field.label"
+              [placeholder]="field.placeHolder ? field.placeHolder : field.name === 'password' ? 'Enter password' : field.label"
               (keyup)="field.eventEmit?.keyup ? handleEvent(field.eventEmit.keyup, $event) : null"
               (click)="field.eventEmit?.click ? handleEvent(field.eventEmit.click, $event) : null"
-              (change)="field.eventEmit?.change ? handleEvent(field.eventEmit.change, $event) : null" />
+              (change)="field.eventEmit?.change ? handleEvent(field.eventEmit.change, $event) : null"
+            />
 
-
-           
-
-              <app-common-select-box 
+            <app-common-select-box
               *ngIf="field.type === 'select'"
-              [dataList]="field.options" 
-              [id]="field.optionValue" 
-              [name]="field.optionText" 
-              (valueChange)="onValueReceived($event)" 
-              [searchExprOption]="[field.optionText]" 
-              [disabled]="gridHandleService.selectedTab === 'Details'"  
+              [dataList]="field.options"
+              [id]="field.optionValue"
+              [name]="field.optionText"
+              (valueChange)="onValueReceived($event)"
+              [searchExprOption]="[field.optionText]"
+              [disabled]="gridHandleService.selectedTab === 'Details'"
               [selectedValue]="FormData[field.name]"
               [fieldName]="field.name"
               [isApiCall]="field.isApiCall"
               [flag]="field.flag"
-              >
-            </app-common-select-box>
+            ></app-common-select-box>
 
             <!-- Radio Buttons -->
             <div *ngIf="field.type === 'radio'" class="form-check">
               <div *ngFor="let option of field.options" class="form-check-inline">
-                <input [type]="field.type" [id]="field.name + '_' + option" class="form-check-input" [name]="field.name"
-                  [value]="option" [(ngModel)]="FormData[field.name]" [required]="field.required" />
+                <input
+                  [type]="field.type"
+                  [id]="field.name + '_' + option"
+                  class="form-check-input"
+                  [name]="field.name"
+                  [value]="option"
+                  [(ngModel)]="FormData[field.name]"
+                  [required]="field.required"
+                />
                 <label [for]="field.name + '_' + option" class="form-check-label">
                   {{ option }}
                 </label>
@@ -109,21 +62,94 @@
 
             <!-- Checkbox -->
             <div *ngIf="field.type === 'checkbox'" class="form-check">
-              <input [type]="field.type" [id]="field.name" class="form-check-input" [name]="field.name"
-                [(ngModel)]="FormData[field.name]" />
+              <input
+                [type]="field.type"
+                [id]="field.name"
+                class="form-check-input"
+                [name]="field.name"
+                [(ngModel)]="FormData[field.name]"
+              />
               <label [for]="field.name" class="form-check-label">
                 {{ field.label }}
               </label>
             </div>
-
           </div>
-
         </div>
       </div>
-
-
     </div>
+    <div class="col-xl-12">
+      <div class="fieldset">
+        <div class="profile-card pt-4 d-flex flex-column align-items-center">
+          <div class="input-group">
+            <div ngbDropdown class="dropdown mb-3">
+              <button class="btn btn-primary dropdown-toggle" ngbDropdownToggle type="button">
+                Select Product
+              </button>
+              <div class="dropdown-menu p-2" ngbDropdownMenu>
+                <!-- Search Input -->
+                <input type="text" class="form-control mb-2" placeholder="Search..." [(ngModel)]="searchText" />
+            
+                <ul class="list-unstyled m-0">
+                  <li *ngFor="let option of filteredProducts()">
+                    <a class="dropdown-item" (click)="selectProduct(option)">
+                      <span class="fw-bold">Name:</span> {{ option.name }} <br />
+                      <span class="fw-bold">Price:</span> {{ option.price }} <br />
+                      <span class="fw-bold">Code:</span> {{ option.productCode }} <br />
+                      <span class="fw-bold">Quantity:</span> {{ option.quantityInStock }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            <dx-data-grid
+              id="gridContainer"
+              [dataSource]="selectedItemList"
+              [showBorders]="true"
+              (onRowInserted)="$event.component.navigateToRow($event.key)"
+              (onCellValueChanged)="onCellValueChanged($event)"
+              (onRowUpdated)="onRowUpdated($event)"
+              (onRowRemoved)="onRowRemoved($event)"
+            >
+              <dxo-editing mode="cell" [allowUpdating]="true" [allowDeleting]="true"></dxo-editing>
+
+              <dxi-column dataField="name" [allowEditing]="false">
+                <dxi-validation-rule type="required"></dxi-validation-rule>
+              </dxi-column>
+              <dxi-column dataField="productCode" [allowEditing]="false">
+                <dxi-validation-rule type="required"></dxi-validation-rule>
+              </dxi-column>
+            
+  
+              <dxi-column dataField="productId" [allowEditing]="false">
+                <dxi-validation-rule type="required"></dxi-validation-rule>
+              </dxi-column>
+            
+  
+              <dxi-column dataField="unitPrice" [allowEditing]="false">
+                <dxi-validation-rule type="required"></dxi-validation-rule>
+              </dxi-column>
+              <dxi-column dataField="discountPerAmount" [allowEditing]="false">
+                <dxi-validation-rule type="required"></dxi-validation-rule>
+              </dxi-column>
+              <dxi-column dataField="orderQty">
+                <dxi-validation-rule type="required"></dxi-validation-rule>
+              </dxi-column>
+              <dxi-column dataField="actualAmount" [allowEditing]="false">
+                <dxi-validation-rule type="required"></dxi-validation-rule>
+              </dxi-column>
+              <dxi-column dataField="discountAmount" [allowEditing]="false">
+                <dxi-validation-rule type="required"></dxi-validation-rule>
+              </dxi-column>
+              <dxi-column dataField="totalPrice" [allowEditing]="false">
+                <dxi-validation-rule type="required"></dxi-validation-rule>
+              </dxi-column>
+
+            </dx-data-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+    
   </div>
 </section>
-
-
