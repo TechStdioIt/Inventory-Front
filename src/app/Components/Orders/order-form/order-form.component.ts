@@ -553,51 +553,28 @@ getDiscountandActualAmount(productId: any, pharmacyId: any): Promise<{ actualAmo
   });
 }
 
-  async selectProduct(option: any) {
-    
+   selectProduct(option: any) {
+    ;
     // Check if the product already exists in selectedItemList based on productId (option.id)
-    const existingProduct = await this.selectedItemList.find(item => item.productId === option.id);
-
-    let { actualAmount, discountAmount } = await this.getDiscountandActualAmount(option.id, this.FormData.pharmacyId);
-
-    let totalDiscountAmount = discountAmount  + (actualAmount * this.pharmacyDiscount / 100);
-
+    const existingProduct = this.selectedItemList.find(item => item.productId === option.id);
     
     if (existingProduct) {
       this.toastr.error('Already Added','Duplicate!')
     } else {
       // Product doesn't exist, add it to the selectedItemList
       const data = {
-        // id: 0,
-        // purchaseOrderId: 0,
-        // productId: option.id,
-        // quantity: 1,
-        // unitPrice: option.price,
-        // totalPrice: option.price,
-        // name: option.name,
-        // productCode: option.productCode
         orderTp : option.price,
         productId : option.id,
         orderQty : 1,
         oderTtp :0,
         tpWithVat : 0,
         unitPrice: option.price,
-        totalPrice: actualAmount - discountAmount,
+        totalPrice: option.price,
         productCode: option.productCode,
-        name: option.name,
-
-        actualPerAmount: actualAmount,
-        discountPerAmount: discountAmount,
-
-        actualAmount: option.price,
-        discountAmount: totalDiscountAmount,
-
+        name: option.name
       };
-      // this.selectedItemList.push(data);
-      // this.FormData.ordersList.push(data);
-      this.selectedItemList = [...this.selectedItemList, data];
-    this.FormData.ordersList = [...this.selectedItemList];
-
+      this.selectedItemList.push(data);
+      this.FormData.ordersList.push(data);
       this.totalAmountCalculate();
     }
   }

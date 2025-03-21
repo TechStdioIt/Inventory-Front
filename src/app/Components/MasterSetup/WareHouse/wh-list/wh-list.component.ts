@@ -1,5 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+
+
+
+import {Component, OnInit } from '@angular/core';
+import {Router } from '@angular/router';
 import { take } from 'rxjs';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
@@ -10,18 +13,21 @@ import Swal from 'sweetalert2';
   templateUrl: './wh-list.component.html',
   styleUrl: './wh-list.component.scss'
 })
-export class WhListComponent implements OnInit {
-  fromHeader: string = 'Supplier';
-  formRoute: string = '/suppliersForm';
-  listAPI: string = 'Suppliers/GetAllSuppliers';
-  deleteAPI: string = 'Suppliers/DeleteSuppliers';
+export class WhListComponent  implements OnInit {
+  fromHeader: string = 'WareHouse';
+  formRoute: string = '/wareHouseForm';
+  listAPI: string = 'WareHouse/GetAllWareHouse';
+  deleteAPI: string = 'WareHouse/DeleteWareHouse';
   haveQueryPram: boolean = false;
+  pageSize: number = 10;
+  pageSizes: number[] = [5, 10, 20, 50, 100];
   reloadCount: number = 0;
 
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
-    { caption: 'Name', key: 'companyName' },
-    { caption: 'Contact', key: 'contactName' }
+    { caption: 'Name', key: 'wareHouseName' },
+    { caption: 'Distributer Name', key: 'branchName' },
+    { caption: 'Status', key: 'isActive' }
   ];
 
   buttonShow = {
@@ -67,7 +73,6 @@ export class WhListComponent implements OnInit {
     this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }
   delete(selectedRecord: any) {
-    ;
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete selected record',

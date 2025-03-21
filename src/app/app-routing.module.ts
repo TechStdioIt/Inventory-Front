@@ -64,6 +64,9 @@ import { DeliveryOrderFormComponent } from './Components/DeliveryOrder/delivery-
 import { DeliveryOrderPendingListComponent } from './Components/DeliveryOrder/delivery-order-pending-list/delivery-order-pending-list.component';
 import { ProductDiscountListComponent } from './Components/ProductDiscount/product-discount-list/product-discount-list.component';
 import { ProductDiscountFormComponent } from './Components/ProductDiscount/product-discount-form/product-discount-form.component';
+import { WhListComponent } from './Components/MasterSetup/WareHouse/wh-list/wh-list.component';
+import { WhFormComponent } from './Components/MasterSetup/WareHouse/wh-form/wh-form.component';
+import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.component';
 
 const routes: Routes = [
   {
@@ -330,6 +333,19 @@ const routes: Routes = [
       {
         path:"productWiseDiscountForm",
         component:ProductDiscountFormComponent
+      },
+      {
+        path:"wareHouseList",
+        component:WhListComponent
+      },
+      {
+        path:"wareHouseForm",
+        component:WhFormComponent
+      },
+      
+      {
+        path:"salesForm",
+        component:SalesFormComponent
       },
     ]
   },

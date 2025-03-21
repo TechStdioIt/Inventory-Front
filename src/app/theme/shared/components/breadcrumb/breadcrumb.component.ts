@@ -41,7 +41,7 @@ export class BreadcrumbComponent {
     this.getMenuDatas();
   }
   getMenuDatas(){
-    this.dataService.GetData("Menu/GetAllMenu").subscribe((data:any)=>{
+    this.dataService.GetData("Menu/GetAllMenuByPermission").subscribe((data:any)=>{
       this.navigations=data;
     })
   }
