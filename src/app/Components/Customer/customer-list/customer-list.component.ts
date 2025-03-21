@@ -21,12 +21,11 @@ fromHeader: string = 'Customer';
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
     { caption: 'Customer Name', key: 'name' },
+    { caption: 'Code', key: 'code' },
     { caption: 'Address', key: 'address' },
     { caption: 'Phone', key: 'phone' },
     { caption: 'Email', key: 'email' },
     { caption: 'City', key: 'city' },
-    { caption: 'Cp', key: 'cp' },
-    { caption: 'Zip Code', key: 'zipCode' },
     { caption: 'Type of Customer', key: 'customerType' },
   ];
 
