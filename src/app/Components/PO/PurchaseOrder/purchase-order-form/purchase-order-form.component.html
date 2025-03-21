@@ -5,12 +5,13 @@
       
         <div class="profile-card pt-4 d-flex flex-column align-items-center ">
           <div class="input-group">
-            <div ngbDropdown class="dropdown mb-3">
+            <!-- <div ngbDropdown class="dropdown mb-3">
               <button class="btn btn-primary dropdown-toggle" ngbDropdownToggle type="button">
                 Select Product
               </button>
+              <input type="text" class="form-control mb-2" placeholder="Search..." [(ngModel)]="searchText" />
               <ul class="dropdown-menu" ngbDropdownMenu>
-                <li *ngFor="let option of allProduct">
+                <li *ngFor="let option of filteredProducts()">
                   <a class="dropdown-item"  (click)="selectProduct(option)">
                     <span class="fw-bold">Name:</span> {{ option.name }} <br>
                     <span class="fw-bold">Price:</span> {{ option.price }} <br>
@@ -18,6 +19,26 @@
                   </a>
                 </li>
               </ul>
+            </div> -->
+            <div ngbDropdown class="dropdown mb-3">
+              <button class="btn btn-primary dropdown-toggle" ngbDropdownToggle type="button">
+                Select Product
+              </button>
+              <div class="dropdown-menu p-2" ngbDropdownMenu>
+                <!-- Search Input -->
+                <input type="text" class="form-control mb-2" placeholder="Search..." [(ngModel)]="searchText" />
+            
+                <ul class="list-unstyled m-0">
+                  <li *ngFor="let option of filteredProducts()">
+                    <a class="dropdown-item" (click)="selectProduct(option)">
+                      <span class="fw-bold">Name:</span> {{ option.name }} <br>
+                      <span class="fw-bold">Code:</span> {{ option.productCode }} <br />
+                      <span class="fw-bold">Price:</span> {{ option.price }} <br>
+                      <span class="fw-bold">Quantity:</span> {{ option.quantityInStock }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
             <dx-data-grid
             id="gridContainer"
@@ -37,14 +58,25 @@
             <dxi-column dataField="productCode" [allowEditing]="false">
               <dxi-validation-rule type="required"></dxi-validation-rule>
             </dxi-column>
-
+            <dxi-column dataField="unitName" [allowEditing]="false">
+              <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-column>
             <dxi-column dataField="unitPrice">
               <dxi-validation-rule type="required"></dxi-validation-rule>
             </dxi-column>
-            <dxi-column dataField="quantity">
+            <dxi-column dataField="actualQty">
               <dxi-validation-rule type="required"></dxi-validation-rule>
             </dxi-column>
-            <dxi-column dataField="totalPrice" [allowEditing]="false">
+            <dxi-column dataField="discount">
+              <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="tax">
+              <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="subTotal" [allowEditing]="false">
+              <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-column>
+            <dxi-column dataField="netTotal" [allowEditing]="false">
               <dxi-validation-rule type="required"></dxi-validation-rule>
             </dxi-column>
             <!-- <dxi-column dataField="Status" width="200" [editorOptions]="editorOptions">

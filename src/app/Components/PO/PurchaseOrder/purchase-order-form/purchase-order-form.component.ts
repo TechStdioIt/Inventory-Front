@@ -27,10 +27,16 @@ export class PurchaseOrderFormComponent implements OnInit {
   listRoute: string = '/purchaseOrderList';
 selectedItemList:any[]=[];
 allProduct:any[]=[];
+searchText: string = '';
   formdata: any[] = [
     { type: 'select', name: 'supplierId', label: 'Supplier Name', required: true,column:4,options:[]},
+    { type: 'text', name: 'batchNo', label: 'Batch No', required: true ,column:4},
     { type: 'number', name: 'shippingCost', label: 'Shipping Cost', required: true ,column:4},
     { type: 'select', name: 'paymentMethodId', label: 'Payment Method', required: true ,column:4,options:[]},
+    { type: 'number', name: 'totalDiscount', label: 'Total Discount', required: true ,column:4,isReadOnly:true},
+    { type: 'number', name: 'tax', label: 'Total Tax', required: true ,column:4,isReadOnly:true},
+    { type: 'select', name: 'warHouseId', label: 'WareHouse', required: true ,column:4},
+    { type: 'number', name: 'totalAmount', label: 'Total Amount', required: true ,column:4,isReadOnly:true},
     
   ];
   constructor(
@@ -130,6 +136,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     }
   }
  updateGridData(item:any){
+
   const data = {
     id: item.id,
     purchaseOrderId: item.purchaseOrderId,
@@ -157,48 +164,58 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
         id: 0,
         purchaseOrderId: 0,
         productId: option.id,
-        quantity: 1,
+        actualQty: 1,
         unitPrice: option.price,
-        totalPrice: option.price,
+        subTotal: option.price,
         name: option.name,
-        productCode: option.productCode
+        productCode: option.productCode,
+        unitId:option.unitId,
+        unitName:option.unitName,
+        discount:0,
+        tax:0,
+        netTotal : option.price
       };
       this.selectedItemList.push(data);
       this.FormData.purchasList.push(data);
     }
   }
-
+  
 
   onCellValueChanged(event: any) {
-    ;
+    
     const updatedData = event.data;
     
     // Check if 'quantity' or 'unitPrice' has changed
-    if (event.column.dataField === 'quantity' || event.column.dataField === 'unitPrice') {
-      // Calculate and update the 'totalPrice'
+    if (updatedData.actualQty || updatedData.unitPrice || updatedData.discount || updatedData.tax) {
       var exist = this.FormData.purchasList.find((x:any)=>x.productId == updatedData.productId);
       if(exist){
-        exist.quantity = updatedData.quantity;
+        exist.actualQty = updatedData.actualQty;
+        exist.discount = updatedData.discount;
+        exist.tax = updatedData.tax;
         exist.unitPrice = updatedData.unitPrice
-        exist.totalPrice = updatedData.quantity * updatedData.unitPrice
-        updatedData.totalPrice = updatedData.quantity * updatedData.unitPrice;
+        exist.subTotal = updatedData.actualQty * updatedData.unitPrice;
+          // Calculate and update the 'totalPrice'
+      updatedData.subTotal = updatedData.actualQty * updatedData.unitPrice;
+      updatedData.netTotal = (exist.subTotal + updatedData.tax) -updatedData.discount;
       }
-     
     }
   }
   onRowUpdated(event: any) {
-    ;
+    
     const updatedData = event.data;
     
     // Check if 'quantity' or 'unitPrice' has changed
-    if (updatedData.quantity || updatedData.unitPrice) {
+    if (updatedData.actualQty || updatedData.unitPrice || updatedData.discount || updatedData.tax) {
       var exist = this.FormData.purchasList.find((x:any)=>x.productId == updatedData.productId);
       if(exist){
-        exist.quantity = updatedData.quantity;
+        exist.actualQty = updatedData.actualQty;
+        exist.discount = updatedData.discount;
+        exist.tax = updatedData.tax;
         exist.unitPrice = updatedData.unitPrice
-        exist.totalPrice = updatedData.quantity * updatedData.unitPrice;
+        exist.subTotal = updatedData.actualQty * updatedData.unitPrice;
           // Calculate and update the 'totalPrice'
-      updatedData.totalPrice = updatedData.quantity * updatedData.unitPrice;
+      updatedData.subTotal = updatedData.actualQty * updatedData.unitPrice;
+      updatedData.netTotal = (exist.subTotal + updatedData.tax) -updatedData.discount;
       }
     }
     
@@ -206,4 +223,14 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     event.component.refresh();
   }
 
+
+  filteredProducts() {
+    if (!this.searchText) {
+      return this.allProduct;
+    }
+    return this.allProduct.filter(option =>
+      option.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      option.productCode.toLowerCase().includes(this.searchText.toLowerCase()) 
+    );
+  }
 }
