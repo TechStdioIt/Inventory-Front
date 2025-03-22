@@ -29,13 +29,13 @@ selectedItemList:any[]=[];
 allProduct:any[]=[];
 searchText: string = '';
   formdata: any[] = [
-    { type: 'select', name: 'supplierId', label: 'Supplier Name', required: true,column:4,options:[]},
+    { type: 'select', name: 'supplierId', label: 'Supplier Name', required: true,column:4,options:[],optionText:'name',optionValue:'id'},
     { type: 'text', name: 'batchNo', label: 'Batch No', required: true ,column:4},
+    { type: 'date', name: 'orderDate', label: 'Order Date', required: true ,column:4},
     { type: 'number', name: 'shippingCost', label: 'Shipping Cost', required: true ,column:4},
-    { type: 'select', name: 'paymentMethodId', label: 'Payment Method', required: true ,column:4,options:[]},
+    { type: 'select', name: 'paymentMethodId', label: 'Payment Method', required: true ,column:4,options:[],optionText:'name',optionValue:'id'},
     { type: 'number', name: 'totalDiscount', label: 'Total Discount', required: true ,column:4,isReadOnly:true},
     { type: 'number', name: 'tax', label: 'Total Tax', required: true ,column:4,isReadOnly:true},
-    { type: 'select', name: 'warHouseId', label: 'WareHouse', required: true ,column:4},
     { type: 'number', name: 'totalAmount', label: 'Total Amount', required: true ,column:4,isReadOnly:true},
     
   ];
@@ -127,7 +127,10 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
       }
     );
   }
+  onValueReceived(eventData: { value: any; fieldName?: any }) {
+    this.FormData[eventData.fieldName] = eventData.value;
 
+  }
   handleEvent(functionName: string, event: any) {
     if (typeof this[functionName] === 'function') {
       this[functionName](event); // Dynamically call the specified function
@@ -177,10 +180,22 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
       };
       this.selectedItemList.push(data);
       this.FormData.purchasList.push(data);
+      this.totalAmountCalculate();
     }
   }
   
+  totalAmountCalculate() {
+    this.FormData.totalAmount = 0;
+  this.FormData.totalDiscount = 0;
+  this.FormData.actualAmount = 0;
+  this.FormData.tax =0;
+  this.FormData.purchasList.forEach((item: any) => {
+    this.FormData.totalAmount += item.netTotal || 0;
+    this.FormData.totalDiscount += item.discount || 0;
+    this.FormData.tax += item.tax || 0;
+  });
 
+  }
   onCellValueChanged(event: any) {
     
     const updatedData = event.data;
@@ -197,6 +212,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
           // Calculate and update the 'totalPrice'
       updatedData.subTotal = updatedData.actualQty * updatedData.unitPrice;
       updatedData.netTotal = (exist.subTotal + updatedData.tax) -updatedData.discount;
+      this.totalAmountCalculate();
       }
     }
   }
@@ -221,6 +237,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     
     // You can refresh the grid if necessary (although DevExtreme usually handles this automatically)
     event.component.refresh();
+    this.totalAmountCalculate();
   }
 
 
