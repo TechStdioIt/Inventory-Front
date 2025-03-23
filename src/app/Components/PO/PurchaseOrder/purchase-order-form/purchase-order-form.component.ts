@@ -99,20 +99,23 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
   }
   getDataById(id:any){
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{
-      ;
+      debugger;
       // this.FormData=data.data;
       this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as PurchaseOrder;
-      if(data.data.detailsInfo.length >0){
+      debugger;
+      this.FormData.orderDate = this.formatDate(this.FormData.orderDate);
+      if(data.data.purchasList.length >0){
         this.FormData.purchasList =[];
-        data.data.detailsInfo.forEach((element:any) => {
+        data.data.purchasList.forEach((element:any) => {
         this.updateGridData(element);
         });
+        this.totalAmountCalculate();
       }
-    
+      
     })
   }
   insertOrUpdate(form: NgForm) {
-    ;
+    debugger;
     this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
       
       (res) => {
@@ -138,20 +141,26 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
       console.error(`Function ${functionName} is not defined`);
     }
   }
- updateGridData(item:any){
+ updateGridData(option:any){
 
   const data = {
-    id: item.id,
-    purchaseOrderId: item.purchaseOrderId,
-    productId: item.productId,
-    quantity: item.quantity,
-    unitPrice: item.unitPrice,
-    totalPrice: item.totalPrice,
-    name: item.productName,
-    productCode: item.productCode
+    id: option.id,
+    purchaseOrderId: option.purchaseOrderId,
+    productId: option.productId,
+    actualQty: option.actualQty,
+    unitPrice: option.unitPrice,
+    subTotal: option.subTotal,
+    name: option.productName,
+    productCode: option.productCode,
+    unitId:option.unitId,
+    unitName:option.unitName,
+    discount:option.discount,
+    tax:option.tax,
+    netTotal : option.netTotal
   };
   this.selectedItemList.push(data);
   this.FormData.purchasList.push(data);
+
  }
   
   selectProduct(option: any) {
@@ -249,5 +258,24 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
       option.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
       option.productCode.toLowerCase().includes(this.searchText.toLowerCase()) 
     );
+  }
+  formatDate(date: string | Date): string {
+    
+    if (!date) return ''; // Handle undefined or null values
+
+    // If date is already a Date object, convert it to YYYY-MM-DD format
+    if (date instanceof Date) {
+      return date.toISOString().split('T')[0]; 
+    }
+
+    // If date is a string (from API), convert it to a Date object first
+    const parsedDate = new Date(date);
+    
+    if (isNaN(parsedDate.getTime())) {
+      console.error("Invalid date format:", date);
+      return ''; // Handle invalid date formats gracefully
+    }
+
+    return parsedDate.toISOString().split('T')[0]; // Extract YYYY-MM-DD
   }
 }
