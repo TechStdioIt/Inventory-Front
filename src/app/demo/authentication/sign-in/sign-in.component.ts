@@ -34,19 +34,19 @@ export default class SignInComponent implements OnInit {
 
   // Check if user is already authenticated
   checkAuthentication(): void {
-    this.loginFormData.userName = this.commonService.getCookie('userName');
-    this.loginFormData.password = this.commonService.getCookie('password');
+    // this.loginFormData.userName = this.commonService.getCookie('userName');
+    // this.loginFormData.password = this.commonService.getCookie('password');
 
-    if (this.loginFormData.userName && this.loginFormData.password) {
-      const userId = this.commonService.getCookie('userId');
-      localStorage.setItem('userId', userId);
+    // if (this.loginFormData.userName && this.loginFormData.password) {
+    //   const userId = this.commonService.getCookie('userId');
+    //   localStorage.setItem('userId', userId);
 
-      this.route.navigate(['/analytics']).then(() => {
-        this.isCheckingAuth = false; // Prevent UI flashing
-      });
-    } else {
-      this.isCheckingAuth = false;
-    }
+    //   this.route.navigate(['/analytics']).then(() => {
+    //     this.isCheckingAuth = false; // Prevent UI flashing
+    //   });
+    // } else {
+    //   this.isCheckingAuth = false;
+    // }
   }
 
   // Toggle password visibility
@@ -67,15 +67,15 @@ export default class SignInComponent implements OnInit {
     setTimeout(() => {
       this.dataService.PostData('Administrator/Login', this.loginFormData).subscribe(
         (data: any) => {
-          if (this.loginFormData.rememberMe) {
-            this.commonService.setCookie('userName', this.loginFormData.userName, 30);
-            this.commonService.setCookie('password', this.loginFormData.password, 30);
-            this.commonService.setCookie('userId', data.id, 30);
-            this.commonService.setCookie('businessMasterId', data.businessMasterId, 30);
-          }else{
-            this.commonService.deleteAllCookies();
-          }
-          ;
+          // if (this.loginFormData.rememberMe) {
+          //   this.commonService.setCookie('userName', this.loginFormData.userName, 30);
+          //   this.commonService.setCookie('password', this.loginFormData.password, 30);
+          //   this.commonService.setCookie('userId', data.id, 30);
+          //   this.commonService.setCookie('businessMasterId', data.businessMasterId, 30);
+          // }else{
+          //   this.commonService.deleteAllCookies();
+          // }
+          // ;
           localStorage.setItem('token',data.tokenString);
           localStorage.setItem('userId', data.id);
           localStorage.setItem('businessMasterId', data.businessMasterId);

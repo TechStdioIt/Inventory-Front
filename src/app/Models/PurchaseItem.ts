@@ -10,6 +10,9 @@ export class PurchaseItem {
     netTotal: number = 0;
     unitPrice: number = 0;
     availableQty: number = 0;
+    sellRate:number=0;
+    sellDiscount:number=0;
+    actualSellRate:number=0;
 }
 
 

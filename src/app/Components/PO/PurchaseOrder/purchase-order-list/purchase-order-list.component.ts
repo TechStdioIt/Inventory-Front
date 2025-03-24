@@ -62,6 +62,7 @@ export class PurchaseOrderListComponent  implements OnInit {
   }
 
   edit(selectedRecord: any) {
+    debugger;
     this.commonService.selectedTab = 'Form';
     this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }

@@ -91,7 +91,6 @@ import { UnitFormComponent } from './Components/MasterSetup/Unit/unit-form/unit-
 import { UnitListComponent } from './Components/MasterSetup/Unit/unit-list/unit-list.component';
 import { WhFormComponent } from './Components/MasterSetup/WareHouse/wh-form/wh-form.component';
 import { WhListComponent } from './Components/MasterSetup/WareHouse/wh-list/wh-list.component';
-import { CookieService } from 'ngx-cookie-service';
 import { UserListComponent } from './Components/Config/User/user-list/user-list.component';
 import { UserFormComponent } from './Components/Config/User/user-form/user-form.component';
 import { AuthInterceptor } from './Authorization/AuthInterceptor';
@@ -282,7 +281,7 @@ import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.co
   ToastrModule.forRoot(),
   NgMultiSelectDropDownModule.forRoot()
 ],
-  providers: [CookieService,
+  providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     DatePipe
   ],

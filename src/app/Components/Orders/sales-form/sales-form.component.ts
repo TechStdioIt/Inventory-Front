@@ -33,34 +33,36 @@ export class SalesFormComponent implements OnInit{
     })
   }
   onProductSelect(selectedProduct:any){
-    debugger;
+
     var checkExist = this.selectedProductList.find(x=>x.productId == selectedProduct.id);
     if(!checkExist){
       var newProduct = {
         productName:selectedProduct.name,
-        price:selectedProduct.price,
+        price:selectedProduct.actualSellRate,
         qty:1,
         productId:selectedProduct.id,
         productCode : selectedProduct.productCode,
-        totalPrice:selectedProduct.price
+        totalPrice:selectedProduct.actualSellRate,
+        purchaseDetailsId:selectedProduct.purchaseDetailsId
       };
       this.selectedProductList.push(newProduct);
       this.totalAmountCalculate();
     }else{
-      this.updateQty(selectedProduct.id,'add');
+      this.updateQty(selectedProduct,'add');
     }
 
   }
 
   totalAmountCalculate(){
     this.productAmount = this.selectedProductList.reduce((total: number, item: any) => {
-      return total +  item.totalPrice;
+      return total +  Number(item.totalPrice);
     }, 0);
   }
 
 
-updateQty(productId:any,action:string){
-  var checkExist = this.selectedProductList.find(x=>x.productId == productId);
+updateQty(selectedProduct:any,action:string){
+  var checkExist = this.selectedProductList.find(x=>x.productId == selectedProduct.purchaseDetailsId);
+  var checkApiData = this.productList.find(d=>d.purchaseDetailsId == selectedProduct.purchaseDetailsId)
   if(checkExist){
     if(action == 'add'){
       checkExist.qty += 1;
@@ -71,14 +73,14 @@ updateQty(productId:any,action:string){
       }
       
     }
-    checkExist.totalPrice=checkExist.price * checkExist.qty
+    checkExist.totalPrice=Number(checkExist.price) * Number(checkExist.qty);
     
-  }
+  } 
   this.totalAmountCalculate();
 }
 
-onDeleteProdcut(productId:any){
-  this.selectedProductList = this.selectedProductList.filter(x => x.productId !== productId);
+onDeleteProdcut(purchaseDetailsId:any){
+  this.selectedProductList = this.selectedProductList.filter(x => x.purchaseDetailsId !== purchaseDetailsId);
 
 }
 

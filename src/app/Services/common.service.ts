@@ -5,7 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { DatePipe, Location } from '@angular/common';
 import { DD_Menu } from '../Models/drodown.model';
 import { createUrl } from 'src/utility/common';
-import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +19,7 @@ export class CommonService {
 
   iSButtonManagementComponentFormShow: boolean = true;
 
-  constructor(private location: Location, private http: HttpClient, private toastr: ToastrService,private cookieService: CookieService,private datePipe:DatePipe) {}
+  constructor(private location: Location, private http: HttpClient, private toastr: ToastrService,private datePipe:DatePipe) {}
 
   // Back button logic
   BackButton() {
@@ -43,28 +42,28 @@ export class CommonService {
       })
     );
   }
-  setCookie(name: string, value: string, expiredays: number =0) {
-    const expirationDate = new Date();
-    if(expiredays >0){
-      expirationDate.setDate(expirationDate.getDate() + expiredays);
-    }
-    this.cookieService.set(name, value, expirationDate);
-  }
+  // setCookie(name: string, value: string, expiredays: number =0) {
+  //   const expirationDate = new Date();
+  //   if(expiredays >0){
+  //     expirationDate.setDate(expirationDate.getDate() + expiredays);
+  //   }
+  //   this.cookieService.set(name, value, expirationDate);
+  // }
 
-  // Get a cookie
-  getCookie(name: string) {
-    return this.cookieService.get(name);
-  }
+  // // Get a cookie
+  // getCookie(name: string) {
+  //   return this.cookieService.get(name);
+  // }
 
-  // Delete a cookie
-  deleteCookie(name: string) {
-    this.cookieService.delete(name);
-  }
+  // // Delete a cookie
+  // deleteCookie(name: string) {
+  //   this.cookieService.delete(name);
+  // }
 
-  // Delete all cookies
-  deleteAllCookies() {
-    this.cookieService.deleteAll();
-  }
+  // // Delete all cookies
+  // deleteAllCookies() {
+  //   this.cookieService.deleteAll();
+  // }
   formatDate(date: string | Date,format:string): string {
     return this.datePipe.transform(date, format) || '';
   }

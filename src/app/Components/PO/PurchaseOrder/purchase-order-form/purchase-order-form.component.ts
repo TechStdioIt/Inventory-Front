@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { camelCase, mapKeys } from 'lodash';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { Unit } from 'src/app/Models/Unit';
 import { PurchaseOrder } from 'src/app/Models/PurchaseItem';
 import { CommonService } from 'src/app/Services/common.service';
@@ -15,7 +15,7 @@ import { CommonService } from 'src/app/Services/common.service';
   templateUrl: './purchase-order-form.component.html',
   styleUrl: './purchase-order-form.component.scss'
 })
-export class PurchaseOrderFormComponent implements OnInit {
+export class PurchaseOrderFormComponent implements OnInit,OnDestroy {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
@@ -28,6 +28,7 @@ export class PurchaseOrderFormComponent implements OnInit {
 selectedItemList:any[]=[];
 allProduct:any[]=[];
 searchText: string = '';
+private destroy$ = new Subject<void>();
   formdata: any[] = [
     { type: 'select', name: 'supplierId', label: 'Supplier Name', required: true,column:4,options:[],optionText:'name',optionValue:'id'},
     { type: 'text', name: 'batchNo', label: 'Batch No', required: true ,column:4},
@@ -55,17 +56,19 @@ searchText: string = '';
         this.FormData =new PurchaseOrder();
       }
     });
-    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
-      if (!this.isSubmitting) {
+    this.gridHandleService.add$
+    .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
+    .subscribe(async (data: NgForm) => {
+      if (!this.isSubmitting) { // Prevent multiple submissions
         this.isSubmitting = true;
+
         try {
-          await this.onSubmit(data); 
+          await this.onSubmit(data); // Your form submission logic
           this.gridHandleService.selectedTab = "List";
-          
         } catch (error) {
           console.error('Error during submission:', error);
         } finally {
-          this.isSubmitting = false; // Reset flag when the operation completes or fails
+          this.isSubmitting = false; // Reset flag after completion
         }
       }
     });
@@ -74,6 +77,10 @@ searchText: string = '';
     this.getSupplierData();
     this.getPaymentMethod();
     this.getProductList();
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   getProductList(){
     this.dataService.GetData('Products/GetAllProductData?take=100&skip=0').subscribe((data:any)=>{
@@ -104,9 +111,9 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
       this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as PurchaseOrder;
       debugger;
       this.FormData.orderDate = this.formatDate(this.FormData.orderDate);
-      if(data.data.purchasList.length >0){
+      if(data.data.detailsInfo.length >0){
         this.FormData.purchasList =[];
-        data.data.purchasList.forEach((element:any) => {
+        data.data.detailsInfo.forEach((element:any) => {
         this.updateGridData(element);
         });
         this.totalAmountCalculate();
@@ -156,7 +163,10 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     unitName:option.unitName,
     discount:option.discount,
     tax:option.tax,
-    netTotal : option.netTotal
+    netTotal : option.netTotal,
+    sellRate:option.sellRate,
+    sellDiscount:option.sellDiscount,
+    actualSellRate:option.actualSellRate
   };
   this.selectedItemList.push(data);
   this.FormData.purchasList.push(data);
@@ -185,7 +195,10 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
         unitName:option.unitName,
         discount:0,
         tax:0,
-        netTotal : option.price
+        netTotal : option.price,
+        sellRate:option.price,
+        sellDiscount:0,
+        actualSellRate:option.price
       };
       this.selectedItemList.push(data);
       this.FormData.purchasList.push(data);
@@ -210,7 +223,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     const updatedData = event.data;
     
     // Check if 'quantity' or 'unitPrice' has changed
-    if (updatedData.actualQty || updatedData.unitPrice || updatedData.discount || updatedData.tax) {
+    if (updatedData.actualQty || updatedData.unitPrice || updatedData.discount || updatedData.tax || updatedData.sellRate || updatedData.sellDiscount) {
       var exist = this.FormData.purchasList.find((x:any)=>x.productId == updatedData.productId);
       if(exist){
         exist.actualQty = updatedData.actualQty;
@@ -218,9 +231,11 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
         exist.tax = updatedData.tax;
         exist.unitPrice = updatedData.unitPrice
         exist.subTotal = updatedData.actualQty * updatedData.unitPrice;
+        exist.actualSellRate = updatedData.sellRate - updatedData.sellDiscount;
           // Calculate and update the 'totalPrice'
       updatedData.subTotal = updatedData.actualQty * updatedData.unitPrice;
       updatedData.netTotal = (exist.subTotal + updatedData.tax) -updatedData.discount;
+      updatedData.actualSellRate = exist.actualSellRate;
       this.totalAmountCalculate();
       }
     }
@@ -230,7 +245,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     const updatedData = event.data;
     
     // Check if 'quantity' or 'unitPrice' has changed
-    if (updatedData.actualQty || updatedData.unitPrice || updatedData.discount || updatedData.tax) {
+    if (updatedData.actualQty || updatedData.unitPrice || updatedData.discount || updatedData.tax || updatedData.sellRate || updatedData.sellDiscount) {
       var exist = this.FormData.purchasList.find((x:any)=>x.productId == updatedData.productId);
       if(exist){
         exist.actualQty = updatedData.actualQty;
@@ -238,10 +253,14 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
         exist.tax = updatedData.tax;
         exist.unitPrice = updatedData.unitPrice
         exist.subTotal = updatedData.actualQty * updatedData.unitPrice;
+        exist.actualSellRate = updatedData.sellRate - updatedData.sellDiscount;
           // Calculate and update the 'totalPrice'
       updatedData.subTotal = updatedData.actualQty * updatedData.unitPrice;
       updatedData.netTotal = (exist.subTotal + updatedData.tax) -updatedData.discount;
+      updatedData.actualSellRate = exist.actualSellRate;
+      this.totalAmountCalculate();
       }
+    
     }
     
     // You can refresh the grid if necessary (although DevExtreme usually handles this automatically)

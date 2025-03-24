@@ -16,10 +16,10 @@
                             <img class="imageSet" [src]="field.imageUrl" alt="Product Image">
                             
                             <div class="title">{{ field.name }}</div>
-                            <div class="availableqty">Available: <b>100 {{field.unitName}}</b></div>
-                            <div class="price">TK. <b>{{ field.price }}</b></div>
-                            <div class="disprice">Discount Amt. <b>{{ field.price }}</b></div>
-                            <div class="totprice">Total Amt. <b>{{ field.price }}</b></div>
+                            <div class="availableqty">Available: <b>{{field.avaiableQty}} {{field.unitName}}</b></div>
+                            <div class="price">TK. <b>{{ field.sellRate }}</b></div>
+                            <div class="disprice">Discount Amt. <b>{{ field.sellDiscount }}</b></div>
+                            <div class="totprice">Total Amt. <b>{{ field.actualSellRate }}</b></div>
                           </div>
                         </div>
                       </div>
@@ -56,9 +56,9 @@
                                 <div class="col-2 text-center">{{item.qty}}</div>
                                 <!-- Buttons -->
                                 <div class="col-4 d-flex justify-content-between">
-                                    <button class="btn btn-sm btn-outline-primary" (click)="updateQty(item.productId,'add')"><i class="fa fa-plus"></i></button>
-                                    <button class="btn btn-sm btn-outline-secondary" (click)="updateQty(item.productId,'minus')"><i class="fa fa-minus"></i></button>
-                                    <button class="btn btn-sm btn-outline-danger" (click)="onDeleteProdcut(item.productId)"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary" (click)="updateQty(item,'add')"><i class="fa fa-plus"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary" (click)="updateQty(item,'minus')"><i class="fa fa-minus"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger" (click)="onDeleteProdcut(item.purchaseDetailsId)"><i class="fa fa-trash"></i></button>
                                 </div>
                                 <!-- Price -->
                                 <div class="col-2 text-end">৳{{item.totalPrice}}</div>
