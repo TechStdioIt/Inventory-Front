@@ -110,6 +110,10 @@ yarn.lock
 
 
 # Add environment files
+
+.env
+.env.test
+
 environment.ts
 environment.prod.ts
 src/environments/environment.ts
