@@ -25,7 +25,7 @@ export class PurchaseOrderFormComponent implements OnInit,OnDestroy {
   insertOrUpdateAPI: string = 'PurchasOrder/CreateOrUpdatePurchaseOrder';
   getDataByIdAPI: string = 'PurchasOrder/GetPOById';
   listRoute: string = '/purchaseOrderList';
-selectedItemList:any[]=[];
+//selectedItemList:any[]=[];
 allProduct:any[]=[];
 searchText: string = '';
 private destroy$ = new Subject<void>();
@@ -168,15 +168,16 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     sellDiscount:option.sellDiscount,
     actualSellRate:option.actualSellRate
   };
-  this.selectedItemList.push(data);
+  //this.selectedItemList.push(data);
   this.FormData.purchasList.push(data);
 
  }
   
   selectProduct(option: any) {
-    
+    debugger
     // Check if the product already exists in selectedItemList based on productId (option.id)
-    const existingProduct = this.selectedItemList.find(item => item.productId === option.id);
+    const existingProduct = this.FormData.purchasList.find((item:any) => item.productId === option.id);
+    // const existingProduct = this.selectedItemList.find(item => item.productId === option.id);
     
     if (existingProduct) {
       this.toastr.error('Already Added','Duplicate!')
@@ -200,7 +201,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
         sellDiscount:0,
         actualSellRate:option.price
       };
-      this.selectedItemList.push(data);
+      //this.selectedItemList.push(data);
       this.FormData.purchasList.push(data);
       this.totalAmountCalculate();
     }
@@ -266,6 +267,19 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     // You can refresh the grid if necessary (although DevExtreme usually handles this automatically)
     event.component.refresh();
     this.totalAmountCalculate();
+  }
+
+
+        
+  onRowRemoved(event: any) {
+    debugger;
+    const removedData = event.data;
+    // this.selectedItemList = this.selectedItemList.filter(item => item.productId !== removedData.productId);
+    // this.FormData.purchasList = this.selectedItemList;
+   
+    this.FormData.purchasList = this.FormData.purchasList.filter((item:any) => item.productId !== removedData.productId);
+    this.totalAmountCalculate();
+  
   }
 
 

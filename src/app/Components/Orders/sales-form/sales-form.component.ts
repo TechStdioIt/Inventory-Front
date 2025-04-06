@@ -34,7 +34,7 @@ export class SalesFormComponent implements OnInit{
   }
   onProductSelect(selectedProduct:any){
 
-    var checkExist = this.selectedProductList.find(x=>x.productId == selectedProduct.id);
+    var checkExist = this.selectedProductList.find(x=>x.purchaseDetailsId == selectedProduct.purchaseDetailsId);
     if(!checkExist){
       var newProduct = {
         productName:selectedProduct.name,
