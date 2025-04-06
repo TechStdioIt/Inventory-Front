@@ -11,6 +11,10 @@ export class SalesFormComponent implements OnInit{
   productList:any[]=[];
   selectedProductList:any[]=[];
   productAmount:any =0;
+  isPopupVisible:boolean = false;
+  showOTPInputBox : boolean = false;
+  
+
   constructor(private dataService:HttpClientConnectionService){}
   ngOnInit(): void {
     this.GetAllCategory();
@@ -58,6 +62,9 @@ export class SalesFormComponent implements OnInit{
       return total +  Number(item.totalPrice);
     }, 0);
   }
+  ShowCusAddPopUp(){
+    this.isPopupVisible =! this.isPopupVisible;
+  }
 
 
 updateQty(selectedProduct:any,action:string){
@@ -83,5 +90,41 @@ onDeleteProdcut(purchaseDetailsId:any){
   this.selectedProductList = this.selectedProductList.filter(x => x.purchaseDetailsId !== purchaseDetailsId);
 
 }
+
+timerCount: number = 0;
+timerInterval: any;
+
+
+SendOtpbtn() {
+  this.showOTPInputBox = true;
+  this.startTimer();
+  // Logic to send OTP
+}
+backBtn(){
+  this.showOTPInputBox = false;
+}
+resendOTP() {
+  this.startTimer();
+  // Logic to resend OTP
+}
+
+startTimer() {
+  this.timerCount = 10;
+  if (this.timerInterval) {
+    clearInterval(this.timerInterval);
+  }
+
+  this.timerInterval = setInterval(() => {
+    this.timerCount--;
+    if (this.timerCount <= 0) {
+      clearInterval(this.timerInterval);
+    }
+  }, 1000);
+}
+
+submitBtn() {
+  // Submit logic
+}
+
 
 }
