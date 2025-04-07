@@ -85,3 +85,5 @@ export class StoreTypeFormComponent implements OnInit {
     this.location.back();
   }
 }
+
+

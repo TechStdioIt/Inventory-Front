@@ -137,11 +137,11 @@ const routes: Routes = [
       },
       {
         path: 'storetypeList',
-        component: StListComponent
+        component: StoreTypeListComponent
       },
       {
         path: 'storetypeForm',
-        component: StFormComponent
+        component: StoreTypeFormComponent
       },
       {
         path: 'categoryList',
