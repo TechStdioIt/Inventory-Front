@@ -69,6 +69,8 @@ import { WhFormComponent } from './Components/MasterSetup/WareHouse/wh-form/wh-f
 import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.component';
 import { ReportViewModel } from 'devexpress-reporting/dx-reportdesigner';
 import { ReportViewerComponent } from './Components/Reports/report-viewer/report-viewer.component';
+import { BrandListComponent } from './Components/Brands/brand-list/brand-list.component';
+import { BrandFormComponent } from './Components/Brands/brand-form/brand-form.component';
 
 const routes: Routes = [
   {
@@ -351,7 +353,15 @@ const routes: Routes = [
       },{
         path:'reports',
         component:ReportViewerComponent
-      }
+      },
+      {
+        path:"brandList",
+        component:BrandListComponent
+      },
+      {
+        path:"brandForm",
+        component:BrandFormComponent
+      },
     ]
   },
   {

@@ -141,6 +141,8 @@ import { ProductDiscountFormComponent } from './Components/ProductDiscount/produ
 import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.component';
 import { ReportViewerComponent } from './Components/Reports/report-viewer/report-viewer.component';
 import { DxReportViewerModule } from 'devexpress-reporting-angular';
+import { BrandFormComponent } from './Components/Brands/brand-form/brand-form.component';
+import { BrandListComponent } from './Components/Brands/brand-list/brand-list.component';
 
 @NgModule({
   declarations: [
@@ -189,6 +191,8 @@ import { DxReportViewerModule } from 'devexpress-reporting-angular';
     // StFormComponent,
     StListComponent,
      UnitFormComponent,
+     BrandFormComponent,
+     BrandListComponent,
     UnitListComponent,
     // WhFormComponent,
     WhListComponent,

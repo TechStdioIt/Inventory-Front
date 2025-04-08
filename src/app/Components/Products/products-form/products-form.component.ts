@@ -36,6 +36,7 @@ export class ProductsFormComponent implements OnInit {
   formdata: any[] = [
     { type: 'text', name: 'name', label: 'Product Name', required: true, column: 4 },
     { type: 'select', name: 'categoryId', label: 'Category', required: true, column: 4, options: [] },
+    { type: 'select', name: 'brandId', label: 'Brand', required: true, column: 4, options: [] },
     { type: 'text', name: 'description', label: 'Description', required: true, column: 4 },
     { type: 'number', name: 'price', label: 'Price', required: true, column: 4 },
     { type: 'number', name: 'quantityInStock', label: 'Stock In', required: true, column: 4 },
@@ -81,6 +82,7 @@ export class ProductsFormComponent implements OnInit {
   ngOnInit(): void {
     this.getUnitData();
     this.getCategoryData();
+    this.getBrandData();
   }
   onSubmit(form: NgForm) {
     this.insertOrUpdate(form);
@@ -89,16 +91,23 @@ export class ProductsFormComponent implements OnInit {
 
 
   getUnitData() {
-    return this.dataService.GetData('Unit/GetAllUnit?take=10&skip=0').subscribe((data: any) => {
+    return this.dataService.GetData('Unit/GetAllUnit?take=1000&skip=0').subscribe((data: any) => {
       this.formdata.find(field => field.name === 'unitId').options = data.data;
     })
   }
   getCategoryData() {
-    return this.dataService.GetData('Category/GetAllCategory?take=10&skip=0').subscribe((data: any) => {
+    return this.dataService.GetData('Category/GetAllCategory?take=1000&skip=0').subscribe((data: any) => {
       ;
       this.formdata.find(field => field.name === 'categoryId').options = data.data;
     })
   }
+  getBrandData() {
+    return this.dataService.GetData('Brand/GetAll?take=1000&skip=0').subscribe((data: any) => {
+      ;
+      this.formdata.find(field => field.name === 'brandId').options = data.data;
+    })
+  }
+
 
   getDataById(id: any) {
     this.dataService.GetData(`${this.getDataByIdAPI}?id=` + id).subscribe((data: any) => {

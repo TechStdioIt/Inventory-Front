@@ -1,3 +1,7 @@
+
+
+
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -9,25 +13,23 @@ import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { take } from 'rxjs';
 import { Unit } from 'src/app/Models/Unit';
 @Component({
-  selector: 'app-unit-form',
-  templateUrl: './unit-form.component.html',
-  styleUrl: './unit-form.component.scss'
+  selector: 'app-brand-form',
+  templateUrl: './brand-form.component.html',
+  styleUrl: './brand-form.component.scss'
 })
-export class UnitFormComponent implements OnInit {
+export class BrandFormComponent implements OnInit {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
   FormData: any = new Unit();
   isSubmitting: boolean = false;
   fromHeader: string = 'Brand';
-  insertOrUpdateAPI: string = 'Unit/CreateOrUpdateUnit';
-  getDataByIdAPI: string = 'Unit/GetUnitById';
-  listRoute: string = '/unitList';
+  insertOrUpdateAPI: string = 'Brand/CreateOrUpdate';
+  getDataByIdAPI: string = 'Brand/GetById';
+  listRoute: string = '/brandList';
 
   formdata: any[] = [
-    { type: 'text', name: 'name', label: 'Unit Name', required: true,column:4},
-    { type: 'text', name: 'shortCode', label: 'Short Name', required: true ,column:4},
-    { type: 'text', name: 'description', label: 'Description', required: true ,column:4},
+    { type: 'text', name: 'name', label: 'Brand Name', required: true,column:4},
     
   ];
 

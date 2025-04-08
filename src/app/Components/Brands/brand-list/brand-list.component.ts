@@ -1,3 +1,5 @@
+
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
@@ -6,23 +8,21 @@ import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnecti
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-unit-list',
-  templateUrl: './unit-list.component.html',
-  styleUrl: './unit-list.component.scss'
+  selector: 'app-brand-list',
+  templateUrl: './brand-list.component.html',
+  styleUrl: './brand-list.component.scss'
 })
-export class UnitListComponent implements OnInit {
-  fromHeader: string = 'Supplier';
-  formRoute: string = '/unitForm';
-  listAPI: string = 'Unit/GetAllUnit';
-  deleteAPI: string = 'Unit/DeletUnit';
+export class BrandListComponent implements OnInit {
+  fromHeader: string = 'Brand';
+  formRoute: string = '/brandForm';
+  listAPI: string = 'Brand/GetAll';
+  deleteAPI: string = 'Brand/Delete';
   haveQueryPram: boolean = false;
   reloadCount: number = 0;
 
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
     { caption: 'Name', key: 'name' },
-    { caption: 'Short Name', key: 'shortCode' },
-    { caption: 'Description', key: 'description' }
   ];
 
   buttonShow = {
