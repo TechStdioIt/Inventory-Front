@@ -35,27 +35,23 @@ export class ReportViewerComponent implements OnInit {
 }
 
   constructor(private route:ActivatedRoute) {
-    var data = {
-      reportName: 'rptDemo'
-    }
-    this.reportName = JSON.stringify(data);
-    // this.route.queryParams.subscribe(params => {
-    //   var data = {
-    //     reportName: params['reportName'],
-    //     do: params['do']
-    //   }
-    //   this.reportName = JSON.stringify(data);
+ 
+    this.route.queryParams.subscribe(params => {
+      var data = {
+        reportName: params['reportName'],
+        do: params['do'],
+        isPrint: params['isPrint'],
+        
+      }
+      this.reportName = JSON.stringify(data);
 
-    // });
+    });
    }
 
   ngOnInit(): void {
-  }
-  printReport() {
-    if (this.viewer && this.viewer) {
+    setTimeout(() => {
       this.viewer.bindingSender.Print(0);
-    } else {
-      console.warn('Report Viewer is not initialized.');
-    }
+    }, 3000);
   }
+
 }

@@ -19,11 +19,11 @@
         <div class="main-body">
           <div class="page-wrapper">
             <app-breadcrumb></app-breadcrumb>
-            <ng-container *ngIf="currentRoute !=='/analytics' && currentRoute !=='/businessDashboard' && currentRoute !=='/menuPermission' && currentRoute !=='/salesForm' "> 
+            <ng-container *ngIf="currentRoute !=='/analytics' && currentRoute !=='/businessDashboard' && currentRoute !=='/menuPermission' && currentRoute !=='/salesForm'  && !currentRoute.startsWith('/reports') "> 
               <app-button-control ></app-button-control>
             </ng-container>
             
-            <router-outlet *ngIf="currentRoute ==='/salesForm' || currentRoute ==='/analytics' || currentRoute ==='/businessDashboard' || currentRoute ==='/menuPermission'"></router-outlet>
+            <router-outlet *ngIf="currentRoute ==='/salesForm' || currentRoute ==='/analytics' || currentRoute ==='/businessDashboard' || currentRoute ==='/menuPermission' || currentRoute.startsWith('/reports')"></router-outlet>
           </div>
         </div>
       </div>

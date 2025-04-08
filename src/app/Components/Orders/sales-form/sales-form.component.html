@@ -182,8 +182,12 @@
 
 
 
-          <button class="btn btn-primary w-100" (click)="onCharge()">Charge</button>
-        </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary w-50" (click)="onCharge(false)">Save</button>
+            <button class="btn btn-secondary w-50" (click)="onCharge(true)">Save & Print</button>
+          </div>
+
+        </div> 
       </div>
 
 

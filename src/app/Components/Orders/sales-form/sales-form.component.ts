@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Customer } from 'src/app/Models/Customer';
 import { OrderDetailsVM, OrderVM } from 'src/app/Models/SalesInvoice';
 import { CommonService } from 'src/app/Services/common.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sales-form',
@@ -39,7 +39,7 @@ masterData:OrderVM=new OrderVM();
   ];
 
 
-  constructor(private dataService: HttpClientConnectionService, private commonService: CommonService, private toastr: ToastrService) { }
+  constructor(private dataService: HttpClientConnectionService, private commonService: CommonService, private toastr: ToastrService,private router:Router) { }
   ngOnInit(): void {
     this.GetAllCategory();
     this.onCategoryChange(0);
@@ -220,6 +220,7 @@ debugger;
         this.toastr.success('Successfull', `Customer Information`);
         this.FormData = new Customer();
         this.isPopupVisible = false;
+        
       },
       (err) => {
         this.toastr.error('Please Try Again', 'Invalid Information!!');
@@ -237,13 +238,25 @@ debugger;
   }
 
 
-  onCharge(){
+  onCharge(isPrint:boolean){
     this.SetUpData();
     this.dataService.PostData('SalesOrder/CreateOrUpdateOrder',this.masterData).subscribe(
-      (res) => {
+      (res:any) => {
         this.toastr.success('Successfull', `Customer Information`);
         this.masterData = new OrderVM();
+        if(isPrint){
+          debugger;
+          
+          const newUrl = this.router.serializeUrl(
+            this.router.createUrlTree(['/reports'], { queryParams: { reportName: 'rptDemo', do: res.data[0].OrderId,isPrint:isPrint } })
+          );
+          
+          // Open in new tab or window
+          window.open(newUrl, '_blank');
+        }
+    
         this.selectedProductList = [];
+        
       },
       (err) => {
         this.toastr.error('Please Try Again', 'Invalid Information!!');
