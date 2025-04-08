@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -8,33 +7,30 @@ import { NgForm } from '@angular/forms';
 import { camelCase, mapKeys } from 'lodash';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { take } from 'rxjs';
-import { WareHouseVM } from 'src/app/Models/Unit';
+import { Unit } from 'src/app/Models/Unit';
+import { OrderVM } from 'src/app/Models/SalesInvoice';
 @Component({
-  selector: 'app-wh-form',
-  templateUrl: './wh-form.component.html',
-  styleUrl: './wh-form.component.scss'
+  selector: 'app-print-label-list',
+  templateUrl: './print-label-list.component.html',
+  styleUrl: './print-label-list.component.scss'
 })
-export class WhFormComponent implements OnInit {
+export class PrintLabelListComponent implements OnInit {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
-  FormData: any = new WareHouseVM();
+  FormData: any = new Unit();
   isSubmitting: boolean = false;
-  fromHeader: string = 'Warehouse';
-  insertOrUpdateAPI: string = 'WareHouse/CreateOrUpdateWareHouse';
-  getDataByIdAPI: string = 'WareHouse/GetAllWareHouse';
-  listRoute: string = '/wareHouseList';
+  fromHeader: string = 'Brand';
+  insertOrUpdateAPI: string = 'Brand/CreateOrUpdate';
+  getDataByIdAPI: string = 'Brand/GetById';
+  listRoute: string = '/brandList';
+
+  masterData:OrderVM=new OrderVM();
 
   formdata: any[] = [
-    { type: 'text', name: 'wareHouseName', label: 'WareHouse Name', required: true, column: 4 },
-    { type: 'datetime', name: 'openTime', label: 'openTime', required: true, column: 4 },
-    { type: 'datetime', name: 'closeTime', label: 'closeTime', required: true, column: 4 },
-    { type: 'text', name: 'note', label: 'note', required: true, column: 4 },
-    { type: 'text', name: 'street', label: 'street', required: true, column: 4 },
-    { type: 'text', name: 'city', label: 'city', required: true, column: 4 },
-    { type: 'text', name: 'province', label: 'province', required: true, column: 4 },
-    { type: 'text', name: 'postalCode', label: 'postalCode', required: true, column: 4 },
-
+    { type: 'text', name: 'name', label: 'Qunatity', required: true,column:4},
+    { type: 'select', name: 'warehouseId', label: 'Warehouse', required: true, column: 4, options: [] },
+    
   ];
 
 
@@ -52,7 +48,7 @@ export class WhFormComponent implements OnInit {
       if(data.do !=undefined && data !=null){
         this.getDataById(data.do);
       }else{
-        this.FormData =new WareHouseVM();
+        this.FormData =new Unit();
       }
     });
     this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
@@ -70,21 +66,35 @@ export class WhFormComponent implements OnInit {
       }
     });
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+    this.getwarehouse();
+  }
   onSubmit(form: NgForm) {
     this.insertOrUpdate(form);
   }
+  getwarehouse() {
+    return this.dataService.GetData('WareHouse/GetAllWareHouse?take=1000&skip=0').subscribe((data: any) => {
+      ;
+      this.formdata.find(field => field.name === 'warehouseId').options = data.data;
+    })
+  }
+  onValueChangedAutoSelect(eventData: { value: any; fieldName?: any, text?: any, showField?: any, emiter?: any }) {
+    this.masterData.customerId = eventData.value;
+  }
+
+
   getDataById(id:any){
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{
       // this.FormData=data.data;
-      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as WareHouseVM;
+      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as Unit;
     })
   }
   insertOrUpdate(form: NgForm) {
     this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
       (res) => {
         this.toastr.success('Successfull', `${this.fromHeader} Information`);
-       //this.FormData = new Unit();
+       this.FormData = new Unit();
        this.route.navigate([this.listRoute]);
        this.gridHandleService.selectedTab = "List";
       },
@@ -101,10 +111,7 @@ export class WhFormComponent implements OnInit {
     } else {
       console.error(`Function ${functionName} is not defined`);
     }
-  }
-
-  
-
-  
+  } 
   
 }
+

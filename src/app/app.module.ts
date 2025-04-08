@@ -143,6 +143,7 @@ import { ReportViewerComponent } from './Components/Reports/report-viewer/report
 import { DxReportViewerModule } from 'devexpress-reporting-angular';
 import { BrandFormComponent } from './Components/Brands/brand-form/brand-form.component';
 import { BrandListComponent } from './Components/Brands/brand-list/brand-list.component';
+import { PrintLabelListComponent } from './Components/PrintLabel/print-label-list/print-label-list.component';
 
 @NgModule({
   declarations: [
@@ -186,6 +187,8 @@ import { BrandListComponent } from './Components/Brands/brand-list/brand-list.co
     BankListComponent,
     BmFormComponent,
     BmListComponent,
+    PrintLabelListComponent,
+    WhFormComponent,
      CatagoryFormComponent,
     CatagoryListComponent,
     // StFormComponent,

@@ -71,6 +71,7 @@ import { ReportViewModel } from 'devexpress-reporting/dx-reportdesigner';
 import { ReportViewerComponent } from './Components/Reports/report-viewer/report-viewer.component';
 import { BrandListComponent } from './Components/Brands/brand-list/brand-list.component';
 import { BrandFormComponent } from './Components/Brands/brand-form/brand-form.component';
+import { PrintLabelListComponent } from './Components/PrintLabel/print-label-list/print-label-list.component';
 
 const routes: Routes = [
   {
@@ -361,6 +362,10 @@ const routes: Routes = [
       {
         path:"brandForm",
         component:BrandFormComponent
+      },
+      {
+        path:"labelList",
+        component:PrintLabelListComponent
       },
     ]
   },
