@@ -55,19 +55,26 @@
     <div class="col-md-6">
 
       <div class="row mb-3">
-        <div class="col-5">
+        <div class="col-10">
 
-          <dx-text-box label="Mobile No" class="input-label" labelMode="outside"></dx-text-box>
+          <app-common-auto-complete-api
+          [dataSource]=""
+          [searchExprOption]="['name']"
+          [selectedValue]=""
+          [isReadOnly]="false"
+          [flag]="1"
+          [valueExpr]="'name'"
+          [displayExpr]="'name'"
+          [showFieldName]="''"
+          [minSearchLengthOption]="4"
+          [placeholder]="'customer Mobile No.'"
+          (valueChange)="onValueChangedAutoSelect($event)"
+          >
+          </app-common-auto-complete-api>
 
         </div>
-        <div class="col-5">
-
-          <dx-select-box [dataSource]="productList" label="Select Customer" displayExpr="menuName" valueExpr="id"
-            class="input-label" [searchEnabled]="true" labelMode="outside"></dx-select-box>
-        </div>
-
         <div class="col-2">
-          <button class="btn btn-outline-primary mt-4" (click)="ShowCusAddPopUp()">Add <i
+          <button class="btn btn-outline-primary " (click)="ShowCusAddPopUp()">Add <i
               class="fa fa-plus"></i></button>
         </div>
 
@@ -115,45 +122,58 @@
           <!-- Subtotal row -->
           <div class="d-flex justify-content-between mb-2">
             <strong class="mb-0">SubTotal:</strong>
-            <strong class="mb-0">৳{{ productAmount }}</strong>
+            <strong class="mb-0">৳{{ masterData.subTotal }}</strong>
           </div>
 
 
           <div class="d-flex justify-content-between mb-2">
             <strong class="mb-0">Discount:</strong>
-            <strong class="mb-0">৳{{ productAmount }}</strong>
+            <strong class="mb-0">৳{{ masterData.discount }}</strong>
+          </div>
+          
+          <div class="d-flex justify-content-between mb-2">
+            <strong class="mb-0">Net Total:</strong>
+            <strong class="mb-0">৳{{ masterData.netTotal }}</strong>
           </div>
 
-          <div class="d-flex justify-content-between mb-2">
-            <strong class="mb-0">Vat:</strong>
-            <strong class="mb-0">৳{{ productAmount }}</strong>
+
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <!-- Left side: Label and input -->
+            <div class="d-flex align-items-center">
+              <strong class="mb-0 me-2">Vat (%):</strong>
+              <input type="text" class="form-control form-control-sm text-end" style="width: 40px;"  [(ngModel)]="masterData.vatPercent" (keyup)="totalAmountCalculate()"  placeholder="%">
+            </div>
+          
+            <!-- Right side: Total display -->
+            <strong class="mb-0">৳{{ masterData.vatAmount }}</strong>
           </div>
+          
 
           <div class="d-flex justify-content-between mb-2">
             <strong class="mb-0">Grand Total:</strong>
-            <strong class="mb-0">৳{{ productAmount }}</strong>
+            <strong class="mb-0">৳{{ masterData.grandTotal }}</strong>
           </div>
 
 
 
           <div class="d-flex justify-content-between mb-2">
             <strong class="mb-0">Extra Discount:</strong>
-            <input type="text" class="form-control form-control-sm w-50 text-end ms-2" placeholder="Enter amount">
+            <input type="text" class="form-control form-control-sm w-50 text-end ms-2" placeholder="Enter amount"  [(ngModel)]="masterData.extraDiscount" (keyup)="onExtraDiscount()">
           </div>
           <div class="d-flex justify-content-between mb-2">
             <strong class="mb-0">Payable Amount:</strong>
-            <strong class="mb-0">৳{{ productAmount }}</strong>
+            <strong class="mb-0">৳{{ masterData.payableAmount }}</strong>
           </div>
 
           <div class="d-flex justify-content-between mb-2">
             <strong class="mb-0">Given Amount:</strong>
-            <input type="text" class="form-control form-control-sm w-50 text-end ms-2" placeholder="Enter amount">
+            <input type="text" class="form-control form-control-sm w-50 text-end ms-2" placeholder="Enter amount" [(ngModel)]="masterData.givenAmount" (keyup)="onGivenAmount()">
           </div>
 
 
           <div class="d-flex justify-content-between mb-2">
-            <strong class="mb-0">Change Amount:</strong>
-            <strong class="mb-0">৳{{ productAmount }}</strong>
+            <strong class="mb-0">{{masterData.dynamicLabel}} Amount:</strong>
+            <strong class="mb-0">৳{{ masterData.dynamicLabelAmount }}</strong>
           </div>
 
 
@@ -162,7 +182,7 @@
 
 
 
-          <button class="btn btn-primary w-100">Charge</button>
+          <button class="btn btn-primary w-100" (click)="onCharge()">Charge</button>
         </div>
       </div>
 
@@ -174,23 +194,83 @@
 </div>
 
 <dx-popup [(visible)]="isPopupVisible" [showTitle]="true" [dragEnabled]="true" [closeOnOutsideClick]="true"
-  [width]="700" [height]="800">
+  [width]="700" [height]="800" [closeOnOutsideClick]="false"[showCloseButton]="true">
 
   <div *dxTemplate="let data of 'content'">
     <div *ngIf="!showOTPInputBox">
       <!-- Initial form fields -->
-      <dx-text-box label="Mobile No" class="input-label" labelMode="outside"></dx-text-box>
+      <!-- <dx-text-box label="Mobile No" class="input-label" labelMode="outside"></dx-text-box>
       <dx-text-box label="Customer Name" class="input-label" labelMode="outside"></dx-text-box>
       <dx-text-box label="Customer Address" class="input-label" labelMode="outside"></dx-text-box>
       <dx-text-box label="Email" class="input-label" labelMode="outside"></dx-text-box>
       <dx-text-box label="Type of Customer" class="input-label" labelMode="outside"></dx-text-box>
       <dx-text-box label="City" class="input-label" labelMode="outside"></dx-text-box>
       <dx-text-box label="Customer CP" class="input-label" labelMode="outside"></dx-text-box>
-      <dx-text-box label="ZipCode" class="input-label" labelMode="outside"></dx-text-box>
+      <dx-text-box label="ZipCode" class="input-label" labelMode="outside"></dx-text-box> -->
+      <div class="mb-3" *ngFor="let field of formdata" [class]="'col-lg-' + (field.column || 6)">
+        <label [for]="field.name" class="col-sm-12 col-form-label">
+          {{ field.label }}
+        </label>
+        <!-- Text, Email, Date, Time, Number, File Inputs -->
+        <input *ngIf="['text', 'email', 'date', 'time', 'number', 'file'].includes(field.type)" [type]="field.type"
+          [id]="field.name" class="form-control" [class]="field.class? field.class : null" [name]="field.name"
+          [(ngModel)]="FormData[field.name]" [required]="field.required" [min]="field.min || null"
+          [max]="field.max || null" [accept]="field.type === 'file' ? field.accept || '*' : null"
+          [class.invalid]="field.name.invalid && field.name.touched"
+          [readOnly]=" field.isReadOnly == true"
+          [placeholder]="field.placeHolder? field.placeHolder : field.name === 'password' ? 'Enter password' : field.label"
+          (keyup)="field.eventEmit?.keyup ? handleEvent(field.eventEmit.keyup, $event) : null"
+          (click)="field.eventEmit?.click ? handleEvent(field.eventEmit.click, $event) : null"
+          (change)="field.eventEmit?.change ? handleEvent(field.eventEmit.change, $event) : null" />
 
-      <div class="text-end mt-3">
+
+       
+
+          <app-common-select-box 
+          *ngIf="field.type === 'select'"
+          [dataList]="field.options" 
+          [id]="field.optionValue" 
+          [name]="field.optionText" 
+          (valueChange)="onValueReceived($event)" 
+          [searchExprOption]="[field.optionText]" 
+          [disabled]="field.isReadOnly == true"  
+          [selectedValue]="FormData[field.name]"
+          [fieldName]="field.name"
+          [isApiCall]="field.isApiCall"
+          [flag]="field.flag"
+          >
+        </app-common-select-box>
+
+        <!-- Radio Buttons -->
+        <div *ngIf="field.type === 'radio'" class="form-check">
+          <div *ngFor="let option of field.options" class="form-check-inline">
+            <input [type]="field.type" [id]="field.name + '_' + option" class="form-check-input" [name]="field.name"
+              [value]="option" [(ngModel)]="FormData[field.name]" [required]="field.required" />
+            <label [for]="field.name + '_' + option" class="form-check-label">
+              {{ option }}
+            </label>
+          </div>
+        </div>
+
+        <!-- Checkbox -->
+        <div *ngIf="field.type === 'checkbox'" class="form-check">
+          <input [type]="field.type" [id]="field.name" class="form-check-input" [name]="field.name"
+            [(ngModel)]="FormData[field.name]" />
+          <label [for]="field.name" class="form-check-label">
+            {{ field.label }}
+          </label>
+        </div>
+
+      </div>
+
+      <!-- <div class="text-end mt-3">
         <button class="btn btn-outline-primary" (click)="SendOtpbtn()">
           Send OTP <i class="fa fa-paper-plane ms-2"></i>
+        </button>
+      </div> -->
+      <div class="text-end mt-3">
+        <button class="btn btn-outline-primary" (click)="submitBtn()">
+          Save <i class="fa fa-paper-plane ms-2"></i>
         </button>
       </div>
     </div>

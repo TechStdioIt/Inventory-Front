@@ -6,6 +6,7 @@ export class Category {
   export class Login{
     userName:string ='';
     password :string ='';
+    businessMasterId:number=0;
     rememberMe:boolean = false;
   }
   export class Role {

@@ -13,6 +13,7 @@ export class CommonAutoCompleteApiComponent {
   @Input() dataSource:any = [];
   @Input() valueExpr: string = 'id';
   @Input() displayExpr: string = 'name';
+  @Input() placeholder: string = 'Start typing...';
   @Input() api:string = '';
   @Input() flag:number = 0;
   @Input() searchExprOption: string[] = ['name'];
@@ -26,10 +27,11 @@ export class CommonAutoCompleteApiComponent {
   constructor(private dataService: HttpClientConnectionService) {}
 
   onValueChanged(event: any) {
+    debugger;
     this.selectedItem = this.dataSource.find((x: any) => x.name === event.value);
     // { value: event.value, fieldName: this.fieldName, emiter: this.parentEmitter }
     if(this.selectedItem){
-      this.valueChange.emit({ value: this.selectedItem[this.valueExpr], fieldName: this.fieldName,text:this.selectedItem[this.displayExpr],showField:this.showFieldName });
+      this.valueChange.emit({ value: this.selectedItem.id, fieldName: this.fieldName,text:this.selectedItem[this.displayExpr],showField:this.showFieldName });
     }
     
   }
@@ -37,6 +39,7 @@ export class CommonAutoCompleteApiComponent {
   searchCategories = (e: any) => {
     const searchTerm = e.component.option('text'); // Get the input text
     let url = this.makeApiUrl(searchTerm);
+ 
     if (searchTerm.length >= 3) {
       this.isLoading = true;
       this.dataService.GetData(url).subscribe((data: any) => {

@@ -23,6 +23,7 @@
                 name="password" 
                 #password="ngModel"
                 [(ngModel)]="loginFormData.password"/>
+
               
               <button 
                 class="input-group-text" 
@@ -30,6 +31,25 @@
                 type="button">
                 <i class="feather" [ngClass]="showPassword ? 'icon-eye-off' : 'icon-eye'"></i>
               </button>
+            </div>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon3"><i class="feather icon-list"></i></span>
+              <dx-select-box [dataSource]="DD_BusinessMasterId" displayExpr="name" valueExpr="id"
+                                        class="input-label" [searchEnabled]="true"
+                                        labelMode="outside" name="businessMasterId" #businessMasterId="ngModel"
+                                        [(ngModel)]="loginFormData.businessMasterId"></dx-select-box>
+
+              <!-- <select 
+                class="form-control"
+                name="businessMasterId"
+                #businessMasterId="ngModel"
+                [(ngModel)]="loginFormData.businessMasterId">
+                <option value="Select user type" disabled selected>Select user type</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+                <option value="guest">Guest</option>
+              </select> -->
             </div>
             
             <div class="form-group text-start mt-2">

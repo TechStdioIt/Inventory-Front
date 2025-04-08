@@ -139,6 +139,8 @@ import { DeliveryOrderPendingListComponent } from './Components/DeliveryOrder/de
 import { ProductDiscountListComponent } from './Components/ProductDiscount/product-discount-list/product-discount-list.component';
 import { ProductDiscountFormComponent } from './Components/ProductDiscount/product-discount-form/product-discount-form.component';
 import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.component';
+import { ReportViewerComponent } from './Components/Reports/report-viewer/report-viewer.component';
+import { DxReportViewerModule } from 'devexpress-reporting-angular';
 
 @NgModule({
   declarations: [
@@ -234,7 +236,8 @@ import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.co
     DeliveryOrderPendingListComponent,
     ProductDiscountListComponent,
     ProductDiscountFormComponent,
-    SalesFormComponent
+    SalesFormComponent,
+    ReportViewerComponent
 
   ],
   imports: [
@@ -279,12 +282,14 @@ import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.co
   DxSortableModule,
   HttpClientModule,
   ToastrModule.forRoot(),
+  DxReportViewerModule,
   NgMultiSelectDropDownModule.forRoot()
 ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     DatePipe
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [DxReportViewerModule]
 })
 export class AppModule {}

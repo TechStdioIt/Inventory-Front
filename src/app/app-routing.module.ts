@@ -67,6 +67,8 @@ import { ProductDiscountFormComponent } from './Components/ProductDiscount/produ
 import { WhListComponent } from './Components/MasterSetup/WareHouse/wh-list/wh-list.component';
 import { WhFormComponent } from './Components/MasterSetup/WareHouse/wh-form/wh-form.component';
 import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.component';
+import { ReportViewModel } from 'devexpress-reporting/dx-reportdesigner';
+import { ReportViewerComponent } from './Components/Reports/report-viewer/report-viewer.component';
 
 const routes: Routes = [
   {
@@ -346,7 +348,10 @@ const routes: Routes = [
       {
         path:"salesForm",
         component:SalesFormComponent
-      },
+      },{
+        path:'reports',
+        component:ReportViewerComponent
+      }
     ]
   },
   {
