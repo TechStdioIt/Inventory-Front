@@ -20,8 +20,7 @@ export class ReportViewerComponent implements OnInit {
   invokeAction: string = 'DXXRDV';
   host  : any =environment.reportUrl;
   reportName : any = 'rptSalesInvoice';
-  do: any = 'preview';
-
+  isPrint:boolean =false;
 
 
   CustomizeMenuActions(event:any) {
@@ -43,15 +42,19 @@ export class ReportViewerComponent implements OnInit {
         isPrint: params['isPrint'],
         
       }
+      this.isPrint= data.isPrint;
       this.reportName = JSON.stringify(data);
 
     });
    }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.viewer.bindingSender.Print(0);
-    }, 3000);
+    if(this.isPrint){
+      setTimeout(() => {
+        this.viewer.bindingSender.Print(0);
+      }, 3000);
+    }
+  
   }
 
 }
