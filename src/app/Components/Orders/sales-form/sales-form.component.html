@@ -15,15 +15,16 @@
   <div class="row">
     <!-- Product List Section -->
     <div class="col-md-6">
-      <input type="text" class="form-control mb-3" placeholder="Search All" />
+      <input type="text" class="form-control mb-3" placeholder="Search All" (keyup)="onSearchProduct($event)"/>
       <div class="row g-3">
         <div *ngIf="productList.length > 0; else noData">
           <div class="row g-3">
-            <div class="col-md-4" *ngFor="let field of productList" (click)="onProductSelect(field)">
+            <div class="col-md-4" *ngFor="let field of productList" (click)="onProductSelect(field,true)">
               <div class="product card" style="height: 150px; overflow-y: auto;">
                 <div class="card-body text-center">
                   <img class="imageSet" [src]="field.imageUrl" alt="Product Image" />
-                  <div class="title">{{ field.name }}</div>
+                  <div class="title">{{ field.name }} -</div>
+                  <div class="title">{{ field.batchNo }}</div>
                   <div class="availableqty">
                     Available: <b>{{ field.avaiableQty }} {{ field.unitName }}</b>
                   </div>
@@ -60,7 +61,7 @@
           <app-common-auto-complete-api
           [dataSource]=""
           [searchExprOption]="['name']"
-          [selectedValue]=""
+          [selectedValue]="selectedValue"
           [isReadOnly]="false"
           [flag]="1"
           [valueExpr]="'name'"

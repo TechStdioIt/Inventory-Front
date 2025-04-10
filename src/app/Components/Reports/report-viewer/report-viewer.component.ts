@@ -40,7 +40,7 @@ export class ReportViewerComponent implements OnInit {
         reportName: params['reportName'],
         do: params['do'],
         isPrint: params['isPrint'],
-        
+        qty:params['repoQty']
       }
       this.isPrint= data.isPrint;
       this.reportName = JSON.stringify(data);
@@ -56,5 +56,7 @@ export class ReportViewerComponent implements OnInit {
     }
   
   }
-
+  print() {
+    this.viewer.bindingSender.Print(0);
+} 
 }

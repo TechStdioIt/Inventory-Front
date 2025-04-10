@@ -23,6 +23,7 @@ export class CommonAutoCompleteApiComponent {
   @Input() showFieldName: string = '';
   @Input() isReadOnly: boolean = false;
   @Output() valueChange = new EventEmitter<any>();
+  @Input() dependencyValue:number=0;
 
   constructor(private dataService: HttpClientConnectionService) {}
 
@@ -50,8 +51,9 @@ export class CommonAutoCompleteApiComponent {
   };
 
   makeApiUrl(searchTerm: string) {
-    let url = `Administrator/GetDropDownBySearchString?flag=${this.flag}&searchText=${searchTerm}`;
+    let url = `Administrator/GetDropDownBySearchString?flag=${this.flag}&searchText=${searchTerm}&poid=${this.dependencyValue}`;
     return url;
   }
+  
 
 }

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { escape } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { Customer } from 'src/app/Models/Customer';
 import { OrderDetailsVM, OrderVM } from 'src/app/Models/SalesInvoice';
@@ -21,8 +22,8 @@ export class SalesFormComponent implements OnInit {
   isPopupVisible: boolean = false;
   FormData: any = new Customer();
   showOTPInputBox: boolean = false;
-
-
+  allProductList :any[]=[];
+selectedValue:string | null= ''
 masterData:OrderVM=new OrderVM();
 
 
@@ -31,7 +32,7 @@ masterData:OrderVM=new OrderVM();
     { type: 'text', name: 'address', label: 'Customer Address', required: true, column: 4 },
     { type: 'text', name: 'phone', label: 'Mobile', required: true, column: 4 },
     { type: 'text', name: 'email', label: 'Email', required: true, column: 4 },
-    { type: 'select', name: 'customerTypeId', label: 'Type of Customer', required: true, column: 4, options: [], optionValue: 'id', optionText: 'name' },
+    { type: 'select', name: 'customerTypeId', label: 'Type of Customer', required: true, column: 4, options: [], optionValue: 'id', optionText: 'name',isApiCall:false,flag:7 },
     { type: 'text', name: 'city', label: 'City', required: true, column: 4 },
     { type: 'number', name: 'cp', label: 'Customer CP', required: true, column: 4 },
     { type: 'text', name: 'zipCode', label: 'ZipCode', required: true, column: 4 },
@@ -39,13 +40,11 @@ masterData:OrderVM=new OrderVM();
   ];
 
 
-  constructor(private dataService: HttpClientConnectionService, private commonService: CommonService, private toastr: ToastrService,private router:Router) { }
+  constructor(private dataService: HttpClientConnectionService, private commonService: CommonService, private toastr: ToastrService,private router:Router,private cdr:ChangeDetectorRef) { }
   ngOnInit(): void {
     this.GetAllCategory();
     this.onCategoryChange(0);
-    this.commonService.getDropDownData(7).subscribe((data: any) => {
-      this.formdata.find(field => field.name === 'customerTypeId').options = data
-    })
+    
   }
   GetAllCategory() {
     this.dataService.GetData('Category/GetAllCategory?take=1000&skip=0').subscribe((data: any) => {
@@ -57,13 +56,15 @@ masterData:OrderVM=new OrderVM();
     this.dataService.GetData(`Products/GetAllProductByCategoryId?catgoryId=${catId}`).subscribe((data: any) => {
       if (data) {
         this.productList = data.data;
+        this.allProductList = data.data;
+        this.cdr.detectChanges();
       } else {
         this.productList = [];
       }
 
     })
   }
-  onProductSelect(selectedProduct: any) {
+  onProductSelect(selectedProduct: any,isUpdate:boolean) {
 
     var checkExist = this.selectedProductList.find(x => x.purchaseDetailsId == selectedProduct.purchaseDetailsId);
     if (!checkExist) {
@@ -82,11 +83,29 @@ masterData:OrderVM=new OrderVM();
       this.selectedProductList.push(newProduct);
       this.totalAmountCalculate();
     } else {
-      this.updateQty(selectedProduct, 'add');
+      if(isUpdate){
+        this.updateQty(selectedProduct, 'add');
+      }
+     
     }
 
   }
-
+  onSearchProduct(evt: any) {
+    const searchItem = evt.target.value; 
+    if(searchItem){
+      this.productList = this.productList.filter(product =>
+        product.name.toLowerCase().includes(searchItem.toLowerCase()) 
+      );
+      if(this.productList.length >0){
+        if(this.productList.length ==1){
+          this.onProductSelect(this.productList[0],false);
+        }
+      }
+    }else{
+      this.productList = this.allProductList
+    }
+  
+  }
   totalAmountCalculate() {
     let subTotal = 0;
     let discountTotal = 0;
@@ -102,7 +121,7 @@ masterData:OrderVM=new OrderVM();
       discountTotal += qty * discount;
       vatTotal += qty * vat;
     });
-debugger;
+
     this.masterData.subTotal = subTotal;
     this.masterData.discount = discountTotal;
     this.masterData.netTotal = this.masterData.subTotal - this.masterData.discount;
@@ -218,9 +237,10 @@ debugger;
     this.dataService.PostData('Customer/CreateOrUpdateCustomer', this.FormData).subscribe(
       (res) => {
         this.toastr.success('Successfull', `Customer Information`);
+
         this.FormData = new Customer();
         this.isPopupVisible = false;
-        
+
       },
       (err) => {
         this.toastr.error('Please Try Again', 'Invalid Information!!');
@@ -240,29 +260,37 @@ debugger;
 
   onCharge(isPrint:boolean){
     this.SetUpData();
-    this.dataService.PostData('SalesOrder/CreateOrUpdateOrder',this.masterData).subscribe(
-      (res:any) => {
-        this.toastr.success('Successfull', `Customer Information`);
-        this.masterData = new OrderVM();
-        if(isPrint){
-          debugger;
+    if(this.masterData.customerId != 0){
+      this.dataService.PostData('SalesOrder/CreateOrUpdateOrder',this.masterData).subscribe(
+        (res:any) => {
+          this.toastr.success('Successfull', `Customer Information`);
+          this.masterData = new OrderVM();
+          this.selectedValue =null
+          if(isPrint){
+            debugger;
+            
+            const newUrl = this.router.serializeUrl(
+              this.router.createUrlTree(['/reports'], { queryParams: { reportName: 'rptSalesInvoices', do: res.data[0].OrderId,isPrint:isPrint } })
+            );
+            
+            // Open in new tab or window
+            window.open(newUrl, '_blank');
+          }
+          this.onCategoryChange(0) ;
+          this.cdr.detectChanges();
+          this.masterData = new OrderVM();
+          this.selectedProductList = [];
           
-          const newUrl = this.router.serializeUrl(
-            this.router.createUrlTree(['/reports'], { queryParams: { reportName: 'rptDemo', do: res.data[0].OrderId,isPrint:isPrint } })
-          );
-          
-          // Open in new tab or window
-          window.open(newUrl, '_blank');
+        },
+        (err) => {
+          this.toastr.error('Please Try Again', 'Invalid Information!!');
+          console.log(err);
         }
-    
-        this.selectedProductList = [];
-        
-      },
-      (err) => {
-        this.toastr.error('Please Try Again', 'Invalid Information!!');
-        console.log(err);
-      }
-    );
+      );
+    }else{
+      this.toastr.error('Pls Select Customer','Error Customer Selection')
+    }
+  
 
   }
   SetUpData(){

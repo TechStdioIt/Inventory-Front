@@ -276,7 +276,7 @@ const routes: Routes = [
         component:PendingorderListComponent
       },
       {
-        path:"orderList",
+        path:"salesOrderList",
         component:OrderListComponent
       },
       {

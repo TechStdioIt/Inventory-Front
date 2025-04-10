@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
@@ -24,12 +24,47 @@ export class PrintLabelListComponent implements OnInit {
   insertOrUpdateAPI: string = 'Brand/CreateOrUpdate';
   getDataByIdAPI: string = 'Brand/GetById';
   listRoute: string = '/brandList';
-
   masterData:OrderVM=new OrderVM();
 
   formdata: any[] = [
-    { type: 'text', name: 'name', label: 'Qunatity', required: true,column:4},
-    { type: 'select', name: 'warehouseId', label: 'Warehouse', required: true, column: 4, options: [] },
+    { 
+      type: 'select', 
+      name: 'warehouseId',
+       label: 'Warehouse',
+        required: true, 
+        column: 4, 
+        options: [] ,
+        optionText:'name',
+        optionValue:'id',
+        isApiCall:true,
+        api:'WareHouse/GetAllWareHouse?take=1000&skip=0'
+      },
+    { 
+      type: 'select', 
+      name: 'poId', 
+      label: 'Batch No', 
+      required: true, 
+      column: 4, 
+      options: [],
+      optionText:'batchNo',
+      optionValue:'id' ,
+      isApiCall:true,
+      api:'PurchasOrder/GetAllpurchaseOrder?take=1000&skip=0'
+    },
+    { type: 'auto-complete', name: 'productId', label: 'Product', required: true, column: 4, flag:3,minSearchLengthOption:2,optionText:'name' },
+    { type: 'text', name: 'qty', label: 'Qunatity', required: true,column:4},
+    { 
+      type: 'select', 
+      name: 'perPage',
+       label: 'PerPage Quantity',
+        required: true, 
+        column: 4, 
+        options: [] ,
+        optionText:'name',
+        optionValue:'id',
+        isApiCall:false,
+        flag:13
+      },
     
   ];
 
@@ -42,7 +77,8 @@ export class PrintLabelListComponent implements OnInit {
     private router:ActivatedRoute,
     private route:Router,
     private location:Location,
-    public gridHandleService:GridHandlerService
+    public gridHandleService:GridHandlerService,private cdr:ChangeDetectorRef
+
   ) {
     this.router.queryParams.subscribe((data:any)=>{
       if(data.do !=undefined && data !=null){
@@ -68,17 +104,13 @@ export class PrintLabelListComponent implements OnInit {
   }
   ngOnInit(): void {
 
-    this.getwarehouse();
+   
   }
+
   onSubmit(form: NgForm) {
     this.insertOrUpdate(form);
   }
-  getwarehouse() {
-    return this.dataService.GetData('WareHouse/GetAllWareHouse?take=1000&skip=0').subscribe((data: any) => {
-      ;
-      this.formdata.find(field => field.name === 'warehouseId').options = data.data;
-    })
-  }
+
   onValueChangedAutoSelect(eventData: { value: any; fieldName?: any, text?: any, showField?: any, emiter?: any }) {
     this.masterData.customerId = eventData.value;
   }
@@ -112,6 +144,19 @@ export class PrintLabelListComponent implements OnInit {
       console.error(`Function ${functionName} is not defined`);
     }
   } 
-  
+  onValueReceived(eventData: { value: any; fieldName?: any }) {
+    debugger;
+    this.FormData[eventData.fieldName] = eventData.value;
+    debugger;
+    this.cdr.detectChanges();
+  }
+  onGenerate(){
+    const newUrl = this.route.serializeUrl(
+      this.route.createUrlTree(['/reports'], { queryParams: { reportName: 'ProductBarCode', do: this.FormData.productId,isPrint:false,repoQty:this.FormData.qty } })
+    );
+    
+    // Open in new tab or window
+    window.open(newUrl, '_blank');
+  }
 }
 

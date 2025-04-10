@@ -12,23 +12,7 @@
             <!-- Loop through the form model -->
             <div class="row mb-3">
               
-              <div class="col-5">
-                <label for="">Select Product</label>
-                <app-common-auto-complete-api
-                [dataSource]=""
-                [searchExprOption]="['name']"
-                [selectedValue]=""
-                [isReadOnly]="false"
-                [flag]="1"
-                [valueExpr]="'name'"
-                [displayExpr]="'name'"
-                [showFieldName]="''"
-                [minSearchLengthOption]="4"
-                [placeholder]="'Select Product'"
-                (valueChange)="onValueChangedAutoSelect($event)"
-                >
-                </app-common-auto-complete-api>
-              </div>
+            
               
 
               
@@ -36,6 +20,24 @@
                  <label [for]="field.name" class="col-sm-12 col-form-label">
                     {{ field.label }}
                   </label>
+
+
+                  <app-common-auto-complete-api
+                [dataSource]=""
+                *ngIf="field.type == 'auto-complete'"
+                [searchExprOption]="[field.optionText]"
+                [selectedValue]=""
+                [isReadOnly]="false"
+                [flag]="field.flag"
+                [valueExpr]="field.optionText"
+                [displayExpr]="field.optionText"
+                [showFieldName]="''"
+                [minSearchLengthOption]="field.minSearchLengthOption"
+                [dependencyValue]="this.FormData.poId??0"
+                [placeholder]="'Select Product'"
+                (valueChange)="onValueChangedAutoSelect($event)"
+                >
+                </app-common-auto-complete-api>
                 <!-- Text, Email, Date, Time, Number, File Inputs -->
                 <input
                   *ngIf="['text', 'email', 'date', 'time', 'number', 'file'].includes(field.type)"
@@ -59,22 +61,20 @@
 
 
                 <!-- Select Dropdown -->
-                <select
-                  *ngIf="field.type === 'select' && field.options?.length > 0"
-                  [id]="field.name"
-                  class="form-control"
-                  [name]="field.name"
-                  [(ngModel)]="FormData[field.name]"
-                  [required]="field.required"
+                <app-common-select-box 
+                *ngIf="field.type === 'select'"
+                [dataList]="field.options" 
+                [id]="field.optionValue" 
+                [name]="field.optionText" 
+                (valueChange)="onValueReceived($event)" 
+                [searchExprOption]="[field.optionText]" 
+                [selectedValue]="FormData[field.name]"
+                [fieldName]="field.name"
+                [isApiCall]="field.isApiCall"
+                [flag]="field.flag"
+                [apiUrl]="field.api"
                 >
-                  <option [value]="null">{{ field.optionLabel || 'Select' }}</option>
-                  <option
-                    *ngFor="let option of field.options"
-                    [value]="option[field.optionValue]"
-                  >
-                    {{ option[field.optionText] }}
-                  </option>
-                </select>
+              </app-common-select-box>
 
                 <!-- Radio Buttons -->
                 <div *ngIf="field.type === 'radio'" class="form-check">
@@ -115,8 +115,9 @@
                 </div>
                
               </div>
+            
             </div>
-            <button>Genarate </button>
+            <button (click)="onGenerate()">Genarate </button>
 
           </form>
         </div>
