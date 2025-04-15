@@ -144,6 +144,8 @@ import { DxReportViewerModule } from 'devexpress-reporting-angular';
 import { BrandFormComponent } from './Components/Brands/brand-form/brand-form.component';
 import { BrandListComponent } from './Components/Brands/brand-list/brand-list.component';
 import { PrintLabelListComponent } from './Components/PrintLabel/print-label-list/print-label-list.component';
+import { BranchListComponent } from './Components/MasterSetup/Branch/branch-list/branch-list.component';
+import { BranchFormComponent } from './Components/MasterSetup/Branch/branch-form/branch-form.component';
 
 @NgModule({
   declarations: [
@@ -244,7 +246,9 @@ import { PrintLabelListComponent } from './Components/PrintLabel/print-label-lis
     ProductDiscountListComponent,
     ProductDiscountFormComponent,
     SalesFormComponent,
-    ReportViewerComponent
+    ReportViewerComponent,
+    BranchListComponent,
+    BranchFormComponent
 
   ],
   imports: [
