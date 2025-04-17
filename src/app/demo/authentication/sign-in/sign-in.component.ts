@@ -24,7 +24,7 @@ export default class SignInComponent implements OnInit {
   loginFormData: Login = new Login();
   isCheckingAuth: boolean = false; // Prevent UI flashing
   DD_BusinessMasterId: DD_BusinessMasterId[] = [];
-
+branchList:any[]=[];
   constructor(
     private route: Router,
     private dataService: HttpClientConnectionService,
@@ -40,6 +40,10 @@ export default class SignInComponent implements OnInit {
 
   // Check if user is already authenticated
   checkAuthentication(): void {
+    debugger
+    this.dataService.GetData('Branch/GetBranchListByMaster?businessMasterId='+this.loginFormData.businessMasterId).subscribe((data:any)=>{
+      this.branchList=data.data;
+    })
     // this.loginFormData.userName = this.commonService.getCookie('userName');
     // this.loginFormData.password = this.commonService.getCookie('password');
 

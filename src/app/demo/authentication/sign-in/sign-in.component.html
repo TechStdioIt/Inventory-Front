@@ -53,10 +53,10 @@
             </div>
             <div class="input-group mb-3">
               <span class="input-group-text" id="basic-addon3"><i class="feather icon-list"></i></span>
-              <dx-select-box [dataSource]="DD_BusinessMasterId" displayExpr="name" valueExpr="id"
+              <dx-select-box [dataSource]="this.branchList" displayExpr="branchName" valueExpr="id"
                                         class="input-label" [searchEnabled]="true"
-                                        labelMode="outside" name="businessMasterId" #businessMasterId="ngModel"
-                                        [(ngModel)]="loginFormData.businessMasterId"></dx-select-box>
+                                        labelMode="outside" name="branchId" #branchId="ngModel"
+                                        [(ngModel)]="loginFormData.branchId"></dx-select-box>
             </div> 
             <div class="form-group text-start mt-2">
               <div class="checkbox checkbox-primary d-inline">

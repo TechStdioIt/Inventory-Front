@@ -8,6 +8,7 @@ export class Category {
     password :string ='';
     businessMasterId:number=0;
     rememberMe:boolean = false;
+    branchId:number=0
   }
   export class Role {
     id: string='';
