@@ -74,6 +74,7 @@ import { BrandFormComponent } from './Components/Brands/brand-form/brand-form.co
 import { PrintLabelListComponent } from './Components/PrintLabel/print-label-list/print-label-list.component';
 import { BranchListComponent } from './Components/MasterSetup/Branch/branch-list/branch-list.component';
 import { BranchFormComponent } from './Components/MasterSetup/Branch/branch-form/branch-form.component';
+import { RegeionFormComponent } from './Components/Regeion/regeion-form/regeion-form.component';
 
 const routes: Routes = [
   {
@@ -377,6 +378,10 @@ const routes: Routes = [
         path:"branchForm",
         component:BranchFormComponent
       },
+      {
+        path:"RegeionForm",
+        component:RegeionFormComponent
+      }
     ]
   },
   {

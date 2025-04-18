@@ -27,7 +27,6 @@ export class CommonService {
   }
 
   getDropDownData(flag: number) {
-    debugger;
     return this.GetDataById(`Administrator/GetDropdownData?flag=${flag}`);
   }
 

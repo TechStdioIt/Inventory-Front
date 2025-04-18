@@ -146,6 +146,7 @@ import { BrandListComponent } from './Components/Brands/brand-list/brand-list.co
 import { PrintLabelListComponent } from './Components/PrintLabel/print-label-list/print-label-list.component';
 import { BranchListComponent } from './Components/MasterSetup/Branch/branch-list/branch-list.component';
 import { BranchFormComponent } from './Components/MasterSetup/Branch/branch-form/branch-form.component';
+import { RegeionFormComponent } from './Components/Regeion/regeion-form/regeion-form.component';
 
 @NgModule({
   declarations: [
@@ -248,7 +249,8 @@ import { BranchFormComponent } from './Components/MasterSetup/Branch/branch-form
     SalesFormComponent,
     ReportViewerComponent,
     BranchListComponent,
-    BranchFormComponent
+    BranchFormComponent,
+    RegeionFormComponent
 
   ],
   imports: [
