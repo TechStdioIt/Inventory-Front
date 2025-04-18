@@ -78,7 +78,8 @@ masterData:OrderVM=new OrderVM();
         totalPrice: selectedProduct.sellRate,
         purchaseDetailsId: selectedProduct.purchaseDetailsId,
         sellDiscount: selectedProduct.sellDiscount,
-        vat: selectedProduct.vat ?? 0
+        vat: selectedProduct.vat ?? 0,
+        actualSellRate:selectedProduct.sellRate
       };
       this.selectedProductList.push(newProduct);
       this.totalAmountCalculate();
@@ -162,7 +163,7 @@ masterData:OrderVM=new OrderVM();
         }
 
       }
-      checkExist.totalPrice = Number(checkExist.sellRate) * Number(checkExist.qty);
+      checkExist.totalPrice = Number(checkExist.actualSellRate) * Number(checkExist.qty);
       this.totalAmountCalculate();
     }
 
@@ -298,9 +299,14 @@ masterData:OrderVM=new OrderVM();
     this.selectedProductList.forEach(element => {
       var details = new OrderDetailsVM();
       details.orderQty = element.qty;
-      details.purchaseDetailsId = element.purchaseDetailsId
+      details.purchaseDetailsId = element.purchaseDetailsId;
+      details.actualSellRate = element.actualSellRate
       detailsList.push(details);
     });
     this.masterData.ordersList = detailsList;
+  }
+  onActualSellRateChange(item:any){
+    item.totalPrice = Number(item.actualSellRate) * Number(item.qty);
+    this.totalAmountCalculate();
   }
 }

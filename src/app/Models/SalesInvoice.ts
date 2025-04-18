@@ -21,6 +21,7 @@ export class SalesInvoice {
     orderQty: number = 0;
     returnQty: number = 0;
     returnDate: Date = new Date();
+    actualSellRate:number=0
   }
   
   export class OrderVM {
