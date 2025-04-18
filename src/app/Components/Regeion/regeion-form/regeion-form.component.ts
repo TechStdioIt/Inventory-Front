@@ -1,20 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { camelCase, mapKeys } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, takeUntil } from 'rxjs';
-import { Regeion } from 'src/app/Models/Regeion';
-import { CommonService } from 'src/app/Services/common.service';
-import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
-
+import { Location } from '@angular/common';
+import { NgForm } from '@angular/forms';
+import { camelCase, flatMap, mapKeys } from 'lodash';
+import { GridHandlerService } from 'src/app/Services/GridHandler.service';
+import { Subject, take, takeUntil } from 'rxjs';
+import { Doctor, DoctorBrand, DoctorChamber, DoctorDegree, DoctorSpecialDay, DoctorSpeciality } from 'src/app/Models/Doctor';
+import { CommonService } from 'src/app/Services/common.service';
+import { Regeion } from 'src/app/Models/Regeion';
 @Component({
   selector: 'app-regeion-form',
   templateUrl: './regeion-form.component.html',
   styleUrl: './regeion-form.component.scss'
 })
-export class RegeionFormComponent implements OnInit,OnDestroy{
+export class RegeionFormComponent implements OnInit, OnDestroy {
   [key: string]: any;
   dropdownSettings = {};
   text: string = '';
@@ -27,14 +28,21 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
   getDataByIdAPI: string = 'ProductDiscount/GetByIdProductDis';
   listRoute: string = '/productWiseDiscountList';
   selectedItems: any[] = [];
-  selectedProduct: any;
+
+  //Only for Pharmacy
+  businessOptions = [
+    { id: true, name: 'Yes' },
+    { id: false, name: 'No' }
+  ];
 
   getModelClass(modelName: string): any {
     const modelMapping: { [key: string]: any } = {};
+
     return modelMapping[modelName] || Object;
   }
 
   formdata: any[] = [
+    
     {
       type: 'select',
       name: 'divisionId',
@@ -44,7 +52,7 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
       options: [],
       optionValue: 'id',
       optionText: 'name',
-      flag: 14,
+      flag: 14
     },
     {
       type: 'select',
@@ -54,9 +62,9 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
       column: 6,
       options: [],
       optionValue: 'id',
-      optionText: 'name',
-      flag: 11,
+      optionText: 'name'
     },
+
     {
       type: 'select',
       name: 'upazilaId',
@@ -66,10 +74,8 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
       options: [],
       optionValue: 'id',
       optionText: 'name',
-      flag: 11,
     },
-    { type: 'text', name: 'Name', label: 'SubArea Name', required: true, column: 6,},
-    
+    { type: 'text', name: 'name', label: 'SubArea Name', required: true, column: 6 },
   ];
 
   constructor(
@@ -77,6 +83,7 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
     private toastr: ToastrService,
     private router: ActivatedRoute,
     private route: Router,
+    private location: Location,
     public gridHandleService: GridHandlerService,
     private commonService: CommonService
   ) {
@@ -84,7 +91,7 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
       if (data.do != undefined && data != null) {
         this.getDataById(data.do);
       } else {
-        this.FormData = new Regeion();
+        this.FormData = new Doctor();
       }
     });
     this.gridHandleService.add$
@@ -110,15 +117,14 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
     this.destroy$.complete();
   }
   ngOnInit(): void {
-    this.formdata.filter(x=>x.type =='select' || x.type == 'multi-select').forEach((item:any) => 
-      {
-        if(item.flag){
-          this.commonService.getDropDownData(item.flag).subscribe((data:any)=>{
+    this.formdata
+      .filter((x) => x.type == 'select' || x.type == 'multi-select')
+      .forEach((item: any) => {
+        if (item.flag) {
+          this.commonService.getDropDownData(item.flag,'frommmmmm').subscribe((data: any) => {
             item.options = data;
           });
         }
-      
-  
       });
 
     this.dropdownSettings = {
@@ -135,20 +141,17 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
     this.insertOrUpdate(form);
   }
   getDataById(id: any) {
-    debugger;
     this.dataService.GetData(`${this.getDataByIdAPI}?id=` + id).subscribe((data: any) => {
       // this.FormData=data.data;
-     
-      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as Regeion;
-      this.FormData.activeFromDate = this.formatDate(this.FormData.activeFromDate);
-      this.FormData.expireDate = this.formatDate(this.FormData.expireDate);
+      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as Doctor;
     });
   }
   insertOrUpdate(form: NgForm) {
+    
     this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
       (res) => {
         this.toastr.success('Successfull', `${this.fromHeader} Information`);
-        this.FormData = new Regeion();
+        this.FormData = new Doctor();
         this.route.navigate([this.listRoute]);
         this.gridHandleService.selectedTab = 'List';
       },
@@ -214,55 +217,18 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
     this.FormData[fieldName] = [];
   }
   onValueReceived(eventData: { value: any; fieldName?: any }) {
-    debugger;
     this.FormData[eventData.fieldName] = eventData.value;
+
     let flagdata = [
-      { api: 'Unit/GetAllRegeionByParentId?parentId=', fieldName: 'divisionId', for: 'districtId' },
+      { api: 'Unit/GetAllSubAreaByDivisionId?divisionId=', fieldName: 'divisionId', for: 'districtId' },
+      { api: 'Unit/GetAllSubAreaByDistrictId?districtId=', fieldName: 'districtId', for: 'upazilaId' },
     ];
-    let filterflag = flagdata.find((x) => x.fieldName === eventData.fieldName);
-    if (filterflag) {
-      this.dataService
-        .GetData(filterflag.api + eventData.value)
-        .subscribe((data: any) => {
-          // datagot
-                
-          this.formdata.find((x) => x.name == filterflag.for).options = data.data;
 
-          // this.formdata.find((x) => x.name == filterflag.for).options = data.data;
-        });
-    }
-  
-    if (eventData.fieldName == 'productId') {
-      this.selectedProduct = this.formdata.find((x) => x.name == 'productId').options.find((x: any) => x.id === eventData.value);
-    }
-  }
+    flagdata.filter((x) => x.fieldName === eventData.fieldName).forEach((item) => {
+      this.dataService.GetData(item.api + eventData.value).subscribe((data: any) => {
+        this.formdata.find((x) => x.name == item.for).options = data.data;
+      });
+    });
 
-
-  formatDate(date: string | Date): string {
-    
-    debugger;
-    if (!date) return ''; // Handle undefined or null values
-
-    // If date is already a Date object, convert it to YYYY-MM-DD format
-    if (date instanceof Date) {
-      return date.toISOString().split('T')[0]; 
-    }
-
-    // If date is a string (from API), convert it to a Date object first
-    const parsedDate = new Date(date);
-    
-    if (isNaN(parsedDate.getTime())) {
-      console.error("Invalid date format:", date);
-      return ''; // Handle invalid date formats gracefully
-    }
-
-    return parsedDate.toISOString().split('T')[0]; // Extract YYYY-MM-DD
-  }
-
-
-  onValueSelect(event:any, fieldName: string)
-  {
-    debugger;
-    maxDate: new Date();
   }
 }

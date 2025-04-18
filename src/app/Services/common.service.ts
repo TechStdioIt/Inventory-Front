@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Subject, throwError } from 'rxjs';
+import { catchError, of, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe, Location } from '@angular/common';
 import { DD_Menu } from '../Models/drodown.model';
@@ -26,9 +26,15 @@ export class CommonService {
     this.location.back();
   }
 
-  getDropDownData(flag: number) {
-    return this.GetDataById(`Administrator/GetDropdownData?flag=${flag}`);
+  getDropDownData(flag: number, test: string = '') {
+    if (flag !== 0) {
+      return this.GetDataById(`Administrator/GetDropdownData?flag=${flag}`);
+    } else {
+      console.warn('Invalid flag passed:', flag);
+      return of([]); // <-- return an empty array observable instead of undefined
+    }
   }
+  
 
 
   // Method to fetch data by ID
