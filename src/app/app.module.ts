@@ -139,6 +139,14 @@ import { DeliveryOrderPendingListComponent } from './Components/DeliveryOrder/de
 import { ProductDiscountListComponent } from './Components/ProductDiscount/product-discount-list/product-discount-list.component';
 import { ProductDiscountFormComponent } from './Components/ProductDiscount/product-discount-form/product-discount-form.component';
 import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.component';
+import { ReportViewerComponent } from './Components/Reports/report-viewer/report-viewer.component';
+import { DxReportViewerModule } from 'devexpress-reporting-angular';
+import { BrandFormComponent } from './Components/Brands/brand-form/brand-form.component';
+import { BrandListComponent } from './Components/Brands/brand-list/brand-list.component';
+import { PrintLabelListComponent } from './Components/PrintLabel/print-label-list/print-label-list.component';
+import { BranchListComponent } from './Components/MasterSetup/Branch/branch-list/branch-list.component';
+import { BranchFormComponent } from './Components/MasterSetup/Branch/branch-form/branch-form.component';
+import { RegeionFormComponent } from './Components/Regeion/regeion-form/regeion-form.component';
 
 @NgModule({
   declarations: [
@@ -182,11 +190,15 @@ import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.co
     BankListComponent,
     BmFormComponent,
     BmListComponent,
+    PrintLabelListComponent,
+    WhFormComponent,
      CatagoryFormComponent,
     CatagoryListComponent,
     // StFormComponent,
     StListComponent,
      UnitFormComponent,
+     BrandFormComponent,
+     BrandListComponent,
     UnitListComponent,
     // WhFormComponent,
     WhListComponent,
@@ -234,7 +246,11 @@ import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.co
     DeliveryOrderPendingListComponent,
     ProductDiscountListComponent,
     ProductDiscountFormComponent,
-    SalesFormComponent
+    SalesFormComponent,
+    ReportViewerComponent,
+    BranchListComponent,
+    BranchFormComponent,
+    RegeionFormComponent
 
   ],
   imports: [
@@ -279,12 +295,14 @@ import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.co
   DxSortableModule,
   HttpClientModule,
   ToastrModule.forRoot(),
+  DxReportViewerModule,
   NgMultiSelectDropDownModule.forRoot()
 ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     DatePipe
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [DxReportViewerModule]
 })
 export class AppModule {}

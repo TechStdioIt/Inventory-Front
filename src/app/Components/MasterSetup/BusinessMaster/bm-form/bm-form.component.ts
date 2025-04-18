@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Suppliers } from 'src/app/Models/Suppliers';
@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { camelCase, mapKeys } from 'lodash';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { take } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-bm-form',
   templateUrl: './bm-form.component.html',
@@ -16,19 +17,26 @@ import { take } from 'rxjs';
 })
 export class BmFormComponent implements OnInit {
   [key: string]: any;
+   @ViewChild('fileInput') fileInput!: ElementRef;
   text: string = '';
+  fileData: string | ArrayBuffer | null = null; 
+  fileName: string = ''; // Stores the name of the uploaded file
   exist: boolean = false;
   FormData: any = new Suppliers();
   isSubmitting: boolean = false;
+  isDragging: boolean = false; // Toggles drag-and-drop styles
   fromHeader: string = 'Business Master';
   insertOrUpdateAPI: string = 'BusinessMaster/CreateOrUpdateBusinessMaster';
   getDataByIdAPI: string = 'Bank/GetBankById';
   listRoute: string = '/bankList';
-
+  selectedLogo?:File
   formdata: any[] = [
-    { type: 'text', name: 'name', label: 'Bank Name', required: true,column:6,placeHolder:"Enter Bank Name"},
-    { type: 'text', name: 'address', label: 'Address', required: true,column:6,placeHolder:"Enter Address Name"},
-    { type: 'text', name: 'branch', label: 'Branch', required: true,column:6,placeHolder:"Enter Branch Name"},
+    { type: 'text', name: 'businessName', label: 'Business Name', required: true,column:4,placeHolder:"Enter Bank Name"},
+    { type: 'text', name: 'ownerName', label: 'Owner Name', required: true,column:4,placeHolder:"Enter Address Name"},
+    { type: 'text', name: 'email', label: 'Email', required: true,column:4,placeHolder:"Enter Branch Name"},
+    { type: 'number', name: 'totalBranch', label: 'Total Branch', required: true,column:4,placeHolder:"Enter Branch Name"},
+    { type: 'text', name: 'contactNumber', label: 'Contact Number', required: true,column:4,placeHolder:"Enter Branch Name"},
+    { type: 'text', name: 'address', label: 'Address', required: true,column:4,placeHolder:"Enter Branch Name"}
 
   ];
 
@@ -77,19 +85,51 @@ export class BmFormComponent implements OnInit {
     })
   }
   insertOrUpdate(form: NgForm) {
-    this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
-      (res) => {
-        this.toastr.success('Successfull', `${this.fromHeader} Information`);
-       this.FormData = new Suppliers();
-       this.route.navigate([this.listRoute]);
-       this.gridHandleService.selectedTab = "List";
-      },
-      (err) => {
-        this.toastr.error('Please Try Again', 'Invalid Information!!');
-        console.log(err);
-      }
-    );
+    var data =new FormData();
+    debugger;
+          data.append('businessName',this.FormData.businessName);
+          data.append('id',this.FormData.id??0);
+          data.append('ownerName',this.FormData.ownerName);
+          data.append('email',this.FormData.email);
+          data.append('totalBranch',this.FormData.totalBranch.toString());
+          if (this.selectedLogo) {
+            data.append('logoFile',this.selectedLogo);
+          }
+         data.append('address',this.FormData.address);
+         data.append('contactNumber',this.FormData.contactNumber);
+          // if (this.FormData.businessTypeDetails.length >0) {
+          //   this.FormData.businessTypeDetails.forEach((detail:any, index:any) => {
+          //     data.append(`businessTypeDetails[${index}].businessTypeId`, detail.businessTypeId.toString());
+          //   });
+          // }
+          this.dataService.PostData('BusinessMaster/CreateOrUpdateBusinessMaster',data).subscribe((data:any)=>{
+            ;
+            this.route.navigate(['/bmList']);
+          },
+          (error:HttpErrorResponse)=>{
+          })
   }
+  removeFile(): void {
+    this.fileData = null;
+    this.fileName = '';
+    this.selectedLogo= undefined;
+  }
+    // Handle file selection
+    onFileSelected(event: Event): void {
+      const input = event.target as HTMLInputElement;
+      if (input.files && input.files.length > 0) {
+        const file = input.files[0];
+        this.fileName = file.name;
+        this.selectedLogo = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target?.result) {
+            this.fileData = e.target.result; // Store base64 image data
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    }
 
   handleEvent(functionName: string, event: any) {
     if (typeof this[functionName] === 'function') {
@@ -98,7 +138,39 @@ export class BmFormComponent implements OnInit {
       console.error(`Function ${functionName} is not defined`);
     }
   }
+ // Handle drag over
+ onDragOver(event: DragEvent): void {
+  event.preventDefault();
+  this.isDragging = true;
+}
 
+// Handle drag leave
+onDragLeave(event: DragEvent): void {
+  event.preventDefault();
+  this.isDragging = false;
+}
+
+// Handle drop
+onDrop(event: DragEvent): void {
+  event.preventDefault();
+  this.isDragging = false;
+
+  if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
+    const file = event.dataTransfer.files[0];
+    this.fileName = file.name;
+    this.selectedLogo = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target?.result) {
+        this.fileData = e.target.result; // Store base64 image data
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+}
+triggerFileInput() {
+  this.fileInput.nativeElement.click();
+}
   
 
   

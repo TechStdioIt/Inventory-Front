@@ -67,6 +67,14 @@ import { ProductDiscountFormComponent } from './Components/ProductDiscount/produ
 import { WhListComponent } from './Components/MasterSetup/WareHouse/wh-list/wh-list.component';
 import { WhFormComponent } from './Components/MasterSetup/WareHouse/wh-form/wh-form.component';
 import { SalesFormComponent } from './Components/Orders/sales-form/sales-form.component';
+import { ReportViewModel } from 'devexpress-reporting/dx-reportdesigner';
+import { ReportViewerComponent } from './Components/Reports/report-viewer/report-viewer.component';
+import { BrandListComponent } from './Components/Brands/brand-list/brand-list.component';
+import { BrandFormComponent } from './Components/Brands/brand-form/brand-form.component';
+import { PrintLabelListComponent } from './Components/PrintLabel/print-label-list/print-label-list.component';
+import { BranchListComponent } from './Components/MasterSetup/Branch/branch-list/branch-list.component';
+import { BranchFormComponent } from './Components/MasterSetup/Branch/branch-form/branch-form.component';
+import { RegeionFormComponent } from './Components/Regeion/regeion-form/regeion-form.component';
 
 const routes: Routes = [
   {
@@ -137,11 +145,11 @@ const routes: Routes = [
       },
       {
         path: 'storetypeList',
-        component: StListComponent
+        component: StoreTypeListComponent
       },
       {
         path: 'storetypeForm',
-        component: StFormComponent
+        component: StoreTypeFormComponent
       },
       {
         path: 'categoryList',
@@ -271,7 +279,7 @@ const routes: Routes = [
         component:PendingorderListComponent
       },
       {
-        path:"orderList",
+        path:"salesOrderList",
         component:OrderListComponent
       },
       {
@@ -346,7 +354,34 @@ const routes: Routes = [
       {
         path:"salesForm",
         component:SalesFormComponent
+      },{
+        path:'reports',
+        component:ReportViewerComponent
       },
+      {
+        path:"brandList",
+        component:BrandListComponent
+      },
+      {
+        path:"brandForm",
+        component:BrandFormComponent
+      },
+      {
+        path:"labelList",
+        component:PrintLabelListComponent
+      },
+      {
+        path:"branchList",
+        component:BranchListComponent
+      },
+      {
+        path:"branchForm",
+        component:BranchFormComponent
+      },
+      {
+        path:"RegeionForm",
+        component:RegeionFormComponent
+      }
     ]
   },
   {

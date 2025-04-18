@@ -14,7 +14,7 @@ export class UnitListComponent implements OnInit {
   fromHeader: string = 'Supplier';
   formRoute: string = '/unitForm';
   listAPI: string = 'Unit/GetAllUnit';
-  deleteAPI: string = 'Suppliers/DeleteSuppliers';
+  deleteAPI: string = 'Unit/DeletUnit';
   haveQueryPram: boolean = false;
   reloadCount: number = 0;
 

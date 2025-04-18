@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SimplifiedSearchMode } from 'devextreme/common';
+import { CommonService } from 'src/app/Services/common.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 
 @Component({
@@ -37,7 +38,7 @@ export class CommonSelectBoxComponent implements OnInit {
 
   searchTimeout: any;
 
-  constructor(private dataService: HttpClientConnectionService) {}
+  constructor(private dataService: HttpClientConnectionService,private commonService:CommonService) {}
   ngOnInit(): void {
     this.isApiCalled();
   }
@@ -47,6 +48,7 @@ export class CommonSelectBoxComponent implements OnInit {
   //   }
   // }
   onValueChanged(event: any): void {
+
     if (this.valueChange.observed) {
       if (this.fieldName != '' && this.fieldName != '' && this.fieldName != null) {
         this.valueChange.emit({ value: event.value, fieldName: this.fieldName, emiter: this.parentEmitter });
@@ -68,6 +70,16 @@ export class CommonSelectBoxComponent implements OnInit {
           }
         });
       }
+    }else{
+      this.commonService.getDropDownData(Number(this.flag)).subscribe((data: any) => {
+        if (data) {
+          if (data.data) {
+            this.dataList = data.data;
+          } else {
+            this.dataList = data;
+          }
+        }
+      });
     }
   }
   onSearch(event: any) {

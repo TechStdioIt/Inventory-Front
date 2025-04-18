@@ -25,8 +25,7 @@ export class WhListComponent  implements OnInit {
 
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
-    { caption: 'Name', key: 'wareHouseName' },
-    { caption: 'Distributer Name', key: 'branchName' },
+    { caption: 'Name', key: 'name' },
     { caption: 'Status', key: 'isActive' }
   ];
 

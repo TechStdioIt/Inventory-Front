@@ -19,7 +19,7 @@ export class UnitFormComponent implements OnInit {
   exist: boolean = false;
   FormData: any = new Unit();
   isSubmitting: boolean = false;
-  fromHeader: string = 'Supplier';
+  fromHeader: string = 'Brand';
   insertOrUpdateAPI: string = 'Unit/CreateOrUpdateUnit';
   getDataByIdAPI: string = 'Unit/GetUnitById';
   listRoute: string = '/unitList';

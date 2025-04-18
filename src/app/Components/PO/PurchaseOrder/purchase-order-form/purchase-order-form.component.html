@@ -43,6 +43,7 @@
               [fieldName]="field.name"
               [isApiCall]="field.isApiCall"
               [flag]="field.flag"
+              [apiUrl]="field.api"
             ></app-common-select-box>
 
             <!-- Radio Buttons -->
@@ -125,11 +126,12 @@
             </div>
             <dx-data-grid
             id="gridContainer"
-            [dataSource]="selectedItemList"
+            [dataSource]="this.FormData.purchasList"
             [showBorders]="true"
             (onRowInserted)="$event.component.navigateToRow($event.key)"
             (onCellValueChanged)="onCellValueChanged($event)"
             (onRowUpdated)="onRowUpdated($event)"
+            (onRowRemoved)="onRowRemoved($event)"
           >
             <dxo-editing mode="cell" [allowUpdating]="true" [allowDeleting]="true">
             </dxo-editing>

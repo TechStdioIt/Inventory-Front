@@ -25,16 +25,16 @@ export class PurchaseOrderFormComponent implements OnInit,OnDestroy {
   insertOrUpdateAPI: string = 'PurchasOrder/CreateOrUpdatePurchaseOrder';
   getDataByIdAPI: string = 'PurchasOrder/GetPOById';
   listRoute: string = '/purchaseOrderList';
-selectedItemList:any[]=[];
+//selectedItemList:any[]=[];
 allProduct:any[]=[];
 searchText: string = '';
 private destroy$ = new Subject<void>();
   formdata: any[] = [
-    { type: 'select', name: 'supplierId', label: 'Supplier Name', required: true,column:4,options:[],optionText:'name',optionValue:'id'},
+    { type: 'select', name: 'supplierId', label: 'Supplier Name', required: true,column:4,options:[],optionText:'companyName',optionValue:'id',isApiCall:true,api:'Suppliers/GetAllSuppliers?take=1000&skip=0'},
     { type: 'text', name: 'batchNo', label: 'Batch No', required: true ,column:4},
     { type: 'date', name: 'orderDate', label: 'Order Date', required: true ,column:4},
     { type: 'number', name: 'shippingCost', label: 'Shipping Cost', required: true ,column:4},
-    { type: 'select', name: 'paymentMethodId', label: 'Payment Method', required: true ,column:4,options:[],optionText:'name',optionValue:'id'},
+    { type: 'select', name: 'paymentMethodId', label: 'Payment Method', required: true ,column:4,options:[],optionText:'name',optionValue:'id',isApiCall:false,flag:6},
     { type: 'number', name: 'totalDiscount', label: 'Total Discount', required: true ,column:4,isReadOnly:true},
     { type: 'number', name: 'tax', label: 'Total Tax', required: true ,column:4,isReadOnly:true},
     { type: 'number', name: 'totalAmount', label: 'Total Amount', required: true ,column:4,isReadOnly:true},
@@ -74,8 +74,6 @@ private destroy$ = new Subject<void>();
     });
   }
   ngOnInit(): void {
-    this.getSupplierData();
-    this.getPaymentMethod();
     this.getProductList();
   }
   ngOnDestroy(): void {
@@ -83,24 +81,20 @@ private destroy$ = new Subject<void>();
     this.destroy$.complete();
   }
   getProductList(){
-    this.dataService.GetData('Products/GetAllProductData?take=100&skip=0').subscribe((data:any)=>{
+    this.dataService.GetData('Products/GetAllProductData?take=1000&skip=0').subscribe((data:any)=>{
       this.allProduct = data.data
     })
   }
-  getSupplierData(take:number =10,skip:number =0){
-this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).subscribe((data:any)=>{
-  this.formdata.find(field => field.name === 'supplierId').options = data.data.map((x:any) => ({ 
-    id: x.id, 
-    name: x.companyName 
-  }));
+//   getSupplierData(take:number =10,skip:number =0){
+// this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).subscribe((data:any)=>{
+//   this.formdata.find(field => field.name === 'supplierId').options = data.data.map((x:any) => ({ 
+//     id: x.id, 
+//     name: x.companyName 
+//   }));
   
-})
-  }
-  getPaymentMethod(){
-   this.commonService.getDropDownData(6).subscribe((data:any)=>{
-    this.formdata.find(field => field.name === 'paymentMethodId').options = data;
-   })
-  }
+// })
+//   }
+ 
   onSubmit(form: NgForm) {
     this.insertOrUpdate(form);
   }
@@ -168,15 +162,16 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     sellDiscount:option.sellDiscount,
     actualSellRate:option.actualSellRate
   };
-  this.selectedItemList.push(data);
+  //this.selectedItemList.push(data);
   this.FormData.purchasList.push(data);
 
  }
   
   selectProduct(option: any) {
-    
+    debugger
     // Check if the product already exists in selectedItemList based on productId (option.id)
-    const existingProduct = this.selectedItemList.find(item => item.productId === option.id);
+    const existingProduct = this.FormData.purchasList.find((item:any) => item.productId === option.id);
+    // const existingProduct = this.selectedItemList.find(item => item.productId === option.id);
     
     if (existingProduct) {
       this.toastr.error('Already Added','Duplicate!')
@@ -200,7 +195,7 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
         sellDiscount:0,
         actualSellRate:option.price
       };
-      this.selectedItemList.push(data);
+      //this.selectedItemList.push(data);
       this.FormData.purchasList.push(data);
       this.totalAmountCalculate();
     }
@@ -266,6 +261,19 @@ this.dataService.GetData(`Suppliers/GetAllSuppliers?take=${take}&skip=${skip}`).
     // You can refresh the grid if necessary (although DevExtreme usually handles this automatically)
     event.component.refresh();
     this.totalAmountCalculate();
+  }
+
+
+        
+  onRowRemoved(event: any) {
+    debugger;
+    const removedData = event.data;
+    // this.selectedItemList = this.selectedItemList.filter(item => item.productId !== removedData.productId);
+    // this.FormData.purchasList = this.selectedItemList;
+   
+    this.FormData.purchasList = this.FormData.purchasList.filter((item:any) => item.productId !== removedData.productId);
+    this.totalAmountCalculate();
+  
   }
 
 

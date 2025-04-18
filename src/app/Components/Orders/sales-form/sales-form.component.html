@@ -1,79 +1,319 @@
 <div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-2 sidebar p-3" >
-            <button class="btn btn-primary w-100 mb-2" (click)="onCategoryChange(0)">All</button>
-            <button class="btn btn-light w-100 mb-2" *ngFor="let field of categoryList" (click)="onCategoryChange(field.id)">{{field.name}}</button>
-        </div>
-        <div class="col-md-6">
-            <input type="text" class="form-control mb-3" placeholder="Search All">
-            <div class="row g-3">
-                <div *ngIf="productList.length > 0; else noData">
-                    <div class="row g-3">
-                      <div class="col-md-4" *ngFor="let field of productList" (click)="onProductSelect(field)">
-                        <div class="product card" style="height: 150px; overflow-y: auto;">
-                          <div class="card-body text-center">
-                            <img class="imageSet" [src]="field.imageUrl" alt="Product Image">
-                            
-                            <div class="title">{{ field.name }}</div>
-                            <div class="availableqty">Available: <b>{{field.avaiableQty}} {{field.unitName}}</b></div>
-                            <div class="price">TK. <b>{{ field.sellRate }}</b></div>
-                            <div class="disprice">Discount Amt. <b>{{ field.sellDiscount }}</b></div>
-                            <div class="totprice">Total Amt. <b>{{ field.actualSellRate }}</b></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- No Data Template -->
-                  <ng-template #noData>
-                    <div class="text-center p-5">
-                      <img src="../../../../assets/images/maintenance/noDataFound.jpg" alt="No Data" style="max-width: 200px;">
-                      <h5 class="mt-3">No Products Available</h5>
-                      <p>Please check back later or try a different category.</p>
-                    </div>
-                  </ng-template>
-                  
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="cart p-2 border rounded">
-                <h5>Cart</h5>
-                <ul class="list-group mb-3" >
-                    @for (item of selectedProductList; track $index) {
-                        <li class="list-group-item" >
-                            <div class="row align-items-center">
-    
-                                
-                                <!-- Product Name with Bootstrap Tooltip -->
-                                <div class="col-4 text-truncate" title="Kids' Sports Shoes">
-                                    <strong>{{item.productName}}</strong>
-                                    
-                                    <div class="small text-muted">Code: {{item.productCode}}</div>
-                                </div>
-                                <!-- Qty -->
-                                <div class="col-2 text-center">{{item.qty}}</div>
-                                <!-- Buttons -->
-                                <div class="col-4 d-flex justify-content-between">
-                                    <button class="btn btn-sm btn-outline-primary" (click)="updateQty(item,'add')"><i class="fa fa-plus"></i></button>
-                                    <button class="btn btn-sm btn-outline-secondary" (click)="updateQty(item,'minus')"><i class="fa fa-minus"></i></button>
-                                    <button class="btn btn-sm btn-outline-danger" (click)="onDeleteProdcut(item.purchaseDetailsId)"><i class="fa fa-trash"></i></button>
-                                </div>
-                                <!-- Price -->
-                                <div class="col-2 text-end">৳{{item.totalPrice}}</div>
-                            </div>
-                        </li>
-                    }
-                       
-                    
-                </ul>
-                
-                <h6>SubTotal: ৳{{productAmount}}</h6>
-                <button class="btn btn-primary w-100">Charge</button>
-            </div>
-        </div>
-        
+  <!-- Navbar (was Sidebar) -->
+  <nav class="navbar navbar-expand-md navbar-light bg-light mb-3 px-3">
+    <div class="container-fluid">
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-primary" (click)="onCategoryChange(0)">All</button>
+        <button class="btn btn-outline-secondary" *ngFor="let field of categoryList"
+          (click)="onCategoryChange(field.id)">
+          {{ field.name }}
+        </button>
+      </div>
     </div>
+  </nav>
+
+  <div class="row">
+    <!-- Product List Section -->
+    <div class="col-md-6">
+      <input type="text" class="form-control mb-3" placeholder="Search All" (keyup)="onSearchProduct($event)"/>
+      <div class="row g-3">
+        <div *ngIf="productList.length > 0; else noData">
+          <div class="row g-3">
+            <div class="col-md-4" *ngFor="let field of productList" (click)="onProductSelect(field,true)">
+              <div class="product card" style="height: 150px; overflow-y: auto;">
+                <div class="card-body text-center">
+                  <img class="imageSet" [src]="field.imageUrl" alt="Product Image" />
+                  <div class="title">{{ field.name }} -</div>
+                  <div class="title">{{ field.batchNo }}</div>
+                  <div class="availableqty">
+                    Available: <b>{{ field.avaiableQty }} {{ field.unitName }}</b>
+                  </div>
+                  <div class="price">TK. <b>{{ field.sellRate }}</b></div>
+                  <div class="disprice">
+                    Discount Amt. <b>{{ field.sellDiscount }}</b>
+                  </div>
+                  <div class="totprice">
+                    Total Amt. <b>{{ field.actualSellRate }}</b>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Data Template -->
+        <ng-template #noData>
+          <div class="text-center p-5">
+            <img src="../../../../assets/images/maintenance/noDataFound.jpg" alt="No Data" style="max-width: 200px" />
+            <h5 class="mt-3">No Products Available</h5>
+            <p>Please check back later or try a different category.</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Cart Section -->
+    <div class="col-md-6">
+
+      <div class="row mb-3">
+        <div class="col-10">
+
+          <app-common-auto-complete-api
+          [dataSource]=""
+          [searchExprOption]="['name']"
+          [selectedValue]="selectedValue"
+          [isReadOnly]="false"
+          [flag]="1"
+          [valueExpr]="'name'"
+          [displayExpr]="'name'"
+          [showFieldName]="''"
+          [minSearchLengthOption]="4"
+          [placeholder]="'customer Mobile No.'"
+          (valueChange)="onValueChangedAutoSelect($event)"
+          >
+          </app-common-auto-complete-api>
+
+        </div>
+        <div class="col-2">
+          <button class="btn btn-outline-primary " (click)="ShowCusAddPopUp()">Add <i
+              class="fa fa-plus"></i></button>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="cart p-2 border rounded col-12">
+          <h5>Cart</h5>
+          <ul class="list-group mb-3 scrollable-cart" style="max-height: 300px; overflow-y: auto;">
+            @for (item of selectedProductList; track $index) {
+            <li class="list-group-item">
+              <div class="row align-items-center">
+                <!-- Product Info -->
+                <div class="col-4 text-truncate" [title]="item.productName">
+                  <strong>{{ item.productName }}</strong>
+                  <div class="small text-muted">Code: {{ item.productCode }}</div>
+                </div>
+
+                <!-- Qty -->
+                <div class="col-1 text-center">{{ item.qty }}</div>
+
+                <!-- Controls -->
+                <div class="col-3 d-flex justify-content-between">
+                  <button class="btn btn-sm btn-outline-primary" (click)="updateQty(item,'add')">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-secondary" (click)="updateQty(item,'minus')">
+                    <i class="fa fa-minus"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="onDeleteProdcut(item.purchaseDetailsId)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+                <div class="col-1 text-center">
+                  <input type="number" [value]="item.actualSellRate" name="sellRate"
+                  [(ngModel)]="item.actualSellRate" (keyup)="onActualSellRateChange(item)">
+                </div>
+                <!-- Price -->
+                <div class="col-2 text-end">=৳{{ item.totalPrice }}</div>
+              
+              </div>
+            </li>
+            }
+          </ul>
+        </div>
+
+        <hr>
+        <br>
+        <div class="col-12">
+          <!-- Subtotal row -->
+          <div class="d-flex justify-content-between mb-2">
+            <strong class="mb-0">SubTotal:</strong>
+            <strong class="mb-0">৳{{ masterData.subTotal }}</strong>
+          </div>
+
+
+          <div class="d-flex justify-content-between mb-2">
+            <strong class="mb-0">Discount:</strong>
+            <strong class="mb-0">৳{{ masterData.discount }}</strong>
+          </div>
+          
+          <div class="d-flex justify-content-between mb-2">
+            <strong class="mb-0">Net Total:</strong>
+            <strong class="mb-0">৳{{ masterData.netTotal }}</strong>
+          </div>
+
+
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <!-- Left side: Label and input -->
+            <div class="d-flex align-items-center">
+              <strong class="mb-0 me-2">Vat (%):</strong>
+              <input type="text" class="form-control form-control-sm text-end" style="width: 40px;"  [(ngModel)]="masterData.vatPercent" (keyup)="totalAmountCalculate()"  placeholder="%">
+            </div>
+          
+            <!-- Right side: Total display -->
+            <strong class="mb-0">৳{{ masterData.vatAmount }}</strong>
+          </div>
+          
+
+          <div class="d-flex justify-content-between mb-2">
+            <strong class="mb-0">Grand Total:</strong>
+            <strong class="mb-0">৳{{ masterData.grandTotal }}</strong>
+          </div>
+
+
+
+          <div class="d-flex justify-content-between mb-2">
+            <strong class="mb-0">Extra Discount:</strong>
+            <input type="text" class="form-control form-control-sm w-50 text-end ms-2" placeholder="Enter amount"  [(ngModel)]="masterData.extraDiscount" (keyup)="onExtraDiscount()">
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <strong class="mb-0">Payable Amount:</strong>
+            <strong class="mb-0">৳{{ masterData.payableAmount }}</strong>
+          </div>
+
+          <div class="d-flex justify-content-between mb-2">
+            <strong class="mb-0">Given Amount:</strong>
+            <input type="text" class="form-control form-control-sm w-50 text-end ms-2" placeholder="Enter amount" [(ngModel)]="masterData.givenAmount" (keyup)="onGivenAmount()">
+          </div>
+
+
+          <div class="d-flex justify-content-between mb-2">
+            <strong class="mb-0">{{masterData.dynamicLabel}} Amount:</strong>
+            <strong class="mb-0">৳{{ masterData.dynamicLabelAmount }}</strong>
+          </div>
+
+
+
+
+
+
+
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary w-50" (click)="onCharge(false)">Save</button>
+            <button class="btn btn-secondary w-50" (click)="onCharge(true)">Save & Print</button>
+          </div>
+
+        </div> 
+      </div>
+
+
+
+
+    </div>
+  </div>
 </div>
+
+<dx-popup [(visible)]="isPopupVisible" [showTitle]="true" [dragEnabled]="true" [closeOnOutsideClick]="true"
+  [width]="700" [height]="800" [closeOnOutsideClick]="false"[showCloseButton]="true">
+
+  <div *dxTemplate="let data of 'content'">
+    <div *ngIf="!showOTPInputBox">
+      <!-- Initial form fields -->
+      <!-- <dx-text-box label="Mobile No" class="input-label" labelMode="outside"></dx-text-box>
+      <dx-text-box label="Customer Name" class="input-label" labelMode="outside"></dx-text-box>
+      <dx-text-box label="Customer Address" class="input-label" labelMode="outside"></dx-text-box>
+      <dx-text-box label="Email" class="input-label" labelMode="outside"></dx-text-box>
+      <dx-text-box label="Type of Customer" class="input-label" labelMode="outside"></dx-text-box>
+      <dx-text-box label="City" class="input-label" labelMode="outside"></dx-text-box>
+      <dx-text-box label="Customer CP" class="input-label" labelMode="outside"></dx-text-box>
+      <dx-text-box label="ZipCode" class="input-label" labelMode="outside"></dx-text-box> -->
+      <div class="mb-3" *ngFor="let field of formdata" [class]="'col-lg-' + (field.column || 6)">
+        <label [for]="field.name" class="col-sm-12 col-form-label">
+          {{ field.label }}
+        </label>
+        <!-- Text, Email, Date, Time, Number, File Inputs -->
+        <input *ngIf="['text', 'email', 'date', 'time', 'number', 'file'].includes(field.type)" [type]="field.type"
+          [id]="field.name" class="form-control" [class]="field.class? field.class : null" [name]="field.name"
+          [(ngModel)]="FormData[field.name]" [required]="field.required" [min]="field.min || null"
+          [max]="field.max || null" [accept]="field.type === 'file' ? field.accept || '*' : null"
+          [class.invalid]="field.name.invalid && field.name.touched"
+          [readOnly]=" field.isReadOnly == true"
+          [placeholder]="field.placeHolder? field.placeHolder : field.name === 'password' ? 'Enter password' : field.label"
+          (keyup)="field.eventEmit?.keyup ? handleEvent(field.eventEmit.keyup, $event) : null"
+          (click)="field.eventEmit?.click ? handleEvent(field.eventEmit.click, $event) : null"
+          (change)="field.eventEmit?.change ? handleEvent(field.eventEmit.change, $event) : null" />
+
+
+       
+
+          <app-common-select-box 
+          *ngIf="field.type === 'select'"
+          [dataList]="field.options" 
+          [id]="field.optionValue" 
+          [name]="field.optionText" 
+          (valueChange)="onValueReceived($event)" 
+          [searchExprOption]="[field.optionText]" 
+          [disabled]="field.isReadOnly == true"  
+          [selectedValue]="FormData[field.name]"
+          [fieldName]="field.name"
+          [isApiCall]="field.isApiCall"
+          [flag]="field.flag"
+          >
+        </app-common-select-box>
+
+        <!-- Radio Buttons -->
+        <div *ngIf="field.type === 'radio'" class="form-check">
+          <div *ngFor="let option of field.options" class="form-check-inline">
+            <input [type]="field.type" [id]="field.name + '_' + option" class="form-check-input" [name]="field.name"
+              [value]="option" [(ngModel)]="FormData[field.name]" [required]="field.required" />
+            <label [for]="field.name + '_' + option" class="form-check-label">
+              {{ option }}
+            </label>
+          </div>
+        </div>
+
+        <!-- Checkbox -->
+        <div *ngIf="field.type === 'checkbox'" class="form-check">
+          <input [type]="field.type" [id]="field.name" class="form-check-input" [name]="field.name"
+            [(ngModel)]="FormData[field.name]" />
+          <label [for]="field.name" class="form-check-label">
+            {{ field.label }}
+          </label>
+        </div>
+
+      </div>
+
+      <!-- <div class="text-end mt-3">
+        <button class="btn btn-outline-primary" (click)="SendOtpbtn()">
+          Send OTP <i class="fa fa-paper-plane ms-2"></i>
+        </button>
+      </div> -->
+      <div class="text-end mt-3">
+        <button class="btn btn-outline-primary" (click)="submitBtn()">
+          Save <i class="fa fa-paper-plane ms-2"></i>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="showOTPInputBox">
+      <!-- OTP input -->
+      <dx-text-box label="OTP" class="input-label" labelMode="outside"></dx-text-box>
+
+      <div class="d-flex align-items-center justify-content-between mt-3 mb-2">
+        <button class="btn btn-link p-0" [disabled]="timerCount > 0" (click)="resendOTP()">
+          Resend OTP
+        </button>
+        <span *ngIf="timerCount > 0" class="text-muted small">
+          Wait <strong>{{ timerCount }}</strong> sec
+        </span>
+      </div>
+
+      <div class="text-end">
+        <button class="btn btn-outline-success" (click)="submitBtn()">
+          Submit <i class="fa fa-check ms-2"></i>
+        </button>
+        <button class="btn btn-outline-danger" (click)="backBtn()">
+          Back <i class="fa fa-backward" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Title Template -->
+  <div *dxTemplate="let data of 'title'">
+    <div class="d-flex justify-content-between align-items-center w-100 pe-2">
+      <span class="fw-bold">Customer Verification</span>
+      <button type="button" class="btn-close" aria-label="Close" (click)="isPopupVisible = false"></button>
+    </div>
+  </div>
+</dx-popup>
 
