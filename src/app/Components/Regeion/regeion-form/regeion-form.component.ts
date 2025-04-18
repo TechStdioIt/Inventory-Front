@@ -22,7 +22,7 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
   FormData: any = new Regeion();
   isSubmitting: boolean = false;
   private destroy$ = new Subject<void>();
-  fromHeader: string = 'Regeion Form';
+  fromHeader: string = 'District Form';
   insertOrUpdateAPI: string = 'Unit/CreateOrUpdateRegeion';
   getDataByIdAPI: string = 'ProductDiscount/GetByIdProductDis';
   listRoute: string = '/productWiseDiscountList';
@@ -35,11 +35,10 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
   }
 
   formdata: any[] = [
-    { type: 'text', name: 'districtName', label: 'Distric Name', required: true, column: 12,},
     {
       type: 'select',
-      name: 'thanaParentId',
-      label: 'Select District',
+      name: 'divisionId',
+      label: 'Select Division',
       required: true,
       column: 6,
       options: [],
@@ -47,19 +46,30 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
       optionText: 'name',
       flag: 14,
     },
-    { type: 'text', name: 'upazilaName', label: 'Upazila Name', required: true, column: 6,},
-    {type: 'select',name: 'districIdForUp',label: 'Select District',required: true,column: 4,
-      options: [],optionValue: 'id',optionText: 'name',flag: 14,},
-    {type: 'select',name: 'areaParentId',label: 'Select Upazila',required: true,column: 4,
-      options: [],optionValue: 'id',optionText: 'name',flag:0},
-    { type: 'text', name: 'areaName', label: 'Area Name', required: true, column: 4,},
-    {type: 'select',name: 'districIdForArea',label: 'Select District',required: true,column: 3,
-      options: [],optionValue: 'id',optionText: 'name',flag: 14,},
-    {type: 'select',name: 'upazilaId',label: 'Select Upazila',required: true,column: 3,
-      options: [],optionValue: 'id',optionText: 'name',flag:0},
-    {type: 'select',name: 'subAreaParentId',label: 'Select Area',required: true,column: 3,
-      options: [],optionValue: 'id',optionText: 'name',flag:0},
-    { type: 'text', name: 'subAreaName', label: 'SubArea Name', required: true, column: 3,},
+    {
+      type: 'select',
+      name: 'districtId',
+      label: 'Select District',
+      required: true,
+      column: 6,
+      options: [],
+      optionValue: 'id',
+      optionText: 'name',
+      flag: 11,
+    },
+    {
+      type: 'select',
+      name: 'upazilaId',
+      label: 'Select Upazila',
+      required: true,
+      column: 6,
+      options: [],
+      optionValue: 'id',
+      optionText: 'name',
+      flag: 11,
+    },
+    { type: 'text', name: 'Name', label: 'SubArea Name', required: true, column: 6,},
+    
   ];
 
   constructor(
@@ -207,9 +217,7 @@ export class RegeionFormComponent implements OnInit,OnDestroy{
     debugger;
     this.FormData[eventData.fieldName] = eventData.value;
     let flagdata = [
-      { api: 'Unit/GetAllRegeionByParentId?parentId=', fieldName: 'districIdForUp', for: 'areaParentId' },
-      { api: 'Unit/GetAllRegeionByParentId?parentId=', fieldName: 'districIdForArea', for: 'upazilaId' },
-      { api: 'Unit/GetAllRegeionByParentId?parentId=', fieldName: 'upazilaId', for: 'subAreaParentId' },
+      { api: 'Unit/GetAllRegeionByParentId?parentId=', fieldName: 'divisionId', for: 'districtId' },
     ];
     let filterflag = flagdata.find((x) => x.fieldName === eventData.fieldName);
     if (filterflag) {
