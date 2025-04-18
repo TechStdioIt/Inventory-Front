@@ -39,7 +39,7 @@ export class ProductsFormComponent implements OnInit {
     { type: 'select', name: 'brandId', label: 'Brand', required: true, column: 4, options: [] },
     { type: 'text', name: 'description', label: 'Description', required: true, column: 4 },
     { type: 'number', name: 'price', label: 'Price', required: true, column: 4 },
-    { type: 'number', name: 'quantityInStock', label: 'Stock In', required: true, column: 4 },
+    // { type: 'number', name: 'quantityInStock', label: 'Stock In', required: true, column: 4 },
     { type: 'select', name: 'unitId', label: 'Unit', required: true, column: 4, options: [] },
 
   ];

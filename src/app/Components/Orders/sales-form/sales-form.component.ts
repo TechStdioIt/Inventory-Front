@@ -95,7 +95,7 @@ masterData:OrderVM=new OrderVM();
     const searchItem = evt.target.value; 
     if(searchItem){
       this.productList = this.productList.filter(product =>
-        product.name.toLowerCase().includes(searchItem.toLowerCase()) 
+        product.name.toLowerCase().includes(searchItem.toLowerCase())
       );
       if(this.productList.length >0){
         if(this.productList.length ==1){

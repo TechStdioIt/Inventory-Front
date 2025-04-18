@@ -25,7 +25,7 @@ export class ProductsListComponent implements OnInit {
     { caption: 'Name', key: 'name' },
     { caption: 'Description', key: 'description' },
     { caption: 'Price', key: 'price' },
-    { caption: 'Stock Quantity', key: 'quantityInStock' },
+    // { caption: 'Stock Quantity', key: 'quantityInStock' },
     { caption: 'Stock Unit', key: 'unitName' },
     { caption: 'Product Category', key: 'categoryName' },
     { caption: 'Status', key: 'isActive',type:'bool' }

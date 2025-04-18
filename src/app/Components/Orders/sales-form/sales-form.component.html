@@ -14,17 +14,17 @@
 
   <div class="row">
     <!-- Product List Section -->
-    <div class="col-md-6">
+    <div class="col-lg-6 col-md-12 col-sm-12">
       <input type="text" class="form-control mb-3" placeholder="Search All" (keyup)="onSearchProduct($event)"/>
       <div class="row g-3">
         <div *ngIf="productList.length > 0; else noData">
           <div class="row g-3">
-            <div class="col-md-4" *ngFor="let field of productList" (click)="onProductSelect(field,true)">
+            <div class="col-lg-4 col-md-4 col-sm-6" *ngFor="let field of productList" (click)="onProductSelect(field,true)">
               <div class="product card" style="height: 150px; overflow-y: auto;">
                 <div class="card-body text-center">
                   <img class="imageSet" [src]="field.imageUrl" alt="Product Image" />
-                  <div class="title">{{ field.name }} -</div>
-                  <div class="title">{{ field.batchNo }}</div>
+                  <div class="title">{{ field.name }} </div>
+                  <!-- <div class="title">{{ field.batchNo }}</div> -->
                   <div class="availableqty">
                     Available: <b>{{ field.avaiableQty }} {{ field.unitName }}</b>
                   </div>
@@ -53,7 +53,7 @@
     </div>
 
     <!-- Cart Section -->
-    <div class="col-md-6">
+    <div class="col-lg-6 col-md-12 col-sm-12">
 
       <div class="row mb-3">
         <div class="col-10">
@@ -108,12 +108,13 @@
                     <i class="fa fa-trash"></i>
                   </button>
                 </div>
-                <div class="col-1 text-center">
-                  <input type="number" [value]="item.actualSellRate" name="sellRate"
+                <div class="col-2 text-center">
+                  <input style="width: 80%;" type="number" [value]="item.actualSellRate" name="sellRate"
                   [(ngModel)]="item.actualSellRate" (keyup)="onActualSellRateChange(item)">
                 </div>
                 <!-- Price -->
                 <div class="col-2 text-end">=৳{{ item.totalPrice }}</div>
+                
               
               </div>
             </li>
