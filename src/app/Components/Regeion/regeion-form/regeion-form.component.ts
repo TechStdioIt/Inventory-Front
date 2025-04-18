@@ -62,7 +62,9 @@ export class RegeionFormComponent implements OnInit, OnDestroy {
       column: 6,
       options: [],
       optionValue: 'id',
-      optionText: 'name'
+      optionText: 'name',
+      // isApi: true,
+      // api: 'Unit/GetAll'
     },
 
     {
@@ -121,8 +123,13 @@ export class RegeionFormComponent implements OnInit, OnDestroy {
       .filter((x) => x.type == 'select' || x.type == 'multi-select')
       .forEach((item: any) => {
         if (item.flag) {
-          this.commonService.getDropDownData(item.flag,'frommmmmm').subscribe((data: any) => {
+          this.commonService.getDropDownData(item.flag).subscribe((data: any) => {
             item.options = data;
+          });
+        }
+        else if (item.isApi) {
+          this.dataService.GetData(item.api).subscribe((data: any) => {
+            item.options = data.data;
           });
         }
       });
