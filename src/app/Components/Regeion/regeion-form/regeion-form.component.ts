@@ -26,7 +26,7 @@ export class RegeionFormComponent implements OnInit, OnDestroy {
   fromHeader: string = 'District Form';
   insertOrUpdateAPI: string = 'Unit/CreateOrUpdateRegeion';
   getDataByIdAPI: string = 'ProductDiscount/GetByIdProductDis';
-  listRoute: string = '/productWiseDiscountList';
+  listRoute: string = '/RegeionList';
   selectedItems: any[] = [];
 
   //Only for Pharmacy
