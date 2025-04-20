@@ -25,7 +25,7 @@ export class RegeionFormComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   fromHeader: string = 'District Form';
   insertOrUpdateAPI: string = 'Unit/CreateOrUpdateRegeion';
-  getDataByIdAPI: string = 'ProductDiscount/GetByIdProductDis';
+  getDataByIdAPI: string = 'Unit/GetAllSubAreaById';
   listRoute: string = '/RegeionList';
   selectedItems: any[] = [];
 
