@@ -1,5 +1,5 @@
 // Angular Import
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 
 // project import
 import { NavigationItem } from '../../navigation';
@@ -11,8 +11,13 @@ import { Router } from '@angular/router';
   templateUrl: './nav-item.component.html',
   styleUrls: ['./nav-item.component.scss']
 })
-export class NavItemComponent {
-  constructor(private gridService:GridHandlerService,private router:Router){}
+export class NavItemComponent implements AfterViewInit {
+  constructor(private gridService:GridHandlerService,private router:Router){
+   
+  }
+  ngAfterViewInit(): void {
+    console.log('items',this.item);
+  }
   // public props
   @Input() item!: NavigationItem;
 

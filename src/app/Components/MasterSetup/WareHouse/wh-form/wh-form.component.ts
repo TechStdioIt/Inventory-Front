@@ -27,8 +27,8 @@ export class WhFormComponent implements OnInit {
 
   formdata: any[] = [
     { type: 'text', name: 'wareHouseName', label: 'WareHouse Name', required: true, column: 4 },
-    { type: 'datetime', name: 'openTime', label: 'openTime', required: true, column: 4 },
-    { type: 'datetime', name: 'closeTime', label: 'closeTime', required: true, column: 4 },
+    { type: 'time', name: 'openTime', label: 'openTime', required: true, column: 4 },
+    { type: 'time', name: 'closeTime', label: 'closeTime', required: true, column: 4 },
     { type: 'text', name: 'note', label: 'note', required: true, column: 4 },
     { type: 'text', name: 'street', label: 'street', required: true, column: 4 },
     { type: 'text', name: 'city', label: 'city', required: true, column: 4 },
