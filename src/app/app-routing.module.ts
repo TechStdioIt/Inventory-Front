@@ -76,6 +76,8 @@ import { BranchListComponent } from './Components/MasterSetup/Branch/branch-list
 import { BranchFormComponent } from './Components/MasterSetup/Branch/branch-form/branch-form.component';
 import { RegeionFormComponent } from './Components/Regeion/regeion-form/regeion-form.component';
 import { RegeionListComponent } from './Components/Regeion/regeion-list/regeion-list.component';
+import { OrdersListComponent } from './Components/MoneyReceipts/orders-list/orders-list.component';
+import { DuePaymentListComponent } from './Components/MoneyReceipts/due-payment-list/due-payment-list.component';
 
 const routes: Routes = [
   {
@@ -386,6 +388,14 @@ const routes: Routes = [
       {
         path:"RegeionList",
         component:RegeionListComponent
+      },
+      {
+        path:"OrdersList",
+        component:OrdersListComponent
+      },
+      {
+        path:"DuePaymentList",
+        component:DuePaymentListComponent
       }
     ]
   },
