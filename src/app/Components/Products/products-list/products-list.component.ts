@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 export class ProductsListComponent implements OnInit {
   fromHeader: string = 'Product';
   formRoute: string = '/productsForm';
-  listAPI: string = 'Products/GetAllProductData';
+  listAPI: string = 'Products/GetAllProductDataActiveInactive';
   deleteAPI: string = 'Products/DeleteProductData';
   haveQueryPram: boolean = false;
   reloadCount: number = 0;
