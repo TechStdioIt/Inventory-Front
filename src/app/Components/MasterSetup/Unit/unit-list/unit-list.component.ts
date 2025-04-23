@@ -64,21 +64,22 @@ export class UnitListComponent implements OnInit {
     });
     this.activatedRoute.queryParams.subscribe(params => {
       this.idsValue= params['id'];
+      debugger
       var data = this.common.decrypt(this.idsValue,"menuPermissionData");
       this.SelectedMenuItems = JSON.parse(data);
       this.buttonShow.edit.isShow = this.SelectedMenuItems.isEdit
       this.buttonShow.viewDetails.isShow = this.SelectedMenuItems.isDetails
-      this.buttonShow.delete.isShow = this.SelectedMenuItems.isDelete
+      this.buttonShow.delete.isShow = this.SelectedMenuItems.permissionDelete
     });
   }
 
   edit(selectedRecord: any) {
     this.commonService.selectedTab = 'Form';
-    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id, } });
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
   }
   details(selectedRecord: any) {
     this.commonService.selectedTab = 'Details';
-    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
   }
   delete(selectedRecord: any) {
     Swal.fire({

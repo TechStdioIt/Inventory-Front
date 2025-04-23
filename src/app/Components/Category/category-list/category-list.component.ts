@@ -6,88 +6,104 @@ import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/ap
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import * as CryptoJS from 'crypto-js';
+import { CommonService } from 'src/app/Services/common.service';
+import { take } from 'rxjs';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.scss'
 })
 export class CategoryListComponent implements OnInit {
-  dataList: Category[] = [];
+ fromHeader: string = 'Category';
+  formRoute: string = '/customerForm';
+  listAPI: string = 'Category/GetAllCategory';
+  deleteAPI: string = 'Category/DeleteCategory';
+  haveQueryPram: boolean = false;
+  reloadCount: number = 0;
+  idsValue:string =''
+  SelectedMenuItems : any
+  userColumns = [
+    { caption: 'ID', key: 'id', width: 50, isShow: false },
+    { caption: 'Name', key: 'name' }
+  ];
 
-  ///routerData:any;
+  buttonShow = {
+    edit: {
+      isShow: true,
+      emit: (selectedRecord: any) => this.edit(selectedRecord)
+    },
+    viewDetails: {
+      isShow: true,
+      emit: (selectedRecord: any) => this.details(selectedRecord)
+    },
+    delete: {
+      isShow: true,
+      emit: (selectedRecord: any) => this.delete(selectedRecord)
+    },
+  };
 
   constructor(
-    // public service:FloorService,
-    private dataService:HttpClientConnectionService,
-    private toastr:ToastrService,
-    private commonService:GridHandlerService,
-    private route:ActivatedRoute,
-    private router:Router
-  ) { }
+    private dataService: HttpClientConnectionService,
+    private commonService: GridHandlerService,
+    private router: Router,
+    private common : CommonService,
+    private activatedRoute:ActivatedRoute
+  ) {
+    this.commonService.edit$.pipe(take(1)).subscribe(async (data: any) => {
+      this.edit(data);
+    });
+    this.commonService.details$.pipe(take(1)).subscribe(async (data: any) => {
+      this.details(data);
+    });
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.idsValue= params['id'];
+      var data = this.common.decrypt(this.idsValue,"menuPermissionData");
+      this.SelectedMenuItems = JSON.parse(data);
+      this.buttonShow.edit.isShow = this.SelectedMenuItems.isEdit
+      this.buttonShow.viewDetails.isShow = this.SelectedMenuItems.isDetails
+      this.buttonShow.delete.isShow = this.SelectedMenuItems.permissionDelete
+    });
+  }
 
   ngOnInit(): void {
-
-   this.getData();
-   this.commonService.data$.subscribe(newData => {
-    this.edit(newData);
-  });
-
-  }
-  getData = () => {
-    this.dataService.GetData("Category/GetAllCategory").subscribe((data:any)=>{
-      this.dataList=data.data;
-      this.sendDataCommonGrid();
-    },
-    (error:any)=>{
-      this.toastr.error("failed to Get Data")
-    }
-    )
+    this.commonService.data$.subscribe((newData) => {
+      this.edit(newData);
+    });
   }
 
-
-  sendDataCommonGrid(){
-    this.commonService.dataList=[];
-    //Grid Caption 
-    this.commonService.caption = new GridCaption();
-       this.commonService.caption.caption1="Category Id";
-       this.commonService.caption.caption2="Category Name";
-  
-      //PermitForShow or Not
-      this.commonService.isShowData = new GridDataShow()
-       this.commonService.isShowData.caption2=true;
-
-
-       //Permit For Button Show or Not
-       this.commonService.isShowButton =new GridButtonShow()
-       this.commonService.isShowButton.button1=true //edit
-       this.commonService.isShowButton.button2=true //delete
-       this.commonService.isShowButton.button3=true
-        this.commonService.isShowButton.button4=false;
-      
-       //Grid Data 
-   for(let item of this.dataList){
-      this.commonService.dataField = new GridDataModel();
-        this.commonService.dataField.dataField1=item.id;
-        this.commonService.dataField.dataField2=item.name;
-  
-    
-  this.commonService.dataList.push(this.commonService.dataField);
-  this.commonService.dataList=this.commonService.dataList.map((item,index)=>({ ...item,index:index+1}));
-  
-   }
+  edit(selectedRecord: any) {
+    this.commonService.selectedTab = 'Form';
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
   }
-  
-  edit(selectedRecord:any){
-    let data=this.findSelectedItem(selectedRecord.row.data.dataField1);
-    if(data !=null || data !=undefined){
-      this.commonService.selectedTab='Form';
-        var jsonString=JSON.stringify(data);
-        const encodeValue = CryptoJS.AES.encrypt(jsonString, "values").toString();
-      this.router.navigate(['/categoryForm'],{ queryParams: { category: encodeValue } });
-    }
+  details(selectedRecord: any) {
+    this.commonService.selectedTab = 'Details';
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
   }
-  findSelectedItem(selectedItem:any){
-  
-   return this.dataList.find(x=>x.id === selectedItem);
+  delete(selectedRecord: any) {
+    ;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete selected record',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.value) {
+        this.dataService.DeleteData(`${this.deleteAPI}?id=${selectedRecord.id}`).subscribe(
+          (response: any) => {
+            this.reloadCount++;
+            Swal.fire('Done', 'Your record is Deleted :)', 'success');
+
+          },
+          (error: any) => {
+            console.error('Failed to get data:', error);
+          }
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire('Cancelled', 'Your record is safe :)', 'error');
+      }
+    });
   }
 }
