@@ -5,6 +5,7 @@ import { AfterViewInit, Component, Input } from '@angular/core';
 import { NavigationItem } from '../../navigation';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { Router } from '@angular/router';
+import { CommonService } from 'src/app/Services/common.service';
 
 @Component({
   selector: 'app-nav-item',
@@ -12,15 +13,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./nav-item.component.scss']
 })
 export class NavItemComponent implements AfterViewInit {
-  constructor(private gridService:GridHandlerService,private router:Router){
+  constructor(private gridService:GridHandlerService,private router:Router,private commonService:CommonService){
    
   }
   ngAfterViewInit(): void {
-    console.log('items',this.item);
+    var json = JSON.stringify(this.item);
+    this.menuPermissionData= this.commonService.encrypt(json,'menuPermissionData');
   }
   // public props
   @Input() item!: NavigationItem;
-
+  menuPermissionData:any =''
   // public method
   closeOtherMenu(event: MouseEvent) {
     const ele = event.target as HTMLElement;
@@ -49,7 +51,7 @@ export class NavItemComponent implements AfterViewInit {
       document.querySelector('app-navigation.pcoded-navbar')?.classList.remove('mob-open');
     }
   }
-  onRouting(uri:any){
+  onRouting(uri:any,item:any){
     ;
     if(uri == '/orderPlist' || uri == '/deliveryOrderPList' || uri == '/invPList' || uri == '/mrPList'){
       this.gridService.selectedTab = 'PList'
@@ -57,6 +59,6 @@ export class NavItemComponent implements AfterViewInit {
       this.gridService.selectedTab = 'List';
     }
   
-    this.router.navigate([uri]);
+    this.router.navigate([uri],{queryParams:{id:this.menuPermissionData}});
   }
 }

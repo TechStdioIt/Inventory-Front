@@ -3,52 +3,52 @@
     <ul class="nav nav-tabs">
 
       <li class="nav-item hoverEffect"  (click)="selectTab('PList')" *ngIf="currentRoute == '/orderPList' || currentRoute === '/deliveryOrderPList' || currentRoute == '/orderList' || currentRoute === '/deliveryOrderList' || currentRoute.startsWith('/orderForm') || currentRoute.startsWith('/orderList') || currentRoute.startsWith('/deliveryOrderList') || currentRoute.startsWith('/deliveryOrderForm') || currentRoute.startsWith('/mrPList') || currentRoute.startsWith('/invPList') || currentRoute.startsWith('/mrForm') || currentRoute.startsWith('/mrList') || currentRoute.startsWith('/invList') || currentRoute.startsWith('/invForm')">
-        <a class="nav-link active" [class.active]="commonService.selectedTab === 'PList'" >
+        <a class="nav-link active" [class.active]="gridHandlerService.selectedTab === 'PList'" >
           <i class="fa fa-list" aria-hidden="true"></i>&nbsp;Pending List</a>
       </li>
       <li class="nav-item hoverEffect"  (click)="selectTab('CPList')" *ngIf="currentRoute == '/orderPList' || currentRoute == '/orderList'  || currentRoute.startsWith('/orderForm') || currentRoute.startsWith('/orderList')">
-        <a class="nav-link active" [class.active]="commonService.selectedTab === 'CPList'" >
+        <a class="nav-link active" [class.active]="gridHandlerService.selectedTab === 'CPList'" >
           <i class="fa fa-list" aria-hidden="true"></i>&nbsp;Pending Credit List</a>
       </li>
       <li class="nav-item hoverEffect"  (click)="selectTab('Approve')" *ngIf="currentRoute == '/orderPList' || currentRoute == '/orderList' || currentRoute.startsWith('/orderForm') ||currentRoute.startsWith('/orderList') || currentRoute == '/deliveryOrderPList' || currentRoute == '/deliveryOrderList' || currentRoute == '/deliveryOrderForm'  " >
-        <a class="nav-link"  [class.active]="commonService.selectedTab === 'Approve'" >
+        <a class="nav-link"  [class.active]="gridHandlerService.selectedTab === 'Approve'" >
           <i class="fa fa-edit" aria-hidden="true"></i>&nbsp;Approve
         </a>
       </li>
       <li class="nav-item hoverEffect"  (click)="selectTab('List')" >
-        <a class="nav-link" aria-current="page"   [class.active]="commonService.selectedTab === 'List'">
+        <a class="nav-link" aria-current="page"   [class.active]="gridHandlerService.selectedTab === 'List'">
           <i class="fa fa-list" aria-hidden="true"></i>&nbsp; List
         </a>
       </li>
-      <li class="nav-item hoverEffect"  (click)="selectTab('Form')" *ngIf="isAdd">
-        <a class="nav-link"   [class.active]="commonService.selectedTab === 'Form'" >
+      <li class="nav-item hoverEffect"  (click)="selectTab('Form')" *ngIf="this.SelectedMenuItems.isAdd">
+        <a class="nav-link"   [class.active]="gridHandlerService.selectedTab === 'Form'" >
           <i class="fa fa-add" aria-hidden="true"></i>&nbsp;New
         </a>
       </li>
-      <li class="nav-item hoverEffect"  (click)="selectTab('Edit')"*ngIf="isEdit && !isAdd" >
-        <a class="nav-link"  [class.active]="commonService.selectedTab === 'Form'" >
+      <li class="nav-item hoverEffect"  (click)="selectTab('Edit')" *ngIf="this.SelectedMenuItems.isEdit && ! this.SelectedMenuItems.isAdd" >
+        <a class="nav-link"  [class.active]="gridHandlerService.selectedTab === 'Form'" >
           <i class="fa fa-edit" aria-hidden="true"></i>&nbsp;Edit
         </a>
       </li>
       
       
 
-      <li class="nav-item hoverEffect"  (click)="selectTab('Save')"  *ngIf="(isAdd || isEdit) && commonService.selectedTab !='Details'">
-        <a class="nav-link"  [class.active]="commonService.selectedTab === 'Save'" >
+      <li class="nav-item hoverEffect"  (click)="selectTab('Save')"  *ngIf="(this.SelectedMenuItems || this.SelectedMenuItems) && gridHandlerService.selectedTab !='Details'">
+        <a class="nav-link"  [class.active]="gridHandlerService.selectedTab === 'Save'" >
           <i class="fa fa-file" aria-hidden="true"></i>&nbsp;Save
         </a>
       </li>
-      <li class="nav-item hoverEffect"  (click)="selectTab('Details')" *ngIf="isDetails">
-        <a class="nav-link" [class.active]="commonService.selectedTab === 'Details'" >
+      <li class="nav-item hoverEffect"  (click)="selectTab('Details')" *ngIf="this.SelectedMenuItems.isDetails">
+        <a class="nav-link" [class.active]="gridHandlerService.selectedTab === 'Details'" >
           <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Details
         </a>
       </li>
-      <li class="nav-item hoverEffect"  (click)="selectTab('Delete')" *ngIf="isDelete">
-        <a class="nav-link" [class.active]="commonService.selectedTab === 'Delete'" >
+      <li class="nav-item hoverEffect"  (click)="selectTab('Delete')" *ngIf="this.SelectedMenuItems.isDelete">
+        <a class="nav-link" [class.active]="gridHandlerService.selectedTab === 'Delete'" >
           <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Delete</a>
       </li>
       <li class="nav-item hoverEffect"  (click)="selectTab('Search')">
-        <a class="nav-link" [class.active]="commonService.selectedTab === 'Search'" >
+        <a class="nav-link" [class.active]="gridHandlerService.selectedTab === 'Search'" >
           <i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search</a>
       </li>
       

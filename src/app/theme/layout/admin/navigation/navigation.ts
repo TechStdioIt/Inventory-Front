@@ -12,6 +12,7 @@ export interface NavigationItem {
   target?: boolean;
   breadcrumbs?: boolean;
   children?: NavigationItem[];
+  isAdd?:boolean;
 }
 
 // export const NavigationItems: NavigationItem[] = [
