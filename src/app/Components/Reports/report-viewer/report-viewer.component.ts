@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component,OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DxReportViewerComponent } from 'devexpress-reporting-angular';
 import { ActionId } from 'devexpress-reporting/dx-webdocumentviewer';
@@ -20,7 +20,8 @@ export class ReportViewerComponent implements OnInit {
   invokeAction: string = 'DXXRDV';
   host  : any =environment.reportUrl;
   reportName : any = 'rptSalesInvoice';
-  isPrint:boolean =false;
+  do: any = 'preview';
+
 
 
   CustomizeMenuActions(event:any) {
@@ -34,29 +35,17 @@ export class ReportViewerComponent implements OnInit {
 }
 
   constructor(private route:ActivatedRoute) {
- 
     this.route.queryParams.subscribe(params => {
       var data = {
         reportName: params['reportName'],
-        do: params['do'],
-        isPrint: params['isPrint'],
-        qty:params['repoQty']
+        do: params['do']
       }
-      this.isPrint= data.isPrint;
       this.reportName = JSON.stringify(data);
 
     });
    }
 
   ngOnInit(): void {
-    if(this.isPrint){
-      setTimeout(() => {
-        this.viewer.bindingSender.Print(0);
-      }, 3000);
-    }
-  
   }
-  print() {
-    this.viewer.bindingSender.Print(0);
-} 
+
 }

@@ -19,11 +19,11 @@
         <div class="main-body">
           <div class="page-wrapper">
             <app-breadcrumb></app-breadcrumb>
-            <ng-container *ngIf="currentRoute !=='/analytics' && currentRoute !=='/businessDashboard' && currentRoute !=='/menuPermission' && currentRoute !=='/salesForm'  && !currentRoute.startsWith('/reports')&& currentRoute !=='/labelList' "> 
+            <ng-container *ngIf="!currentRoute.startsWith('/analytics') && !currentRoute.startsWith('/businessDashboard') && !currentRoute.startsWith('/menuPermission') && !currentRoute.startsWith('/salesForm')  && !currentRoute.startsWith('/reports')&& !currentRoute.startsWith('/labelList') &&!currentRoute.startsWith('/salesOrderList') "> 
               <app-button-control ></app-button-control>
             </ng-container>
             
-            <router-outlet *ngIf="currentRoute ==='/salesForm' || currentRoute ==='/analytics' || currentRoute ==='/businessDashboard' || currentRoute ==='/menuPermission' || currentRoute.startsWith('/reports') || currentRoute ==='/labelList'"></router-outlet>
+            <router-outlet *ngIf="currentRoute.startsWith('/salesForm') || currentRoute.startsWith('/analytics') || currentRoute.startsWith('/businessDashboard') || currentRoute.startsWith('/menuPermission') || currentRoute.startsWith('/reports') || currentRoute.startsWith('/labelList') || currentRoute.startsWith('/salesOrderList') "></router-outlet>
           </div>
         </div>
       </div>
