@@ -147,6 +147,9 @@ import { PrintLabelListComponent } from './Components/PrintLabel/print-label-lis
 import { BranchListComponent } from './Components/MasterSetup/Branch/branch-list/branch-list.component';
 import { BranchFormComponent } from './Components/MasterSetup/Branch/branch-form/branch-form.component';
 import { RegeionFormComponent } from './Components/Regeion/regeion-form/regeion-form.component';
+import { RegeionListComponent } from './Components/Regeion/regeion-list/regeion-list.component';
+import { DuePaymentListComponent } from './Components/MoneyReceipts/due-payment-list/due-payment-list.component';
+import { OrdersListComponent } from './Components/MoneyReceipts/orders-list/orders-list.component';
 
 @NgModule({
   declarations: [
@@ -183,6 +186,8 @@ import { RegeionFormComponent } from './Components/Regeion/regeion-form/regeion-
     MenuPermissionFormComponent,
     RegisterLandingComponent,
     RegisterMailVerifyComponent,
+    DuePaymentListComponent,
+    OrdersListComponent,
 
     CommonSelectBoxComponent,
     DynamicGridWithPaginationComponent,
@@ -250,7 +255,8 @@ import { RegeionFormComponent } from './Components/Regeion/regeion-form/regeion-
     ReportViewerComponent,
     BranchListComponent,
     BranchFormComponent,
-    RegeionFormComponent
+    RegeionFormComponent,
+    RegeionListComponent
 
   ],
   imports: [

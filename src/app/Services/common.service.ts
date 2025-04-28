@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DatePipe, Location } from '@angular/common';
 import { DD_Menu } from '../Models/drodown.model';
 import { createUrl } from 'src/utility/common';
-
+import * as CryptoJS from 'crypto-js';
 @Injectable({
   providedIn: 'root',
 })
@@ -35,7 +35,14 @@ export class CommonService {
     }
   }
   
+  encrypt(value: string,secretKey:string) {
+    return CryptoJS.AES.encrypt(value, secretKey).toString();
+  }
 
+  decrypt(encrypted:any, secretKey:string) {
+    const bytes = CryptoJS.AES.decrypt(encrypted, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  }
 
   // Method to fetch data by ID
   GetDataById(endpoint: string) {

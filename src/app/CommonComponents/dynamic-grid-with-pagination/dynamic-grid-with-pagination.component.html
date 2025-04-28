@@ -154,11 +154,11 @@
         </td>
         <td *ngIf="buttonShow.edit || buttonShow.viewDetails || buttonShow.delete || buttonShow.print || buttonShow.pen ">
           <div class="btn-group" role="group">
-            <span *ngIf="buttonShow.edit" (click)="buttonShow.edit?.emit(row)" class="text-primary myPointer mx-1"><i class="fas fa-edit"></i></span>
-            <span *ngIf="buttonShow.viewDetails" (click)="buttonShow.viewDetails?.emit(row)" class="text-info myPointer mx-1"><i class="fas fa-info-circle"></i></span>
-            <span *ngIf="buttonShow.delete" (click)="buttonShow.delete?.emit(row)" class="text-danger myPointer mx-1"><i class="fas fa-trash"></i></span>
-            <span *ngIf="buttonShow.print" (click)="buttonShow.print?.emit(row)" class="text-secondary myPointer mx-1"><i class="fas fa-print"></i></span>
-            <span *ngIf="buttonShow.pen" (click)="buttonShow.pen?.emit(row)" class="text-secondary myPointer mx-1"><i class='fas fa-pen-square' style='font-size:18px'></i></span>
+            <span *ngIf="buttonShow.edit?.isShow" (click)="buttonShow.edit?.emit(row)" class="text-primary myPointer mx-1"><i class="fas fa-edit"></i></span>
+            <span *ngIf="buttonShow.viewDetails?.isShow" (click)="buttonShow.viewDetails?.emit(row)" class="text-info myPointer mx-1"><i class="fas fa-info-circle"></i></span>
+            <span *ngIf="buttonShow.delete?.isShow" (click)="buttonShow.delete?.emit(row)" class="text-danger myPointer mx-1"><i class="fas fa-trash"></i></span>
+            <span *ngIf="buttonShow.print?.isShow" (click)="buttonShow.print?.emit(row)" class="text-secondary myPointer mx-1"><i class="fas fa-print"></i></span>
+            <span *ngIf="buttonShow.pen?.isShow" (click)="buttonShow.pen?.emit(row)" class="text-secondary myPointer mx-1"><i class='fas fa-pen-square' style='font-size:18px'></i></span>
             <!-- <button *ngIf="buttonShow.edit" (click)="buttonShow.edit?.emit(row)" class="btn btn-sm btn-primary">
               <i class="fas fa-edit"></i>
             </button> -->

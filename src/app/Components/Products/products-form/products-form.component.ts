@@ -126,7 +126,8 @@ export class ProductsFormComponent implements OnInit {
     data.append('price', this.FormData.price.toString());
     data.append('quantityInStock', this.FormData.quantityInStock.toString());
     data.append('unitId', this.FormData.unitId.toString());
-    data.append('isActive',this.FormData.isActive.toString())
+    data.append('isActive',this.FormData.isActive.toString());
+    data.append('brandId',this.FormData.brandId.toString());
     if (this.selectedLogo) {
       data.append('imageFile', this.selectedLogo);
     }

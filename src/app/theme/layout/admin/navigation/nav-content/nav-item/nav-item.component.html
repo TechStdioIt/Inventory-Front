@@ -1,6 +1,6 @@
 @if (item.url && !item.external) {
   <li [ngClass]="item.classes" [routerLinkActive]="['active']">
-    <a class="nav-link" [target]="item.target ? '_blank' : '_self'" [routerLink]="[item.url]" (click)="closeOtherMenu($event)">
+    <a class="nav-link" [target]="item.target ? '_blank' : '_self'" [routerLink]="[item.url]" [queryParams]="{ id:  this.menuPermissionData }" (click)="closeOtherMenu($event)">
       @if (item.icon) {
         <span class="pcoded-micon"><i class="feather" [ngClass]="item.icon"></i></span>
       }
@@ -10,11 +10,11 @@
         {{ item.title }}
       }
     </a>
-  </li>
+  </li> 
 }
 @if (item.url && item.external) {
   <li [ngClass]="item.classes">
-    <a [target]="item.target ? '_blank' : '_self'" (click)="onRouting(item.url)">
+    <a [target]="item.target ? '_blank' : '_self'" (click)="onRouting(item.url,item)">
       @if (item.icon) {
         <span class="pcoded-micon"><i class="feather" [ngClass]="item.icon"></i></span>
       }

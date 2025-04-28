@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DxTabsComponent } from 'devextreme-angular';
+import { CommonService } from 'src/app/Services/common.service';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import Swal from 'sweetalert2';
@@ -16,6 +17,8 @@ export class ButtonControlComponent implements OnInit {
   @Input() isEdit:boolean=true;
   @Input() isDelete:boolean=true;
   @Input() isDetails:boolean=true;
+  SelectedMenuItems : any ;
+  idsValue:string ='';
   @ViewChild('withText') withText!: DxTabsComponent;
 
   @ViewChild('withIconAndText') withIconAndText!: DxTabsComponent;
@@ -59,25 +62,30 @@ export class ButtonControlComponent implements OnInit {
   };
 
   currentRoute:string ='';
-  constructor(private dataService: HttpClientConnectionService, private router: Router, public commonService: GridHandlerService,private activatedRoute: ActivatedRoute) {
+  constructor(private dataService: HttpClientConnectionService, private router: Router, public gridHandlerService: GridHandlerService,private activatedRoute: ActivatedRoute,private commonService:CommonService ) {
       this.currentRoute = this.router.url;
         this.router.events.subscribe((event) => {
           if (event instanceof NavigationEnd) {
             this.currentRoute = event.url;
             if(this.currentRoute == '/orderPList' || this.currentRoute == '/deliveryOrderPList'){
-              this.commonService.selectedTab = 'PList'
+              this.gridHandlerService.selectedTab = 'PList'
             }
             else if(this.currentRoute.endsWith('List')){
-              this.commonService.selectedTab = "List";
+              this.gridHandlerService.selectedTab = "List";
             }
           }
+        });
+        this.activatedRoute.queryParams.subscribe(params => {
+          this.idsValue= params['id'];
+          var data = this.commonService.decrypt(this.idsValue,"menuPermissionData");
+          this.SelectedMenuItems = JSON.parse(data);
         });
         
   }
   ngOnInit(): void {
     
     if(this.currentRoute == '/orderPList' || this.currentRoute == '/deliveryOrderPList'){
-      this.commonService.selectedTab = 'PList'
+      this.gridHandlerService.selectedTab = 'PList'
     }
   }
  
@@ -86,10 +94,10 @@ export class ButtonControlComponent implements OnInit {
   selectTab(tab: string): void {
     if (tab == 'Save' || tab == 'Delete' ){
       if (tab == 'Save') {
-        this.commonService.addNew();
+        this.gridHandlerService.addNew();
 
       }else {
-        if (this.commonService.checkBoxSelectedData.length > 0) {
+        if (this.gridHandlerService.checkBoxSelectedData.length > 0) {
           Swal.fire({
             title: 'Are you sure?',
             text: 'You want to delete selected record',
@@ -99,14 +107,14 @@ export class ButtonControlComponent implements OnInit {
             cancelButtonText: 'No, keep it'
           }).then((result) => {
             if (result.value) {
-              this.commonService.delete();
+              this.gridHandlerService.delete();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
               Swal.fire(
                 'Cancelled',
                 'Your record is safe :)',
                 'error'
               )
-              this.commonService.checkBoxSelectedData = [];
+              this.gridHandlerService.checkBoxSelectedData = [];
             }
           })
         }
@@ -118,9 +126,9 @@ export class ButtonControlComponent implements OnInit {
             timer: 1500 // auto close after 1.5 seconds
           });
         }
-        // if (this.commonService.checkBoxSelectedData.length > 0) {
+        // if (this.gridHandlerService.checkBoxSelectedData.length > 0) {
         //   if (confirm("Are you sure to delete selected record(s)?") == true) {
-        //     this.commonService.delete();
+        //     this.gridHandlerService.delete();
         //   }
 
         // } else {
@@ -131,7 +139,7 @@ export class ButtonControlComponent implements OnInit {
     } else if(tab =='Details'){
       alert("Please go to List then Select a Record");
     }else if(tab == 'Approve'){
-      this.commonService.approve();
+      this.gridHandlerService.approve();
     }
     else {
       const fullUrl = this.router.url.split('?')[0]; 
@@ -144,10 +152,10 @@ export class ButtonControlComponent implements OnInit {
       //   minorTab='List'
       // }
      var redirectRoute= routeSegment.replace(minorTab, tab);
-      this.router.navigate(['/'+ redirectRoute]);
+      this.router.navigate(['/'+ redirectRoute],{queryParams:{id:this.idsValue}});
     }
     if(tab !== 'Approve'){
-      this.commonService.selectedTab = tab;
+      this.gridHandlerService.selectedTab = tab;
     }
 
   }
