@@ -78,6 +78,7 @@ import { RegeionFormComponent } from './Components/Regeion/regeion-form/regeion-
 import { RegeionListComponent } from './Components/Regeion/regeion-list/regeion-list.component';
 import { OrdersListComponent } from './Components/MoneyReceipts/orders-list/orders-list.component';
 import { DuePaymentListComponent } from './Components/MoneyReceipts/due-payment-list/due-payment-list.component';
+import { MrFormComponent } from './Components/Orders/mr-form/mr-form.component';
 
 const routes: Routes = [
   {
@@ -396,7 +397,13 @@ const routes: Routes = [
       {
         path:"DuePaymentList",
         component:DuePaymentListComponent
-      }
+      },
+      
+      {
+        path:"mrForm",
+        component:MrFormComponent
+      },
+
     ]
   },
   {

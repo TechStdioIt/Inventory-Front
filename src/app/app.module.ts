@@ -123,7 +123,7 @@ import { DopendingListComponent } from './Components/DeliveryOrder/dopending-lis
 import { IntpendingListComponent } from './Components/Invoice/intpending-list/intpending-list.component';
 import { InvFormComponent } from './Components/Invoice/inv-form/inv-form.component';
 import { InvListComponent } from './Components/Invoice/inv-list/inv-list.component';
-import { MrFormComponent } from './Components/MoneyReceipt/mr-form/mr-form.component';
+import { MrFormComponentss } from './Components/MoneyReceipt/mr-form/mr-form.component';
 import { MrListComponent } from './Components/MoneyReceipt/mr-list/mr-list.component';
 import { MrpendingListComponent } from './Components/MoneyReceipt/mrpending-list/mrpending-list.component';
 import { CommonAutoCompleteApiComponent } from './CommonComponents/common-auto-complete-api/common-auto-complete-api.component';
@@ -150,6 +150,7 @@ import { RegeionFormComponent } from './Components/Regeion/regeion-form/regeion-
 import { RegeionListComponent } from './Components/Regeion/regeion-list/regeion-list.component';
 import { DuePaymentListComponent } from './Components/MoneyReceipts/due-payment-list/due-payment-list.component';
 import { OrdersListComponent } from './Components/MoneyReceipts/orders-list/orders-list.component';
+import { MrFormComponent } from './Components/Orders/mr-form/mr-form.component';
 
 @NgModule({
   declarations: [
@@ -236,7 +237,7 @@ import { OrdersListComponent } from './Components/MoneyReceipts/orders-list/orde
     IntpendingListComponent,
     InvFormComponent,
     InvListComponent,
-    MrFormComponent,
+    MrFormComponentss,
     MrListComponent,
     MrpendingListComponent,
     CommonAutoCompleteApiComponent,
@@ -256,7 +257,8 @@ import { OrdersListComponent } from './Components/MoneyReceipts/orders-list/orde
     BranchListComponent,
     BranchFormComponent,
     RegeionFormComponent,
-    RegeionListComponent
+    RegeionListComponent,
+    MrFormComponent,
 
   ],
   imports: [

@@ -15,7 +15,7 @@ import { Doctor } from 'src/app/Models/Doctor';
   templateUrl: './mr-form.component.html',
   styleUrl: './mr-form.component.scss'
 })
-export class MrFormComponent implements OnInit,OnDestroy {
+export class MrFormComponentss implements OnInit,OnDestroy {
   [key: string]: any;
   dropdownSettings = {};
   text: string = '';

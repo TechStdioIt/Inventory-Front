@@ -23,6 +23,8 @@ export class GridHandlerService {
   approve$ = this.approveSubject.asObservable();
   private deleteSubject = new Subject<any>();
   delete$ = this.deleteSubject.asObservable();
+  private mrSubject = new Subject<any>();
+  mr$ = this.mrSubject.asObservable();
   isSearch:boolean=false;
   isPagger:boolean=false; 
   isButtonColumn:boolean=true;
@@ -42,6 +44,9 @@ export class GridHandlerService {
   }
   edit(selectedRecord:any){
     this.editSubject.next(selectedRecord);
+  }
+  generateMR() {
+    this.mrSubject.next(NgForm);
   }
   delete() {
     this.deleteSubject.next(this.checkBoxSelectedData);

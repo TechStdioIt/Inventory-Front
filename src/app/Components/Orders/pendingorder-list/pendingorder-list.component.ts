@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 })
 export class PendingorderListComponent implements OnInit {
   fromHeader: string = 'Order';
-  formRoute: string = '/orderForm';
+  formRoute: string = '/mrForm';
   listAPI: string = 'SalesOrder/GetAllPendingData';
   deleteAPI: string = 'SalesOrder/DeleteOrder';
   haveQueryPram: boolean = false;
@@ -28,10 +28,10 @@ export class PendingorderListComponent implements OnInit {
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
     { caption: 'So No', key: 'soNo' },
-    { caption: 'Delivery Date', key: 'deliveryDate' },
-    { caption: 'Pharmacy Name', key: 'pharmacyName' },
-    { caption: 'Territory Name', key: 'territotyName' },
-    { caption: 'Total Amount', key: 'totalOrder' },
+    { caption: 'Customer Name', key: 'customerName' },
+    { caption: 'Customer Phone Number', key: 'phone' },
+    { caption: 'Total Order Amount', key: 'grandTotal' },
+    { caption: 'Due Amount', key: 'dynamicLabelAmount' },
   ];
 
   buttonShow = {
@@ -66,8 +66,15 @@ export class PendingorderListComponent implements OnInit {
     this.commonService.details$.pipe(take(1)).subscribe(async (data: any) => {
       this.details(data);
     });
-  }
+    this.commonService.mr$.pipe(take(1)).subscribe(async (data: any) => {
+      this.SendMr(data);
+    });
 
+  }
+  SendMr(selectedRecord:any){
+    this.commonService.selectedTab = 'Form';
+    this.router.navigate([this.formRoute]);
+  }
   ngOnInit(): void {
     this.commonService.data$.subscribe((newData) => {
       this.edit(newData);

@@ -3,7 +3,8 @@ export interface GridColumn<T> {
   key: keyof T; // Key to map to object property
   width?: number; // Optional width
   isShow?: boolean; // Whether to show this column
-  type?: any // Optional type for formatting
+  type?: any; // Optional type for formatting
+  isReadOnly?:boolean
 }
 
 export interface GridButtonAction<T> {

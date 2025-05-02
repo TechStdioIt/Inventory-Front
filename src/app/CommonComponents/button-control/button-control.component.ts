@@ -92,11 +92,14 @@ export class ButtonControlComponent implements OnInit {
 
 
   selectTab(tab: string): void {
-    if (tab == 'Save' || tab == 'Delete' ){
+    if (tab == 'Save' || tab == 'Delete' || tab =='GMR'){
       if (tab == 'Save') {
         this.gridHandlerService.addNew();
 
-      }else {
+      }else if(tab == 'GMR'){
+        this.gridHandlerService.generateMR();
+      }
+      else {
         if (this.gridHandlerService.checkBoxSelectedData.length > 0) {
           Swal.fire({
             title: 'Are you sure?',

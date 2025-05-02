@@ -24,15 +24,17 @@ export class CommonAutoCompleteApiComponent {
   @Input() isReadOnly: boolean = false;
   @Output() valueChange = new EventEmitter<any>();
   @Input() dependencyValue:number=0;
+  @Input() parentEmitter?: EventEmitter<any>;
 
   constructor(private dataService: HttpClientConnectionService) {}
 
   onValueChanged(event: any) {
-    debugger;
-    this.selectedItem = this.dataSource.find((x: any) => x.name === event.value);
+    this.selectedItem = this.dataSource.find((x: any) => x[this.displayExpr] === event.value);
+    // console.log(this.selectedItem);
     // { value: event.value, fieldName: this.fieldName, emiter: this.parentEmitter }
     if(this.selectedItem){
-      this.valueChange.emit({ value: this.selectedItem.id, fieldName: this.fieldName,text:this.selectedItem[this.displayExpr],showField:this.showFieldName });
+      // 
+      this.valueChange.emit({ value: this.selectedItem[this.valueExpr], fieldName: this.fieldName,text:this.selectedItem[this.displayExpr],showField:this.showFieldName,emiter: this.parentEmitter });
     }
     
   }

@@ -22,8 +22,8 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
   // @Input() data: T[] = []; // Input for the data to display
   @Input() data: T[] = [];
   @Input() columns: GridColumn<T>[] = []; // Column definitions
-  @Input() pageSizes: any[] = [20, 50, 100, 'All']; // Configurable page sizes
-  @Input() pageSize: number = 20; // Default page size
+  @Input() pageSizes: any[] = [50, 100, 'All']; // Configurable page sizes
+  @Input() pageSize: number = 50; // Default page size
   @Input() reloadCount: number = 0; // Default page size
   @Input() maxVisiblePages: number = 3; // Maximum visible pages for pagination
   @Input() totalRecords: number = 0; // Maximum visible pages for pagination
@@ -32,11 +32,16 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
   @Input() haveQueryPram: boolean = false;
   @Input() isUseData: boolean = false;
   @Input() isSearchShow: boolean = true;
+  @Input() isShowSum: boolean = false;
+  @Input() sumColumn: any[] = [];
   @Input() searchGrid: any[] = [];
   @Input() searchApi: string = '';
   @Input() isSearchGrid: boolean = false;
+  @Input() isPostApi: boolean = false;
+  @Input() postDatas: any = {};
   @Output() dataEmitter = new EventEmitter<{ value: any; fieldName?: any; emiter?: any }>();
   @Output() dataChange = new EventEmitter<any>();
+  @Output() searchSubmit = new EventEmitter<any>();
 
   currentPage: number = 1;
   totalItems: number = 0;
@@ -133,6 +138,12 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
   pageChangeDynamic() {
     const skip = (this.currentPage - 1) * this.pageSize;
     const take = this.pageSize;
+    if(this.isPostApi){
+      this.postDatas.take = take;
+      this.postDatas.skip = skip;
+      this.postData(this.postDatas);
+      return;
+    }
     if (!this.isUseData) {
       this.getData({ take: take, skip: skip });
     } else {
@@ -140,6 +151,32 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
       this.filteredData = this.data.slice(skip, skip + take);
       this.updatePagination();
     }
+  }
+  postData(data: any) {
+    
+    this.dataService.PostData(this.paginationAPI, data).subscribe(
+      (response: any) => {
+        if (response) {
+          if (response.data) {
+            this.data = response.data;
+            this.totalRecords = response.data[0]?.totalRecords ?? response.data.length;
+          } else {
+            this.data = response;
+            this.totalRecords = response[0]?.totalRecords ?? response.length;
+          }
+          // this.pageSizes.push('All');
+          this.filteredData = [...this.data];
+          this.updatePagination();
+        } else {
+          this.data = [];
+        }
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Failed to get data:', error);
+        if (error.error.message == 'You are not authorized! Please log in to access this resource.') {
+          this.router.navigate(['/']);
+        }
+      });
   }
   getData = ({ take, skip }: { take: number; skip: number }) => {
     const api = this.haveQueryPram ? `${this.paginationAPI}&take=${take}&skip=${skip}` : `${this.paginationAPI}?take=${take}&skip=${skip}`;
@@ -279,4 +316,63 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     }
     this.dataChange.emit({ value: this.paginatedData,index: index, fieldName: column });
   }
+  onValueSubmitOnGrid(){
+    this.searchSubmit.emit(this.searchFormData);
+  }
+  onValueChangedAutoSelect(eventData: { value: any; fieldName?: any, text?: any, showField?: any,emiter?: any }) {
+    eventData.emiter(eventData);
+  }
+
+  doSum(column:string,dataSource:any[]){
+    return dataSource.reduce((sum, item) => {
+      // this.getSummaryRow(item);
+      const value = Number(item[column]);
+      return sum + (isNaN(value) ? 0 : value);
+    }, 0);
+  }
+  getSummaryRow(summaryData: any){
+debugger
+const totalColumnCount = this.columns.filter(column => 
+  column.isShow !== false
+).length;
+const row = Array(totalColumnCount).fill('');
+
+
+
+  }
+  makeSumRow(){
+    const totalColumnCount = this.columns.filter(column => 
+      column.isShow !== false
+    ).length + 2;
+    const row = Array(totalColumnCount).fill('');
+
+    let column:any = '';
+    // let getSumColumn = this.sumColumn.find((col:any) => col.key === item.key);
+    this.columns.forEach((itemss:any,i) => {
+      if(this.sumColumn.find((col:any) => col.key === itemss.key)){
+        row[i+1] = this.doSum(itemss.key,this.paginatedData);
+
+
+      }
+
+    });
+    
+    
+
+    // if(getSumColumn !== undefined){
+    //   let sumColumnPosition = getSumColumn.position;
+    //   if((i+2) == sumColumnPosition){
+
+    //     row[i+3] = this.paginatedData.reduce((sum: number, item:any) => {
+    //       const value = Number(item[getSumColumn.key]);
+    //       return sum + (isNaN(value) ? 0 : value);
+    //     }, 0);
+        
+    //   }
+    // }
+    
+    // row[i] = item;
+    return row;
+  }
+  
 }

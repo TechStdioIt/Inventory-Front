@@ -15,6 +15,7 @@
           <i class="fa fa-edit" aria-hidden="true"></i>&nbsp;Approve
         </a>
       </li>
+      
       <li class="nav-item hoverEffect"  (click)="selectTab('List')" >
         <a class="nav-link" aria-current="page"   [class.active]="gridHandlerService.selectedTab === 'List'">
           <i class="fa fa-list" aria-hidden="true"></i>&nbsp; List
@@ -28,6 +29,12 @@
       <li class="nav-item hoverEffect"  (click)="selectTab('Edit')" *ngIf="this.SelectedMenuItems.isEdit && ! this.SelectedMenuItems.isAdd" >
         <a class="nav-link"  [class.active]="gridHandlerService.selectedTab === 'Form'" >
           <i class="fa fa-edit" aria-hidden="true"></i>&nbsp;Edit
+        </a>
+      </li>
+
+      <li class="nav-item hoverEffect"  (click)="selectTab('GMR')" *ngIf="currentRoute.startsWith('/orderPList') || currentRoute=='/mrForm' " >
+        <a class="nav-link" aria-current="page"   [class.active]="gridHandlerService.selectedTab === 'GMR'">
+          <i class="fa fa-list" aria-hidden="true"></i>&nbsp; Generate MR
         </a>
       </li>
       
