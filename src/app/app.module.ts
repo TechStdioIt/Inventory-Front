@@ -151,6 +151,8 @@ import { RegeionListComponent } from './Components/Regeion/regeion-list/regeion-
 import { DuePaymentListComponent } from './Components/MoneyReceipts/due-payment-list/due-payment-list.component';
 import { OrdersListComponent } from './Components/MoneyReceipts/orders-list/orders-list.component';
 import { MrFormComponent } from './Components/Orders/mr-form/mr-form.component';
+import { DueCustomerListComponent } from './Components/Customer/due-customer-list/due-customer-list.component';
+import { DueCustomerFormComponent } from './Components/Customer/due-customer-form/due-customer-form.component';
 
 @NgModule({
   declarations: [
@@ -259,6 +261,8 @@ import { MrFormComponent } from './Components/Orders/mr-form/mr-form.component';
     RegeionFormComponent,
     RegeionListComponent,
     MrFormComponent,
+    DueCustomerListComponent,
+    DueCustomerFormComponent
 
   ],
   imports: [

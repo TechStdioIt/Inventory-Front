@@ -79,6 +79,8 @@ import { RegeionListComponent } from './Components/Regeion/regeion-list/regeion-
 import { OrdersListComponent } from './Components/MoneyReceipts/orders-list/orders-list.component';
 import { DuePaymentListComponent } from './Components/MoneyReceipts/due-payment-list/due-payment-list.component';
 import { MrFormComponent } from './Components/Orders/mr-form/mr-form.component';
+import { DueCustomerListComponent } from './Components/Customer/due-customer-list/due-customer-list.component';
+import { DueCustomerFormComponent } from './Components/Customer/due-customer-form/due-customer-form.component';
 
 const routes: Routes = [
   {
@@ -403,6 +405,15 @@ const routes: Routes = [
         path:"mrForm",
         component:MrFormComponent
       },
+      {
+        path:"dueCustomerList",
+        component:DueCustomerListComponent
+      },
+      {
+        path:"dueCustomerForm",
+        component:DueCustomerFormComponent
+      },
+
 
     ]
   },
