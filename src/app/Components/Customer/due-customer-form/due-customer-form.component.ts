@@ -27,7 +27,7 @@ export class DueCustomerFormComponent implements OnInit, OnDestroy {
   insertOrUpdateAPI: string = 'DueCustomer/SaveCustomerDueAmount';
   getDataByIdAPI: string = 'DueCustomer/GetAllDueCustomerListById';
   listRoute: string = '/GetAllDueCustomerList';
-
+dueAmount : number =0;
   formdata: any[] = [
     { type: 'text', name: 'customerName', label: 'Customer Name', required: true, column: 4, isReadOnly: true },
     { type: 'text', name: 'code', label: 'Customer Code', required: true, column: 4, isReadOnly: true },
@@ -90,9 +90,7 @@ export class DueCustomerFormComponent implements OnInit, OnDestroy {
       });
   }
   ngOnInit(): void {
-    this.commonService.getDropDownData(7).subscribe((data: any) => {
-      this.formdata.find(field => field.name === 'customerTypeId').options = data
-    })
+
   }
   onSubmit(form: NgForm) {
     this.insertOrUpdate(form);
@@ -104,7 +102,8 @@ export class DueCustomerFormComponent implements OnInit, OnDestroy {
   getDataById(id: any) {
     this.dataService.GetData(`${this.getDataByIdAPI}?id=` + id).subscribe((data: any) => {
       // this.FormData=data.data;
-      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as Category;
+      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as any;
+      this.dueAmount = this.FormData.dueAmount;
     })
   }
   insertOrUpdate(form: NgForm) {
@@ -135,8 +134,13 @@ export class DueCustomerFormComponent implements OnInit, OnDestroy {
 
 
   changeDueAmount(evt: any) {
-    
-    console.log(evt.target.value)
+    if(Number(evt.target.value) > this.dueAmount){
+     this.toastr.error("Due Amount should be getter than Given Amount","Error!");
+     this.FormData.givenAmountNow = undefined;
+     this.FormData.dueAmount = this.dueAmount;
+    }else{
+      this.FormData.dueAmount =this.dueAmount - Number(evt.target.value);
+    }
   }
 }
 
