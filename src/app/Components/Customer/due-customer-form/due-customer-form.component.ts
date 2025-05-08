@@ -28,6 +28,7 @@ export class DueCustomerFormComponent implements OnInit, OnDestroy {
   getDataByIdAPI: string = 'DueCustomer/GetAllDueCustomerListById';
   listRoute: string = '/GetAllDueCustomerList';
 dueAmount : number =0;
+totalGivenAmount : number = 0;
   formdata: any[] = [
     { type: 'text', name: 'customerName', label: 'Customer Name', required: true, column: 4, isReadOnly: true },
     { type: 'text', name: 'code', label: 'Customer Code', required: true, column: 4, isReadOnly: true },
@@ -38,13 +39,13 @@ dueAmount : number =0;
     { type: 'text', name: 'givenAmount', label: 'Previous Given Amount', required: true, column: 4, isReadOnly: true },
     { type: 'text', name: 'dueAmount', label: 'Due Amount', required: true, column: 4, isReadOnly: true },
     {
-      type: 'text', name: 'givenAmountNow', label: 'Given Amount', required: true, column: 4,
+      type: 'number', name: 'givenAmountNow', label: 'Given Amount', required: true, column: 4,
       eventEmit: {
         keyup: 'changeDueAmount',
 
       }
     },
-    { type: 'text', name: 'extraDiscount', label: 'Extra Discount', required: true, column: 4 ,
+    { type: 'number', name: 'extraDiscount', label: 'Extra Discount', required: true, column: 4 ,
       eventEmit: {
         keyup: 'changeDueAmount',
 
@@ -121,9 +122,9 @@ dueAmount : number =0;
     );
   }
 
-  handleEvent(functionName: string, event: any) {
+  handleEvent(functionName: string, event: any,fieldName?: any) {
     if (typeof this[functionName] === 'function') {
-      this[functionName](event); // Dynamically call the specified function
+      this[functionName](event,fieldName); // Dynamically call the specified function
     } else {
       console.error(`Function ${functionName} is not defined`);
     }
@@ -133,14 +134,37 @@ dueAmount : number =0;
   }
 
 
-  changeDueAmount(evt: any) {
-    if(Number(evt.target.value) > this.dueAmount){
-     this.toastr.error("Due Amount should be getter than Given Amount","Error!");
-     this.FormData.givenAmountNow = undefined;
-     this.FormData.dueAmount = this.dueAmount;
-    }else{
-      this.FormData.dueAmount =this.dueAmount - Number(evt.target.value);
+  changeDueAmount(evt: any,fieldName?: any) {
+    if (fieldName == 'extraDiscount') {
+      this.FormData.extraDiscount = Number(evt.target.value);
+      this.FormData.dueAmount = parseFloat(
+        (
+          this.dueAmount -
+          Number(this.FormData.extraDiscount || 0) -
+          Number(this.FormData.givenAmountNow || 0)
+        ).toFixed(2)
+      );
+      
     }
+    if (fieldName == 'givenAmountNow') {
+      this.FormData.givenAmountNow = Number(evt.target.value);
+      this.FormData.dueAmount = (
+        this.dueAmount -
+        this.FormData.givenAmountNow -
+        Number(this.FormData.extraDiscount || 0)
+      ).toFixed(2);
+      
+
+    }
+    // if(Number(evt.target.value) > this.dueAmount){
+    //  this.toastr.error("Due Amount should be getter than Given Amount","Error!");
+    //  this.FormData.givenAmountNow = undefined;
+    //  this.FormData.dueAmount = this.dueAmount;
+    // }else{
+    //   this.FormData.dueAmount =this.dueAmount - Number(evt.target.value);
+    // }
+    // this.totalGivenAmount = Number(evt.target.value) + Number(this.totalGivenAmount);
+    // this.FormData.dueAmount = this.dueAmount - this.totalGivenAmount;
   }
 }
 

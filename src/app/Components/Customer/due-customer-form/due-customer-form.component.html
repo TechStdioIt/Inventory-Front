@@ -24,9 +24,9 @@
                       [class.invalid]="field.name.invalid && field.name.touched"
                       [readOnly]="gridHandleService.selectedTab === 'Details' || field.isReadOnly == true"
                       [placeholder]="field.placeHolder? field.placeHolder : field.name === 'password' ? 'Enter password' : field.label"
-                      (keyup)="field.eventEmit?.keyup ? handleEvent(field.eventEmit.keyup, $event) : null"
-                      (click)="field.eventEmit?.click ? handleEvent(field.eventEmit.click, $event) : null"
-                      (change)="field.eventEmit?.change ? handleEvent(field.eventEmit.change, $event) : null" />
+                      (keyup)="field.eventEmit?.keyup ? handleEvent(field.eventEmit.keyup, $event,field.name) : null"
+                      (click)="field.eventEmit?.click ? handleEvent(field.eventEmit.click, $event,field.name) : null"
+                      (change)="field.eventEmit?.change ? handleEvent(field.eventEmit.change, $event,field.name) : null" />
         
         
                    
