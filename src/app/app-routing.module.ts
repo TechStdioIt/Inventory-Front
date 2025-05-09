@@ -362,7 +362,7 @@ const routes: Routes = [
         path:"salesForm",
         component:SalesFormComponent
       },{
-        path:'reports',
+        path:'ReportViewer',
         component:ReportViewerComponent
       },
       {

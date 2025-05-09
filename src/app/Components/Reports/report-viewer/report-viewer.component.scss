@@ -1,6 +1,16 @@
 @import 'variables';
 $Menu-width: 0px;
 
-::ng-deep .pcoded-main-container{
-    margin-left: 0!important;
+:host ::ng-deep .pcoded-main-container{
+    margin-left: 0px!important;
+}
+
+
+
+:host ::ng-deep .dxrd-designer-wrapper .dxrd-right-panel.dxrd-tab-panel-left{
+    width: 380px;
+}
+
+ :host ::ng-deep .pcoded-content{
+    padding: 0px !important;
 }

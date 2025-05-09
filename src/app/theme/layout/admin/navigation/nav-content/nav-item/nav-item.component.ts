@@ -52,13 +52,32 @@ export class NavItemComponent implements AfterViewInit {
     }
   }
   onRouting(uri:any,item:any){
-    ;
+    
     if(uri == '/orderPlist' || uri == '/deliveryOrderPList' || uri == '/invPList' || uri == '/mrPList'){
       this.gridService.selectedTab = 'PList'
     }else{
       this.gridService.selectedTab = 'List';
     }
+     this.router.navigate([uri],{queryParams:{id:this.menuPermissionData}});
+   
+  }
+getLink(uri: string) {
+    const data = this.getParams(uri);
+    return data.path;
+  }
+  getParams(url: string) {
+    const [path, queryString] = url.split('?');
+    const params = new URLSearchParams(queryString);
+    const paramObj: any = {};
+    
+    params.forEach((value, key) => {
+      paramObj[key] = value;
+    });
   
-    this.router.navigate([uri],{queryParams:{id:this.menuPermissionData}});
+    return { path, params: paramObj };
+  }
+  getParamsObj(uri: string) {
+    const data = this.getParams(uri);
+    return data.params;
   }
 }

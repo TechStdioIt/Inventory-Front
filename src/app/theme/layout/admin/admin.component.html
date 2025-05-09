@@ -1,4 +1,4 @@
-<app-navigation
+<app-navigation *ngIf="!currentRoute.startsWith('/ReportViewer')"
   class="pcoded-navbar menupos-fixed menu-light"
   [ngClass]="{
     'navbar-collapsed': navCollapsed,
@@ -7,7 +7,7 @@
   (NavCollapsedMob)="navMobClick()"
 ></app-navigation>
 <!-- <app-side-bar></app-side-bar> -->
-<app-nav-bar
+<app-nav-bar *ngIf="!currentRoute.startsWith('/ReportViewer')"
   class="navbar pcoded-header navbar-expand-lg navbar-light header-blue headerPos-fixed"
   (NavCollapse)="this.navCollapsed = !this.navCollapsed"
   (NavCollapsedMob)="navMobClick()"
@@ -19,11 +19,11 @@
         <div class="main-body">
           <div class="page-wrapper">
             <app-breadcrumb></app-breadcrumb>
-            <ng-container *ngIf="!currentRoute.startsWith('/analytics') && !currentRoute.startsWith('/businessDashboard') && !currentRoute.startsWith('/menuPermission') && !currentRoute.startsWith('/salesForm')  && !currentRoute.startsWith('/reports')&& !currentRoute.startsWith('/labelList') &&!currentRoute.startsWith('/salesOrderList') "> 
+            <ng-container *ngIf="!currentRoute.startsWith('/analytics') && !currentRoute.startsWith('/businessDashboard') && !currentRoute.startsWith('/menuPermission') && !currentRoute.startsWith('/salesForm')  && !currentRoute.startsWith('/reports')&& !currentRoute.startsWith('/labelList') &&!currentRoute.startsWith('/salesOrderList') && !currentRoute.startsWith('/ReportViewer')  "> 
               <app-button-control ></app-button-control>
             </ng-container>
             
-            <router-outlet *ngIf="currentRoute.startsWith('/salesForm') || currentRoute.startsWith('/analytics') || currentRoute.startsWith('/businessDashboard') || currentRoute.startsWith('/menuPermission') || currentRoute.startsWith('/reports') || currentRoute.startsWith('/labelList') || currentRoute.startsWith('/salesOrderList') "></router-outlet>
+            <router-outlet *ngIf="currentRoute.startsWith('/salesForm') || currentRoute.startsWith('/analytics') || currentRoute.startsWith('/businessDashboard') || currentRoute.startsWith('/menuPermission') || currentRoute.startsWith('/reports') || currentRoute.startsWith('/labelList') || currentRoute.startsWith('/salesOrderList') ||currentRoute.startsWith('/ReportViewer') "></router-outlet>
           </div>
         </div>
       </div>
