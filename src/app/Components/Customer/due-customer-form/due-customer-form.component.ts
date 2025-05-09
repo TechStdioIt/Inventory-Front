@@ -136,18 +136,20 @@ totalGivenAmount : number = 0;
 
   changeDueAmount(evt: any,fieldName?: any) {
     if (fieldName == 'extraDiscount') {
-      this.FormData.extraDiscount = Number(evt.target.value);
-      this.FormData.dueAmount = parseFloat(
+      this.FormData.extraDiscount = evt.target.value;
+      this.FormData.dueAmount = 
+      
+      parseFloat(
         (
           this.dueAmount -
-          Number(this.FormData.extraDiscount || 0) -
-          Number(this.FormData.givenAmountNow || 0)
+          parseFloat(this.FormData.extraDiscount || 0) -
+          parseFloat(this.FormData.givenAmountNow || 0)
         ).toFixed(2)
       );
       
     }
     if (fieldName == 'givenAmountNow') {
-      this.FormData.givenAmountNow = Number(evt.target.value);
+      this.FormData.givenAmountNow = (evt.target.value);
       this.FormData.dueAmount = (
         this.dueAmount -
         this.FormData.givenAmountNow -

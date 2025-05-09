@@ -153,6 +153,7 @@ import { OrdersListComponent } from './Components/MoneyReceipts/orders-list/orde
 import { MrFormComponent } from './Components/Orders/mr-form/mr-form.component';
 import { DueCustomerListComponent } from './Components/Customer/due-customer-list/due-customer-list.component';
 import { DueCustomerFormComponent } from './Components/Customer/due-customer-form/due-customer-form.component';
+import { BarcodeGeneratorComponent } from './Components/barcode-generator/barcode-generator.component';
 
 @NgModule({
   declarations: [
@@ -262,7 +263,8 @@ import { DueCustomerFormComponent } from './Components/Customer/due-customer-for
     RegeionListComponent,
     MrFormComponent,
     DueCustomerListComponent,
-    DueCustomerFormComponent
+    DueCustomerFormComponent,
+    BarcodeGeneratorComponent
 
   ],
   imports: [

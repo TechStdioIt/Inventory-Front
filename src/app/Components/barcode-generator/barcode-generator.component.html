@@ -1,0 +1,38 @@
+<div>
+    <h2>Barcode Generator</h2>
+    
+    <!-- Form to input details -->
+    <form (ngSubmit)="generateBarcodes()">
+      <label for="pageSize">Page Size</label>
+      <select id="pageSize" [(ngModel)]="pageSize" name="pageSize">
+        <option value="A4">A4</option>
+        <option value="55mm">55mm</option>
+        <!-- Add more sizes as needed -->
+      </select>
+  
+      <label for="numBarcodes">Number of Barcodes</label>
+      <input type="number" id="numBarcodes" [(ngModel)]="numBarcodes" name="numBarcodes" />
+  
+      <div>
+        <label for="productCode">Product Code</label>
+        <input type="text" id="productCode" [(ngModel)]="productCode" name="productCode" />
+      </div>
+  
+      <div>
+        <label for="price">Price</label>
+        <input type="text" id="price" [(ngModel)]="price" name="price" />
+      </div>
+  
+      <div>
+        <label for="batch">Batch</label>
+        <input type="text" id="batch" [(ngModel)]="batch" name="batch" />
+      </div>
+  
+      <button type="submit">Generate Barcodes</button>
+    </form>
+  
+    <div id="barcodeContainer"></div>
+  </div>
+  
+  <button (click)="downloadBarcodes()">Download Barcodes</button>
+<div id="barcodeContainer"></div>

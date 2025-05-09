@@ -27,7 +27,6 @@ export class PurchaseOrderListComponent  implements OnInit {
     { caption: 'Supplier Name', key: 'supplierName' },
     { caption: 'Total Amount', key: 'totalAmount' },
     { caption: 'Payment Type', key: 'paymentMethod' },
-    { caption: 'BatchNo', key: 'batchNo' },
   ];
 
   buttonShow = {

@@ -26,9 +26,10 @@ export class OrderListComponent implements OnInit {
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
     { caption: 'Order No', key: 'soNo' },
-    { caption: 'Delivery Date', key: 'deliveryDate' },
-    { caption: 'Doctor Name', key: 'doctorName' },
-    { caption: 'Pharmacy Name', key: 'pharmacyName' }
+    { caption: 'Customer Name', key: 'customerName' },
+    { caption: 'Order Amount', key: 'payableAmount' },
+    { caption: 'Due/Paid', key: 'isDue' },
+    { caption: 'Due Amount', key: 'dueAmount' }
   ];
 
   buttonShow = {

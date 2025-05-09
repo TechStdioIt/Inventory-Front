@@ -19,7 +19,7 @@ export class PurchaseOrderFormComponent implements OnInit,OnDestroy {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
-  FormData: any = new PurchaseOrder();
+   FormData: any = new PurchaseOrder();
   isSubmitting: boolean = false;
   fromHeader: string = 'Purchase Order';
   insertOrUpdateAPI: string = 'PurchasOrder/CreateOrUpdatePurchaseOrder';
@@ -31,7 +31,6 @@ searchText: string = '';
 private destroy$ = new Subject<void>();
   formdata: any[] = [
     { type: 'select', name: 'supplierId', label: 'Supplier Name', required: true,column:4,options:[],optionText:'companyName',optionValue:'id',isApiCall:true,api:'Suppliers/GetAllSuppliers?take=1000&skip=0'},
-    { type: 'text', name: 'batchNo', label: 'Batch No', required: true ,column:4},
     { type: 'date', name: 'orderDate', label: 'Order Date', required: true ,column:4},
     { type: 'number', name: 'shippingCost', label: 'Shipping Cost', required: true ,column:4},
     { type: 'select', name: 'paymentMethodId', label: 'Payment Method', required: true ,column:4,options:[],optionText:'name',optionValue:'id',isApiCall:false,flag:6},
@@ -160,7 +159,8 @@ private destroy$ = new Subject<void>();
     netTotal : option.netTotal,
     sellRate:option.sellRate,
     sellDiscount:option.sellDiscount,
-    actualSellRate:option.actualSellRate
+    actualSellRate:option.actualSellRate,
+    batchNo: option.batchNo,
   };
   //this.selectedItemList.push(data);
   this.FormData.purchasList.push(data);
@@ -193,7 +193,8 @@ private destroy$ = new Subject<void>();
         netTotal : option.price,
         sellRate:option.price,
         sellDiscount:0,
-        actualSellRate:option.price
+        actualSellRate:option.price,
+        batchNo: null
       };
       //this.selectedItemList.push(data);
       this.FormData.purchasList.push(data);

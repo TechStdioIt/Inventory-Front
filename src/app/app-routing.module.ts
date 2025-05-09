@@ -81,6 +81,7 @@ import { DuePaymentListComponent } from './Components/MoneyReceipts/due-payment-
 import { MrFormComponent } from './Components/Orders/mr-form/mr-form.component';
 import { DueCustomerListComponent } from './Components/Customer/due-customer-list/due-customer-list.component';
 import { DueCustomerFormComponent } from './Components/Customer/due-customer-form/due-customer-form.component';
+import { BarcodeGeneratorComponent } from './Components/barcode-generator/barcode-generator.component';
 
 const routes: Routes = [
   {
@@ -413,6 +414,12 @@ const routes: Routes = [
         path:"dueCustomerForm",
         component:DueCustomerFormComponent
       },
+      
+      {
+        path:"barcodeGenerator",
+        component:BarcodeGeneratorComponent
+      },
+
 
 
     ]
