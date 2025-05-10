@@ -31,12 +31,12 @@ export class BmFormComponent implements OnInit {
   listRoute: string = '/bankList';
   selectedLogo?:File
   formdata: any[] = [
-    { type: 'text', name: 'businessName', label: 'Business Name', required: true,column:4,placeHolder:"Enter Bank Name"},
-    { type: 'text', name: 'ownerName', label: 'Owner Name', required: true,column:4,placeHolder:"Enter Address Name"},
-    { type: 'text', name: 'email', label: 'Email', required: true,column:4,placeHolder:"Enter Branch Name"},
-    { type: 'number', name: 'totalBranch', label: 'Total Branch', required: true,column:4,placeHolder:"Enter Branch Name"},
-    { type: 'text', name: 'contactNumber', label: 'Contact Number', required: true,column:4,placeHolder:"Enter Branch Name"},
-    { type: 'text', name: 'address', label: 'Address', required: true,column:4,placeHolder:"Enter Branch Name"}
+    { type: 'text', name: 'businessName', label: 'Business Name', required: true,column:4,placeHolder:"Enter Business Name"},
+    { type: 'text', name: 'ownerName', label: 'Owner Name', required: true,column:4,placeHolder:"Enter Owner Name"},
+    { type: 'text', name: 'email', label: 'Email', required: true,column:4,placeHolder:"Enter Email Address"},
+    { type: 'number', name: 'totalBranch', label: 'Total Branch', required: true,column:4,placeHolder:"Enter Total Branch"},
+    { type: 'text', name: 'contactNumber', label: 'Contact Number', required: true,column:4,placeHolder:"Enter Contact Number"},
+    { type: 'text', name: 'address', label: 'Address', required: true,column:4,placeHolder:"Enter Address"}
 
   ];
 

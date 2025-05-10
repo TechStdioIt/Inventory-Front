@@ -1,0 +1,66 @@
+.auth-wrapper .auth-content:not(.container) {
+    width: 550px;
+}
+
+
+.auth-wrapper{
+ background-image: url('../../../../assets/images/bg.jpg');
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+}
+
+/* Make all form fields uniform */
+.input-group {
+  width: 100%;
+  flex-wrap: nowrap;
+  align-items: stretch;
+}
+
+.input-group .form-control {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.input-group .input-group-text {
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+
+/* Match width for dx-select-box */
+dx-select-box {
+  width: 100% !important;
+  display: block;
+}
+
+.input-group dx-select-box {
+  flex: 1;
+}
+
+.input-group button.input-group-text {
+  border-left: none;
+}
+
+/* Responsive behavior */
+@media (max-width: 576px) {
+  .input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-group-text {
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem;
+  }
+
+  .input-group .form-control,
+  dx-select-box {
+    width: 100% !important;
+  }
+
+  .input-group button.input-group-text {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+    

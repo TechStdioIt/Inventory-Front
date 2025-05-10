@@ -1,0 +1,99 @@
+<div class="container-fluid mt-4">
+  <!-- Summary Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3" *ngFor="let card of summaryCards">
+      <div class="card text-white bg-primary h-100 shadow">
+        <div class="card-body">
+          <h6 class="card-title">{{ card.title }}</h6>
+          <h3 class="card-text">{{ card.value }}</h3>
+          <p class="mb-0">{{ card.subtitle }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-body">
+          <h6 class="card-title">Stock Overview</h6>
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-body">
+          <h6 class="card-title">Category Distribution</h6>
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tables and Notifications -->
+  <div class="row mb-4">
+    <!-- Low Stock -->
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-body">
+          <h6 class="card-title">Low Stock Alerts</h6>
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+                *ngFor="let item of lowStockItems">
+              {{ item.name }}
+              <span class="badge bg-danger rounded-pill">{{ item.stock }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-body">
+          <h6 class="card-title">Notifications</h6>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let note of notifications">
+              <i class="bi bi-info-circle text-primary me-2"></i> {{ note }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Transactions Table -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <h6 class="card-title">Recent Transactions</h6>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Type</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let txn of recentTransactions">
+                <td>{{ txn.date }}</td>
+                <td>{{ txn.product }}</td>
+                <td>{{ txn.qty }}</td>
+                <td>{{ txn.type }}</td>
+                <td><span class="badge bg-success">{{ txn.status }}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

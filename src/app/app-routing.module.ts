@@ -82,6 +82,7 @@ import { MrFormComponent } from './Components/Orders/mr-form/mr-form.component';
 import { DueCustomerListComponent } from './Components/Customer/due-customer-list/due-customer-list.component';
 import { DueCustomerFormComponent } from './Components/Customer/due-customer-form/due-customer-form.component';
 import { BarcodeGeneratorComponent } from './Components/barcode-generator/barcode-generator.component';
+import { BusinessDashboardComponent } from './Components/business-dashboard/business-dashboard.component';
 
 const routes: Routes = [
   {
@@ -418,6 +419,10 @@ const routes: Routes = [
       {
         path:"barcodeGenerator",
         component:BarcodeGeneratorComponent
+      },
+      {
+        path:"businessDashboard",
+        component:BusinessDashboardComponent
       },
 
 
