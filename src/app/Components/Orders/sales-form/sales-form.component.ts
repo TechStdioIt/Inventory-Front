@@ -176,6 +176,7 @@ masterData:OrderVM=new OrderVM();
   }
 
   onValueChangedAutoSelect(eventData: { value: any; fieldName?: any, text?: any, showField?: any, emiter?: any }) {
+
     this.masterData.customerId = eventData.value;
   }
   handleEvent(functionName: string, event: any) {
@@ -271,7 +272,7 @@ masterData:OrderVM=new OrderVM();
             debugger;
             
             const newUrl = this.router.serializeUrl(
-              this.router.createUrlTree(['/reports'], { queryParams: { reportName: 'rptSalesInvoices', do: res.data[0].OrderId,isPrint:isPrint } })
+              this.router.createUrlTree(['/ReportViewer'], { queryParams: { reportName: 'rptSalesInvoices', do: res.data[0].OrderId,isPrint:isPrint } })
             );
             
             // Open in new tab or window

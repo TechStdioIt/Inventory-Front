@@ -40,10 +40,11 @@ branchList:any[]=[];
 
   // Check if user is already authenticated
   checkAuthentication(): void {
-    debugger
+    if(this.loginFormData.businessMasterId > 0){
     this.dataService.GetData('Branch/GetBranchListByMaster?businessMasterId='+this.loginFormData.businessMasterId).subscribe((data:any)=>{
       this.branchList=data.data;
     })
+  }
     // this.loginFormData.userName = this.commonService.getCookie('userName');
     // this.loginFormData.password = this.commonService.getCookie('password');
 
