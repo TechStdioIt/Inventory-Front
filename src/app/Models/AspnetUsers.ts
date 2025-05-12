@@ -10,8 +10,13 @@ export class AspnetUsers{
     profileImageUrl?: string = '';
     userRoleId: string = '';
     businessMasterId: number = 0;
+    branchList : UserBranch[]=[]
 }
 
+export class UserBranch
+    {
+         branchId : number =0
+    }
 
 export class AspNetRole {
     id: string = "";
