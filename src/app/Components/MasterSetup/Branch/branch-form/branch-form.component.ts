@@ -7,7 +7,8 @@ import { NgForm } from '@angular/forms';
 import { camelCase, mapKeys } from 'lodash';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { take } from 'rxjs';
-import { Category } from 'src/app/Models/Category';
+import { Branch } from 'src/app/Models/Category';
+import { CommonService } from 'src/app/Services/common.service';
 @Component({
   selector: 'app-branch-form',
   templateUrl: './branch-form.component.html',
@@ -17,7 +18,7 @@ export class BranchFormComponent implements OnInit {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
-  FormData: any = new Category();
+  FormData: any = new Branch();
   isSubmitting: boolean = false;
   fromHeader: string = 'Branch';
   insertOrUpdateAPI: string = 'Branch/CreateOrUpdateBranch';
@@ -27,7 +28,7 @@ export class BranchFormComponent implements OnInit {
   formdata: any[] = [
     { type: 'text', name: 'branchName', label: 'Branch Name', required: true,column:4},
     { type: 'text', name: 'contactNumber', label: 'Contact Number', required: true,column:4},
-    { type: 'text', name: 'address', label: 'Address', required: true,column:4}
+    { type: 'text', name: 'address', label: 'Address', required: false,column:4}
   ];
   constructor(
     private dataService: HttpClientConnectionService,
@@ -35,13 +36,14 @@ export class BranchFormComponent implements OnInit {
     private router:ActivatedRoute,
     private route:Router,
     private location:Location,
-    public gridHandleService:GridHandlerService
+    public gridHandleService:GridHandlerService,
+    private common:CommonService
   ) {
     this.router.queryParams.subscribe((data:any)=>{
       if(data.do !=undefined && data !=null){
         this.getDataById(data.do);
       }else{
-        this.FormData =new Category();
+        this.FormData =new Branch();
       }
     });
     this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
@@ -67,25 +69,30 @@ export class BranchFormComponent implements OnInit {
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{
       // this.FormData=data.data;
       
-      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as Category;
+      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as Branch;
     })
   }
   insertOrUpdate(form: NgForm) {
     debugger;
-    this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
-      (res) => {
-        debugger;
-        this.toastr.success('Successfull', `${this.fromHeader} Information`);
-       this.FormData = new Category();
-       this.route.navigate([this.listRoute]);
-       this.gridHandleService.selectedTab = "List";
-      },
-      (err) => {
-        debugger;
-        this.toastr.error('Please Try Again', 'Invalid Information!!');
-        console.log(err);
-      }
-    );
+    const isValid = this.common.validateFormData(this.formdata, this.FormData);
+    if (isValid) {
+          this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
+            (res) => {
+              debugger;
+              this.toastr.success('Successfull', `${this.fromHeader} Information`);
+            this.FormData = new Branch();
+            this.route.navigate([this.listRoute]);
+            this.gridHandleService.selectedTab = "List";
+            },
+            (err) => {
+              debugger;
+              this.toastr.error('Please Try Again', 'Invalid Information!!');
+              console.log(err);
+            }
+          );
+    }
+
+    
   }
 
   handleEvent(functionName: string, event: any) {
@@ -95,6 +102,9 @@ export class BranchFormComponent implements OnInit {
       console.error(`Function ${functionName} is not defined`);
     }
   }
+
+
+  
 
   
 

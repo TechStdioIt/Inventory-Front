@@ -80,4 +80,21 @@ export class CommonService {
   formatDate(date: string | Date,format:string): string {
     return this.datePipe.transform(date, format) || '';
   }
+  validateFormData(formdata: any[], data: any): boolean {
+    for (const field of formdata) {
+      // Check if the field is required
+      if (field.required) {
+        // Get the value from the data object
+        const value = data[field.name];
+        
+        // Check if the value is empty or null
+        if (value === "" || value === null || value === undefined) {
+          this.toastr.error(`Field "${field.label}" is required but is empty or null.`, 'Validation Error');
+          console.error(`Field "${field.name}" is required but is empty or null.`);
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 }

@@ -27,8 +27,8 @@ export class BmFormComponent implements OnInit {
   isDragging: boolean = false; // Toggles drag-and-drop styles
   fromHeader: string = 'Business Master';
   insertOrUpdateAPI: string = 'BusinessMaster/CreateOrUpdateBusinessMaster';
-  getDataByIdAPI: string = 'Bank/GetBankById';
-  listRoute: string = '/bankList';
+  getDataByIdAPI: string = 'BusinessMaster/GetByIdBusinessMaster';
+  listRoute: string = '/bmList';
   selectedLogo?:File
   formdata: any[] = [
     { type: 'text', name: 'businessName', label: 'Business Name', required: true,column:4,placeHolder:"Enter Business Name"},

@@ -2,6 +2,13 @@ export class Category {
     id: number=0;
     name: string='';
   }
+  export class Branch {
+    id: number=0;
+    branchName: string='';
+    contactNumber: string='';
+    address: string='';
+  }
+  
 
   export class Login{
     userName:string ='';
