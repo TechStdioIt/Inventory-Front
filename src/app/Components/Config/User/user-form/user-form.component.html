@@ -67,7 +67,7 @@
 
     </div>
 
-    <div class="mt-2 col-xl-6">
+    <div class="mt-2 col-xl-4">
       <div class="fieldset">
         <span class="label-fieldset">Assign Role</span>
 
@@ -78,6 +78,27 @@
           </dx-tree-view>
         </div>
       </div>
+
+    </div>
+     <div class="mt-2 col-xl-4">
+      <div class="fieldset">
+        <span class="label-fieldset">Branch</span>
+
+        <div class="row mb-3">
+        <ng-multiselect-dropdown
+                    [placeholder]="'Select One'"
+                    [settings]="dropdownSettings"
+                    [data]="branchList"
+                    [(ngModel)]="selectedBranch"
+                    (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="onItemDeSelect($event)"
+                    (onSelectAll)="onSelectAll($event)"
+                    (onDeSelectAll)="onDeSelectAll($event)"
+                  >
+                  </ng-multiselect-dropdown>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>

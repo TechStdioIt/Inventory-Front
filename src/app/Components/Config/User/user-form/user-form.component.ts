@@ -1,10 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mapKeys, camelCase } from 'lodash';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ToastrService } from 'ngx-toastr';
-import { take } from 'rxjs';
-import { AspNetRole, AspnetUsers } from 'src/app/Models/AspnetUsers';
+import { Subject, take, takeUntil } from 'rxjs';
+import { AspNetRole, AspnetUsers, UserBranch } from 'src/app/Models/AspnetUsers';
 import { IMSMenu } from 'src/app/Models/IMSMenu';
 import { CommonService } from 'src/app/Services/common.service';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
@@ -15,7 +16,7 @@ import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnecti
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss'
 })
-export class UserFormComponent implements OnInit{
+export class UserFormComponent implements OnInit,OnDestroy{
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   fileData: string | ArrayBuffer | null = null; 
@@ -26,7 +27,20 @@ export class UserFormComponent implements OnInit{
   RoleList:any[]=[];
   isSubmitting: boolean = false;
   isDragging: boolean = false; // Toggles drag-and-drop styles
-  selectedLogo?:File
+  selectedLogo?:File;
+   selectedBranch : any[]=[];
+
+  private destroy$ = new Subject<void>();
+ dropdownSettings:IDropdownSettings = {
+    singleSelection: false,
+    idField: 'id',
+    textField: 'branchName',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 10,
+    allowSearchFilter: true
+  };
+   branchList:any[] = [];
   emailValidators = [Validators.required, this.emailFormatValidator];
 constructor(
     private toastr:ToastrService,
@@ -45,25 +59,38 @@ constructor(
             //this.getLrpNo();
           }
         });
-    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
-  
-          if (!this.isSubmitting) {
-            this.isSubmitting = true;
-            try {
-              await this.onSubmit(); 
-              this.gridHandleService.selectedTab = "List";
-              
-            } catch (error) {
-              console.error('Error during submission:', error);
-            } finally {
-              this.isSubmitting = false; // Reset flag when the operation completes or fails
-            }
+ 
+
+        this.gridHandleService.add$
+      .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
+      .subscribe(async (data: NgForm) => {
+        if (!this.isSubmitting) {
+          // Prevent multiple submissions
+          this.isSubmitting = true;
+
+          try {
+            await this.onSubmit(); // Your form submission logic
+            this.gridHandleService.selectedTab = 'List';
+          } catch (error) {
+            console.error('Error during submission:', error);
+          } finally {
+            this.isSubmitting = false; // Reset flag after completion
           }
-        });
+        }
+      });
+
+
+
+
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit(): void {
      this.getData();
+     this.getBranchData();
   }
  getDataById(id:any){
     this.dataService.GetData('Administrator/GetUserById?id='+id).subscribe((data:any)=>{
@@ -73,6 +100,17 @@ constructor(
       this.fileData= data.data.profileImageUrl;
       
     })
+  }
+  
+  getBranchData = ()=>{
+   this.dataService.GetData("Branch/GetBranchList").subscribe((data:any)=>{
+    debugger;
+      this.branchList=data.data;
+    },
+    (error:any)=>{
+      this.toastr.error("failed to Get Data")
+    }
+    )
   }
   onSubmit() {
    this.insertRecord();
@@ -121,7 +159,9 @@ constructor(
     if(this.selectedTree.length >0){
       datass.append('userRoleId',this.selectedTree.map(item => item.id).join(","));
     }
- 
+    if(this.selectedBranch.length > 0){
+      datass.append('branchList',this.FormData.branchList.map(x=>x.branchId).join());
+    }
 
     this.dataService.PostData("Administrator/SaveUser", datass).subscribe(
       res => {
@@ -201,4 +241,50 @@ constructor(
   triggerFileInput() {
     this.fileInput.nativeElement.click();
   }
+
+// Triggered when an item is unselected
+  onItemDeSelect(item: any) {
+    var exist = this.selectedBranch.find(x=>x==item.id );
+    var founded = this.FormData.branchList.find(x=>x.branchId == item.id);
+    if(founded){
+      const arrayIndex = this.FormData.branchList.indexOf(founded);
+      if (arrayIndex !== -1) {
+        this.FormData.branchList.splice(arrayIndex, 1);
+      }
+    }
+   
+    if(exist){
+      const index = this.selectedBranch.indexOf(exist);
+     
+
+
+    if (index !== -1) {
+      this.selectedBranch.splice(index, 1);
+    }
+    }
+  }
+
+  // Triggered when all items are selected 
+  onSelectAll(items: any) {
+    this.branchList.forEach((item:any)=>{
+      this.selectedBranch.push(item.id);
+      var businessDetails = new UserBranch();
+      businessDetails.branchId = item.id;
+      this.FormData.branchList.push(businessDetails);
+    })
+  }
+
+  // Triggered when all items are unselected
+  onDeSelectAll(items: any) {
+    this.selectedBranch =[];
+    this.FormData.branchList = [];
+  }
+  onItemSelect(item: any) {
+    debugger;
+    this.selectedBranch.push(item.id);
+    var businessDetails = new UserBranch();
+    businessDetails.branchId = item.id;
+    this.FormData.branchList.push(businessDetails);
+  }
+
 }

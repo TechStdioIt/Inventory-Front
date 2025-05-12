@@ -8,7 +8,7 @@
               <img src="assets/images/logoFull.png" alt="logo" class="img-fluid mb-4" />
               <h4 class="mb-3 f-w-400">SignIn</h4>
               <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1"><i class="feather icon-mail"></i></span>
+                <span class="input-icon" class="input-group-text" id="basic-addon1"><i class="feather icon-mail"></i></span>
                 <input type="text" class="form-control" placeholder="User Name" aria-label="Username"
                   aria-describedby="basic-addon1" name="userName" #userName="ngModel"
                   [(ngModel)]="loginFormData.userName" />
@@ -25,29 +25,6 @@
                 </button>
               </div>
 
-              <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon3"><i class="feather icon-list"></i></span>
-                <dx-select-box [dataSource]="DD_BusinessMasterId" displayExpr="name" valueExpr="id" class="input-label"
-                  [searchEnabled]="true" labelMode="outside" name="businessMasterId" #businessMasterId="ngModel"
-                  [(ngModel)]="loginFormData.businessMasterId" (onValueChanged)="checkAuthentication()"></dx-select-box>
-
-                <!-- <select 
-                class="form-control"
-                name="businessMasterId"
-                #businessMasterId="ngModel"
-                [(ngModel)]="loginFormData.businessMasterId">
-                <option value="Select user type" disabled selected>Select user type</option>
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-                <option value="guest">Guest</option>
-              </select> -->
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon3"><i class="feather icon-list"></i></span>
-                <dx-select-box [dataSource]="this.branchList" displayExpr="branchName" valueExpr="id"
-                  class="input-label" [searchEnabled]="true" labelMode="outside" name="branchId" #branchId="ngModel"
-                  [(ngModel)]="loginFormData.branchId"></dx-select-box>
-              </div>
               <div class="form-group text-start mt-2">
                 <div class="checkbox checkbox-primary d-inline">
                   <input type="checkbox" name="rememberMe" id="checkbox-fill-a1" #rememberMe="ngModel"
@@ -55,29 +32,10 @@
                   <label for="checkbox-fill-a1" class="cr">Save credentials 30 Days</label>
                 </div>
               </div>
-              <!-- <div class="form-group text-start mt-2">
-              <div class="checkbox checkbox-primary d-inline">
-                <input type="checkbox" name="checkbox-fill-2" id="checkbox-fill-2" />
-                <label for="checkbox-fill-2" class="cr">
-                  Send me the
-                  <a href="javascript:">Newsletter</a>
-                  weekly.
-                </label>
-              </div>
-            </div> -->
-              <div class="d-grid">
-                <button type="submit" class="btn btn-block btn-primary mb-4">
-                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status"
-                    aria-hidden="true"></span>
-                  <span *ngIf="!isLoading">Sign In</span>
-                </button>
-                <div *ngIf="isShowLoginError" class="alert alert-danger mt-2 alert-dismissible fade show" role="alert">
 
-                  {{loginError}}
-                </div>
+              <button type="button" class="btn btn-slide w-100" (click)="NextFromLogin()">Click</button>
 
 
-              </div>
               <p class="mb-2 text-muted">
                 Forgot password?
                 <a href="javascriprt:" class="f-w-400">Reset</a>
@@ -93,3 +51,38 @@
     </div>
   </div>
 </div>
+
+<dx-popup [(visible)]="isPopupVisible" [showTitle]="true" [title]="'Select Business and Branch'" [dragEnabled]="true"
+  [width]="popupWidth" [height]="'auto'" [closeOnOutsideClick]="false" [showCloseButton]="true">
+  
+  <!-- Business Select -->
+  <div class="input-wrapper">
+    <dx-select-box [dataSource]="DD_BusinessMasterId" displayExpr="name" valueExpr="id" class="flex-select-box"
+      [searchEnabled]="true" labelMode="outside" name="businessMasterId" #businessMasterId="ngModel"
+      [(ngModel)]="loginFormData.businessMasterId" (onValueChanged)="checkAuthentication()"
+      placeholder="Select Business">
+    </dx-select-box>
+  </div>
+
+  <!-- Branch Select -->
+  <div class="input-wrapper my-3">
+    <dx-select-box [dataSource]="branchList" displayExpr="branchName" valueExpr="id" class="flex-select-box"
+      [searchEnabled]="true" labelMode="outside" name="branchId" #branchId="ngModel"
+      [(ngModel)]="loginFormData.branchId" placeholder="Select Branch">
+    </dx-select-box>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="d-grid">
+    <button type="submit" class="btn btn-block btn-primary mb-4" (click)="OnFinalSubmit()">
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      <span *ngIf="!isLoading" >Sign In</span>
+    </button>
+
+    <!-- Error Message -->
+    <div *ngIf="isShowLoginError" class="alert alert-danger mt-2 alert-dismissible fade show" role="alert">
+      {{ loginError }}
+    </div>
+  </div>
+</dx-popup>
+
