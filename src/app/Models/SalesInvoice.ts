@@ -30,7 +30,7 @@ export class SalesInvoice {
     discount: number = 0;
     netTotal: number = 0;
     vatAmount: number  =0;
-    vatPercent: number = 5;
+    vatPercent: number = 0;
     grandTotal: number = 0;
     extraDiscount: number  =0;
     payableAmount: number  = 0;
@@ -38,6 +38,8 @@ export class SalesInvoice {
     dynamicLabel: string  = 'Change'
     dynamicLabelAmount: number  = 0;
     customerId: number  = 0;
+    isAdvance: boolean  = false;
+    isDelivered: boolean  = true;
   
     ordersList: OrderDetailsVM[] = [];
   }

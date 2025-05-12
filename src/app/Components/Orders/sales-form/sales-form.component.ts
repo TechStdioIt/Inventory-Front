@@ -176,17 +176,17 @@ export class SalesFormComponent implements OnInit {
     var checkApiData = this.productList.find((d) => d.purchaseDetailsId == selectedProduct.purchaseDetailsId);
     if (inputQty > checkApiData.avaiableQty) {
       this.toastr.error('Not Allow ', 'Error !');
-      selectedProduct.qty = checkApiData.avaiableQty;
-      checkExist.qty = checkApiData.avaiableQty;
+      selectedProduct.qty = Number(checkApiData.avaiableQty);
+      checkExist.qty = Number(checkApiData.avaiableQty);
       checkExist.totalPrice = Number(checkExist.actualSellRate) * Number(checkExist.qty);
       this.totalAmountCalculate();
-      event.target.value = checkApiData.avaiableQty;
+      event.target.value = Number(checkApiData.avaiableQty);
       return;
     }
     selectedProduct.qty = inputQty;
     if (checkApiData) {
       if (checkExist) {
-        checkExist.qty = selectedProduct.qty;
+        checkExist.qty = Number(selectedProduct.qty);
         checkExist.totalPrice = Number(checkExist.actualSellRate) * Number(checkExist.qty);
       }
       this.totalAmountCalculate();
@@ -282,6 +282,7 @@ export class SalesFormComponent implements OnInit {
   onCharge(isPrint: boolean) {
     this.SetUpData();
     if (this.masterData.customerId != 0) {
+      debugger;
       this.dataService.PostData('SalesOrder/CreateOrUpdateOrder', this.masterData).subscribe(
         (res: any) => {
           this.toastr.success('Successfull', `Customer Information`);
@@ -327,5 +328,34 @@ export class SalesFormComponent implements OnInit {
   onActualSellRateChange(item: any) {
     item.totalPrice = Number(item.actualSellRate) * Number(item.qty);
     this.totalAmountCalculate();
+  }
+  getAllProductForAdvance(){
+    this.dataService.GetData(`Products/GetAllProductForIsAdvanced`).subscribe((data: any) => {
+      if (data) {
+        this.productList = data.data;
+        this.allProductList = data.data;
+        this.cdr.detectChanges();
+      } else {
+        this.productList = [];
+      }
+    });
+  }
+
+  onIsAdvanceChange(event: any) {
+    this.masterData.isAdvance = !this.masterData.isAdvance;  
+    this.masterData.isDelivered = !this.masterData.isAdvance;
+    this.dynamicProductLoad();
+  }
+  dynamicProductLoad(){
+    if (this.masterData.isAdvance) {
+      this.getAllProductForAdvance();
+    }else{
+      this.onCategoryChange(0);
+    }
+  }
+  onIsDeliveredChange(event: any) {
+    this.masterData.isDelivered = !this.masterData.isDelivered;  
+    this.masterData.isAdvance = !this.masterData.isDelivered;
+    this.dynamicProductLoad();
   }
 }

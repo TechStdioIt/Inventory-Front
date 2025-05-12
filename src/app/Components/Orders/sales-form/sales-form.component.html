@@ -56,7 +56,7 @@
     <div class="col-lg-6 col-md-12 col-sm-12">
 
       <div class="row mb-3">
-        <div class="col-10">
+        <div class="col-6">
 
           <app-common-auto-complete-api
           [dataSource]=""
@@ -73,11 +73,32 @@
           >
           </app-common-auto-complete-api>
 
+
         </div>
         <div class="col-2">
           <button class="btn btn-outline-primary " (click)="ShowCusAddPopUp()">Add <i
               class="fa fa-plus"></i></button>
         </div>
+        
+        <div class="col-2">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="masterData.isAdvance" [checked]="masterData.isAdvance" id="isAdvance" (change)="onIsAdvanceChange($event)">
+            <label class="form-check-label" for="isAdvance">
+              Is Advance
+            </label>
+          </div>
+          
+
+        </div>
+        <div class="col-2">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="masterData.isDelivered" [checked]="masterData.isDelivered" id="isDelivered" (change)="onIsDeliveredChange($event)">
+            <label class="form-check-label" for="isDelivered">
+              Is Delivered
+            </label>
+          </div>
+        </div>
+
 
       </div>
       <div class="row">

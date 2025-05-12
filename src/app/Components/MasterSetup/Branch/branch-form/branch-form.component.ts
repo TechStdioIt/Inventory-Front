@@ -76,7 +76,7 @@ export class BranchFormComponent implements OnInit {
     debugger;
     const isValid = this.common.validateFormData(this.formdata, this.FormData);
     if (isValid) {
-          this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
+          this.dataService.PostData(  this.insertOrUpdateAPI, this.FormData).subscribe(
             (res) => {
               debugger;
               this.toastr.success('Successfull', `${this.fromHeader} Information`);
