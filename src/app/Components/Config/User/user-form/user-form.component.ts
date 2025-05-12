@@ -146,7 +146,7 @@ constructor(
       datass.append('userRoleId',this.selectedTree.map(item => item.id).join(","));
     }
     if(this.selectedBranch.length > 0){
-      datass.append('branchList',this.FormData.branchList.map(x=>x.branchId).join(","));
+      datass.append('branchList',this.FormData.branchList.map(x=>x.branchId).join());
     }
 
     this.dataService.PostData("Administrator/SaveUser", datass).subscribe(
