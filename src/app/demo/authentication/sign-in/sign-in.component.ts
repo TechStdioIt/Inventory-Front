@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { DxSelectBoxModule } from 'devextreme-angular';
+import { DxPopupModule, DxSelectBoxModule } from 'devextreme-angular';
 import { Login } from 'src/app/Models/Category';
 import { DD_BusinessMasterId } from 'src/app/Models/drodown.model';
 import { CommonService } from 'src/app/Services/common.service';
@@ -11,40 +11,62 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [SharedModule, RouterModule,DxSelectBoxModule],
+  imports: [SharedModule, RouterModule, DxSelectBoxModule, DxPopupModule],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
 
 export default class SignInComponent implements OnInit {
   showPassword = false;
+  isPopupVisible = false;
+  popupWidth: string = '0%';
+
   isShowLoginError: boolean = false;
   loginError: string = '';
   isLoading: boolean = false;
   loginFormData: Login = new Login();
   isCheckingAuth: boolean = false; // Prevent UI flashing
   DD_BusinessMasterId: DD_BusinessMasterId[] = [];
-branchList:any[]=[];
+  branchList: any[] = [];
   constructor(
     private route: Router,
     private dataService: HttpClientConnectionService,
     private commonService: CommonService
-  ) {}
+  ) {
+    this.setPopupWidth();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.setPopupWidth();
+  }
+
+  setPopupWidth() {
+    const screenWidth = window.innerWidth;
+
+    if (screenWidth < 768) {
+      this.popupWidth = '80%'; // Mobile screen
+    } else {
+      this.popupWidth = '25%'; // Larger screens (you can adjust this percentage)
+    }
+  }
 
   ngOnInit(): void {
     //this.checkAuthentication();
-    this.commonService.getDropDownData(12).subscribe((data:any)=>{
+    this.commonService.getDropDownData(12).subscribe((data: any) => {
       this.DD_BusinessMasterId = data;
-     });
+    });
   }
 
   // Check if user is already authenticated
   checkAuthentication(): void {
-    if(this.loginFormData.businessMasterId > 0){
-    this.dataService.GetData('Branch/GetBranchListByMaster?businessMasterId='+this.loginFormData.businessMasterId).subscribe((data:any)=>{
-      this.branchList=data.data;
-    })
-  }
+    if (this.loginFormData.businessMasterId > 0) {
+      this.dataService.GetData('Branch/GetBranchListByMaster?businessMasterId=' + this.loginFormData.businessMasterId).subscribe((data: any) => {
+        this.branchList = data.data;
+      })
+    }
+
+
     // this.loginFormData.userName = this.commonService.getCookie('userName');
     // this.loginFormData.password = this.commonService.getCookie('password');
 
@@ -60,11 +82,28 @@ branchList:any[]=[];
     // }
   }
 
+  NextFromLogin() {
+    this.dataService.PostData('Administrator/Login', this.loginFormData).subscribe(
+      (data: any) => {
+        this.DD_BusinessMasterId = data.businessList
+      },
+        (error: HttpErrorResponse) => {
+          this.showError(error.error.message || 'Login failed');
+        })
+
+
+    this.isPopupVisible = !this.isPopupVisible;
+  }
+
+ 
+
   // Toggle password visibility
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
-
+ OnFinalSubmit() {
+  this.OnSubmit()
+  }
   // Handle login submission
   OnSubmit(): void {
     this.isLoading = true;
@@ -87,7 +126,7 @@ branchList:any[]=[];
           //   this.commonService.deleteAllCookies();
           // }
           // ;
-          localStorage.setItem('token',data.tokenString);
+          localStorage.setItem('token', data.tokenString);
           localStorage.setItem('userId', data.id);
           localStorage.setItem('businessMasterId', data.businessMasterId);
           this.route.navigate(['/analytics']);

@@ -1,29 +1,69 @@
+/* General Styles for the Auth Wrapper */
+.auth-wrapper {
+  background-image: url('../../../../assets/images/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Center the auth content */
 .auth-wrapper .auth-content:not(.container) {
-    width: 550px;
+  width: 550px;
 }
 
-
-.auth-wrapper{
- background-image: url('../../../../assets/images/bg.jpg');
-background-size: cover;
-background-position: center;
-background-repeat: no-repeat;
-}
-
-/* Make all form fields uniform */
+/* Ensure input and icon height are aligned */
 .input-group {
+  display: flex;
+  align-items: center; /* Vertically center the icon and input */
   width: 100%;
   flex-wrap: nowrap;
-  align-items: stretch;
 }
 
 .input-group .form-control {
   flex: 1 1 auto;
   min-width: 0;
+  padding: 0.375rem 0.75rem;
+  font-size: 14px; /* Adjust input text size */
+  height: 38px; /* Ensure input box height matches the icon */
 }
 
 .input-group .input-group-text {
   border-radius: 0.25rem 0 0 0.25rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 16px; /* Icon size for input group */
+  height: 38px; /* Match the height with the input field */
+  display: flex; /* Ensure the icon is centered */
+  justify-content: center;
+  align-items: center;
+}
+
+.input-group button.input-group-text {
+  border-left: none;
+  padding: 0.375rem; /* Adjust padding for button */
+  font-size: 18px; /* Adjust icon size for the eye button */
+  height: 38px; /* Match the height with the input field */
+  display: flex; /* Ensure the icon is centered */
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style for the input icon */
+.input-icon {
+  display: flex;
+  align-items: center;
+  font-size: 16px; /* Adjusted icon size */
+  color: #666;
+  margin-right: 8px; /* Space between icon and input */
+  height: 38px; /* Match the height with the input field */
+  display: flex;
+  align-items: center; /* Ensure the icon stays vertically centered */
+}
+
+/* Flexbox adjustments for the input group */
+.input-group .input-group-text, .input-group .form-control {
+  display: flex;
+  align-items: center; /* Ensure the icon and input stay aligned */
+  height: 38px; /* Ensure both the icon and input are of the same height */
 }
 
 /* Match width for dx-select-box */
@@ -40,11 +80,87 @@ dx-select-box {
   border-left: none;
 }
 
-/* Responsive behavior */
-@media (max-width: 576px) {
+/* Popup Header Styling */
+.dx-popup .dx-popup-title {
+  background-color: #007bff; /* Customize header color */
+  color: white; /* Title text color */
+  padding: 10px;
+  font-size: 1.25rem;
+}
+
+/* General Styles for the Pop-up */
+dx-popup {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Styling for popup content */
+.dx-popup-content {
+  padding: 1rem;
+}
+
+/* Ensure the select box works within input group */
+.flex-select-box {
+  flex: 1; /* Let the select box grow */
+  min-width: 0; /* Prevent overflow */
+  width: 100%; /* Ensures the select box takes up full space */
+}
+
+/* Grid layout for buttons */
+.d-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+}
+
+.d-grid button {
+  width: 100%;
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 768px) {
   .input-group {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row; /* Ensure icon and input stay in the same row */
+    align-items: center; /* Center icon and input vertically */
+    width: 100%; /* Ensure full width for small screens */
+  }
+
+  .input-icon {
+    margin-right: 8px; /* Space between icon and input */
+  }
+
+  .input-group .form-control {
+    width: 100%; /* Make input fill available space */
+  }
+
+  .input-group button.input-group-text {
+    width: auto;
+  }
+
+  .input-wrapper {
+    flex-direction: row; /* Ensure icon and input are in the same row */
+    align-items: center;
+  }
+
+  .input-icon {
+    margin-right: 8px;
+  }
+}
+
+/* Mobile-friendly adjustments for smaller screens */
+@media (max-width: 576px) {
+  .dx-popup {
+    width: 100%;
+  }
+
+  .d-grid button {
+    font-size: 0.875rem;
+  }
+
+  .input-group {
+    flex-direction: row; /* Ensure icon and input stay in the same row */
+    align-items: center; /* Center icon and input vertically */
+    width: 100%; /* Ensure full width for small screens */
   }
 
   .input-group-text {
@@ -58,9 +174,76 @@ dx-select-box {
   }
 
   .input-group button.input-group-text {
-    width: 100%;
+    width: auto;
     justify-content: center;
+  }
+
+  /* Ensure input and icon are in the same row inside the popup */
+  .dx-popup .input-wrapper {
+    display: flex;
+    align-items: center; /* Vertically center the input and icon */
+    width: 100%; /* Ensure full width */
+  }
+
+  /* Ensure icon and input are aligned in the same row */
+  .dx-popup .input-wrapper .input-icon {
+    margin-right: 8px; /* Space between the icon and input */
+  }
+
+  .dx-popup .input-group .form-control,
+  .dx-popup .input-group .input-group-text {
+    width: 100%; /* Ensure input and icon take full width */
+    height: 38px; /* Keep consistent height */
   }
 }
 
-    
+/* Styling for the slide button */
+.btn-slide {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  padding: 0.75rem 1rem;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,0.2);
+  transition: left 0.5s ease;
+}
+
+.btn-slide:active::before {
+  left: 100%;
+}
+
+/* Styling for the dx-popup title */
+::ng-deep .dx-popup-title {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+/* Ensure the input-group inside the popup remains in a single row */
+.dx-popup .input-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+/* Prevents input and icon from stacking vertically inside popup */
+.dx-popup .input-group .form-control,
+.dx-popup .input-group .input-group-text {
+  height: 38px;
+  display: flex;
+  align-items: center; /* Center content vertically */
+}

@@ -73,20 +73,19 @@ export class BranchFormComponent implements OnInit {
     })
   }
   insertOrUpdate(form: NgForm) {
-    debugger;
+
     const isValid = this.common.validateFormData(this.formdata, this.FormData);
     if (isValid) {
           this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
             (res) => {
-              debugger;
+
               this.toastr.success('Successfull', `${this.fromHeader} Information`);
             this.FormData = new Branch();
             this.route.navigate([this.listRoute]);
             this.gridHandleService.selectedTab = "List";
             },
             (err) => {
-              debugger;
-              this.toastr.error('Please Try Again', 'Invalid Information!!');
+              this.toastr.error(err.error.errorDetails, 'Invalid Information!!');
               console.log(err);
             }
           );
