@@ -331,7 +331,7 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
     }, 0);
   }
   getSummaryRow(summaryData: any){
-debugger
+ 
 const totalColumnCount = this.columns.filter(column => 
   column.isShow !== false
 ).length;

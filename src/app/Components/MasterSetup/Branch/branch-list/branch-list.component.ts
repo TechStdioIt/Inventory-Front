@@ -97,7 +97,7 @@ export class BranchListComponent implements OnInit {
       if (result.value) {
         this.dataService.DeleteData(`${this.deleteAPI}?id=${selectedRecord.id}`).subscribe(
           (response: any) => {
-            debugger;
+             ;
             this.reloadCount++;
             Swal.fire('Done', 'Your record is Deleted :)', 'success');
 

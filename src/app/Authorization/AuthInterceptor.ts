@@ -11,7 +11,6 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = localStorage.getItem('token');
    var excludedUrls: string[] = [
     '/Administrator/Login',
-    '/Branch/GetBranchListByMaster',
     'Administrator/GetDropdownData'
   ];
 
@@ -26,8 +25,12 @@ export class AuthInterceptor implements HttpInterceptor {
         setHeaders: { Authorization: `Bearer ${token}` }
       });
       return next.handle(cloned);
-    } else {
+    } else {  
       this.toastr.error('Your Token has expired', 'Please log in again');
+      localStorage.removeItem('token');
+      localStorage.removeItem('businessMasterId');
+      localStorage.removeItem('userId');
+
       this.router.navigate(['/']);
     }
 

@@ -53,15 +53,13 @@ export default class SignInComponent implements OnInit {
 
   ngOnInit(): void {
     //this.checkAuthentication();
-    this.commonService.getDropDownData(12).subscribe((data: any) => {
-      this.DD_BusinessMasterId = data;
-    });
+
   }
 
   // Check if user is already authenticated
   checkAuthentication(): void {
     if (this.loginFormData.businessMasterId > 0) {
-      this.dataService.GetData('Branch/GetBranchListByMaster?businessMasterId=' + this.loginFormData.businessMasterId).subscribe((data: any) => {
+      this.dataService.GetData('Branch/GetBranchListByMasterAndUser?businessMasterId=' + this.loginFormData.businessMasterId).subscribe((data: any) => {
         this.branchList = data.data;
       })
     }
@@ -85,24 +83,28 @@ export default class SignInComponent implements OnInit {
   NextFromLogin() {
     this.dataService.PostData('Administrator/Login', this.loginFormData).subscribe(
       (data: any) => {
-        this.DD_BusinessMasterId = data.businessList
+        this.DD_BusinessMasterId = data.businessList;
+        debugger
+        localStorage.setItem('token', data.tokenString);
+        localStorage.setItem('userId', data.id);
+        localStorage.setItem('businessMasterId', data.businessMasterId);
       },
-        (error: HttpErrorResponse) => {
-          this.showError(error.error.message || 'Login failed');
-        })
+      (error: HttpErrorResponse) => {
+        this.showError(error.error.message || 'Login failed');
+      })
 
 
     this.isPopupVisible = !this.isPopupVisible;
   }
 
- 
+
 
   // Toggle password visibility
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
- OnFinalSubmit() {
-  this.OnSubmit()
+  OnFinalSubmit() {
+    this.OnSubmit()
   }
   // Handle login submission
   OnSubmit(): void {

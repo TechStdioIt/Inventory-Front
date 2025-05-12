@@ -99,10 +99,10 @@ private destroy$ = new Subject<void>();
   }
   getDataById(id:any){
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{
-      debugger;
+       ;
       // this.FormData=data.data;
       this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as PurchaseOrder;
-      debugger;
+       ;
       this.FormData.orderDate = this.formatDate(this.FormData.orderDate);
       if(data.data.detailsInfo.length >0){
         this.FormData.purchasList =[];
@@ -115,7 +115,7 @@ private destroy$ = new Subject<void>();
     })
   }
   insertOrUpdate(form: NgForm) {
-    debugger;
+     ;
     this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
       
       (res) => {
@@ -168,7 +168,7 @@ private destroy$ = new Subject<void>();
  }
   
   selectProduct(option: any) {
-    debugger
+     
     // Check if the product already exists in selectedItemList based on productId (option.id)
     const existingProduct = this.FormData.purchasList.find((item:any) => item.productId === option.id);
     // const existingProduct = this.selectedItemList.find(item => item.productId === option.id);
@@ -267,7 +267,7 @@ private destroy$ = new Subject<void>();
 
         
   onRowRemoved(event: any) {
-    debugger;
+     ;
     const removedData = event.data;
     // this.selectedItemList = this.selectedItemList.filter(item => item.productId !== removedData.productId);
     // this.FormData.purchasList = this.selectedItemList;

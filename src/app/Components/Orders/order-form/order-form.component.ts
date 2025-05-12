@@ -160,18 +160,18 @@
     
 //   }
 //   insertOrUpdate(form: NgForm) {
-//     debugger
+//      
 //     this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
       
 //       (res) => {
-//         debugger;
+//          ;
 //         this.toastr.success('Successfull', `${this.fromHeader} Information`);
 //        this.FormData = new SalesOrder();
 //        this.route.navigate([this.listRoute]);
 //        this.gridHandleService.selectedTab = "List";
 //       },
 //       (err) => {
-//         debugger;
+//          ;
 //         this.toastr.error('Please Try Again', 'Invalid Information!!');
 //         console.log(err);
 //       }
@@ -179,7 +179,7 @@
 //   }
 
 //   handleEvent(functionName: string, event: any) {
-//     debugger;
+//      ;
 //     if (typeof this[functionName] === 'function') {
 //       this[functionName](event); // Dynamically call the specified function
 //     } else {
@@ -604,7 +604,7 @@ getDiscountandActualAmount(productId: any, pharmacyId: any): Promise<{ actualAmo
   
   
   onValueReceived(eventData: { value: any; fieldName?: any }) {
-    debugger
+     
     this.FormData[eventData.fieldName] = eventData.value;
     if(eventData.fieldName == 'pharmacyId'){
       

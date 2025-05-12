@@ -86,7 +86,7 @@ export class BmFormComponent implements OnInit {
   }
   insertOrUpdate(form: NgForm) {
     var data =new FormData();
-    debugger;
+     ;
           data.append('businessName',this.FormData.businessName);
           data.append('id',this.FormData.id??0);
           data.append('ownerName',this.FormData.ownerName);

@@ -83,7 +83,7 @@ export class SideBarComponent implements OnInit {
       }
       var data=JSON.stringify(routerData);
       const encodeValue = CryptoJS.AES.encrypt(data, "values").toString();
-      debugger;
+       ;
       if(dataList.menuUrl.startsWith('/ReportViewer')){
          this.router.navigate(['/'+dataList.menuUrl]);
       }else{

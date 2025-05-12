@@ -140,7 +140,7 @@ export class ProductDiscountFormComponent implements OnInit, OnDestroy{
     this.insertOrUpdate(form);
   }
   getDataById(id: any) {
-    debugger;
+     ;
     this.dataService.GetData(`${this.getDataByIdAPI}?id=` + id).subscribe((data: any) => {
       // this.FormData=data.data;
      
@@ -229,7 +229,7 @@ export class ProductDiscountFormComponent implements OnInit, OnDestroy{
 
   formatDate(date: string | Date): string {
     
-    debugger;
+     ;
     if (!date) return ''; // Handle undefined or null values
 
     // If date is already a Date object, convert it to YYYY-MM-DD format
@@ -250,7 +250,7 @@ export class ProductDiscountFormComponent implements OnInit, OnDestroy{
 
 
   onDiscountChange(event:any, fieldName: string){
-    debugger;
+     ;
     if(this.selectedProduct){
       if(fieldName == 'discountPercent')
       {
@@ -283,7 +283,7 @@ export class ProductDiscountFormComponent implements OnInit, OnDestroy{
 
   onValueSelect(event:any, fieldName: string)
   {
-    debugger;
+     ;
     maxDate: new Date();
   }
 

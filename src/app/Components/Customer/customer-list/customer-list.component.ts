@@ -62,7 +62,7 @@ fromHeader: string = 'Customer';
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.idsValue= params['id'];
-      debugger
+       
       var data = this.common.decrypt(this.idsValue,"menuPermissionData");
       this.SelectedMenuItems = JSON.parse(data);
       this.buttonShow.edit.isShow = this.SelectedMenuItems.isEdit

@@ -145,9 +145,9 @@ export class PrintLabelListComponent implements OnInit {
     }
   } 
   onValueReceived(eventData: { value: any; fieldName?: any }) {
-    debugger;
+     ;
     this.FormData[eventData.fieldName] = eventData.value;
-    debugger;
+     ;
     this.cdr.detectChanges();
   }
   onGenerate(){

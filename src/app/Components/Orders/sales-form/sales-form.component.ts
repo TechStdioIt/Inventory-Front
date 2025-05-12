@@ -165,7 +165,7 @@ export class SalesFormComponent implements OnInit {
     }
   }
   updateQtyByInput(event: any, selectedProduct: any) {
-    debugger;
+     ;
     var inputQty = event.target.value;
     if (inputQty < 1) {
       this.toastr.error('Not Allow ', 'Error !');
@@ -282,14 +282,14 @@ export class SalesFormComponent implements OnInit {
   onCharge(isPrint: boolean) {
     this.SetUpData();
     if (this.masterData.customerId != 0) {
-      debugger;
+       ;
       this.dataService.PostData('SalesOrder/CreateOrUpdateOrder', this.masterData).subscribe(
         (res: any) => {
           this.toastr.success('Successfull', `Customer Information`);
           this.masterData = new OrderVM();
           this.selectedValue = null;
           if (isPrint) {
-            debugger;
+             ;
 
             const newUrl = this.router.serializeUrl(
               this.router.createUrlTree(['/ReportViewer'], {

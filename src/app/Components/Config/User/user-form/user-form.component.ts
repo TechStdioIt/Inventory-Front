@@ -37,7 +37,7 @@ export class UserFormComponent implements OnInit,OnDestroy{
     textField: 'branchName',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 10,
+    itemsShowLimit: 15,
     allowSearchFilter: true
   };
    branchList:any[] = [];
@@ -104,7 +104,7 @@ constructor(
   
   getBranchData = ()=>{
    this.dataService.GetData("Branch/GetBranchList").subscribe((data:any)=>{
-    debugger;
+     ;
       this.branchList=data.data;
     },
     (error:any)=>{
@@ -280,7 +280,7 @@ constructor(
     this.FormData.branchList = [];
   }
   onItemSelect(item: any) {
-    debugger;
+     ;
     this.selectedBranch.push(item.id);
     var businessDetails = new UserBranch();
     businessDetails.branchId = item.id;
