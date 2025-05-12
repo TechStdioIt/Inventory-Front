@@ -1,10 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mapKeys, camelCase } from 'lodash';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ToastrService } from 'ngx-toastr';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { AspNetRole, AspnetUsers, UserBranch } from 'src/app/Models/AspnetUsers';
 import { IMSMenu } from 'src/app/Models/IMSMenu';
 import { CommonService } from 'src/app/Services/common.service';
@@ -16,7 +16,7 @@ import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnecti
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss'
 })
-export class UserFormComponent implements OnInit{
+export class UserFormComponent implements OnInit,OnDestroy{
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   fileData: string | ArrayBuffer | null = null; 
@@ -28,7 +28,9 @@ export class UserFormComponent implements OnInit{
   isSubmitting: boolean = false;
   isDragging: boolean = false; // Toggles drag-and-drop styles
   selectedLogo?:File;
-   selectedBranch : any[]=[]
+   selectedBranch : any[]=[];
+
+  private destroy$ = new Subject<void>();
  dropdownSettings:IDropdownSettings = {
     singleSelection: false,
     idField: 'id',
@@ -57,21 +59,33 @@ constructor(
             //this.getLrpNo();
           }
         });
-    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
-  
-          if (!this.isSubmitting) {
-            this.isSubmitting = true;
-            try {
-              await this.onSubmit(); 
-              this.gridHandleService.selectedTab = "List";
-              
-            } catch (error) {
-              console.error('Error during submission:', error);
-            } finally {
-              this.isSubmitting = false; // Reset flag when the operation completes or fails
-            }
+ 
+
+        this.gridHandleService.add$
+      .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
+      .subscribe(async (data: NgForm) => {
+        if (!this.isSubmitting) {
+          // Prevent multiple submissions
+          this.isSubmitting = true;
+
+          try {
+            await this.onSubmit(); // Your form submission logic
+            this.gridHandleService.selectedTab = 'List';
+          } catch (error) {
+            console.error('Error during submission:', error);
+          } finally {
+            this.isSubmitting = false; // Reset flag after completion
           }
-        });
+        }
+      });
+
+
+
+
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit(): void {
