@@ -94,7 +94,7 @@
                 </div>
 
                 <!-- Qty -->
-                <div class="col-1 text-center">{{ item.qty }}</div>
+                <div class="col-1 text-center"><input type="number" style="width: 60px;" (keyup)="updateQtyByInput($event,item)" [value]="item.qty"></div>
 
                 <!-- Controls -->
                 <div class="col-3 d-flex justify-content-between">

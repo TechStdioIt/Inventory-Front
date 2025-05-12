@@ -14,7 +14,6 @@ import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnecti
   styleUrl: './sales-form.component.scss'
 })
 export class SalesFormComponent implements OnInit {
-  
   [key: string]: any;
   categoryList: any[] = [];
   productList: any[] = [];
@@ -22,37 +21,49 @@ export class SalesFormComponent implements OnInit {
   isPopupVisible: boolean = false;
   FormData: any = new Customer();
   showOTPInputBox: boolean = false;
-  allProductList :any[]=[];
-selectedValue:string | null= ''
-masterData:OrderVM=new OrderVM();
-
+  allProductList: any[] = [];
+  selectedValue: string | null = '';
+  masterData: OrderVM = new OrderVM();
 
   formdata: any[] = [
     { type: 'text', name: 'name', label: 'Customer Name', required: true, column: 4 },
     { type: 'text', name: 'address', label: 'Customer Address', required: true, column: 4 },
     { type: 'text', name: 'phone', label: 'Mobile', required: true, column: 4 },
     { type: 'text', name: 'email', label: 'Email', required: true, column: 4 },
-    { type: 'select', name: 'customerTypeId', label: 'Type of Customer', required: true, column: 4, options: [], optionValue: 'id', optionText: 'name',isApiCall:false,flag:7 },
+    {
+      type: 'select',
+      name: 'customerTypeId',
+      label: 'Type of Customer',
+      required: true,
+      column: 4,
+      options: [],
+      optionValue: 'id',
+      optionText: 'name',
+      isApiCall: false,
+      flag: 7
+    },
     { type: 'text', name: 'city', label: 'City', required: true, column: 4 },
     { type: 'number', name: 'cp', label: 'Customer CP', required: true, column: 4 },
-    { type: 'text', name: 'zipCode', label: 'ZipCode', required: true, column: 4 },
-
+    { type: 'text', name: 'zipCode', label: 'ZipCode', required: true, column: 4 }
   ];
 
-
-  constructor(private dataService: HttpClientConnectionService, private commonService: CommonService, private toastr: ToastrService,private router:Router,private cdr:ChangeDetectorRef) { }
+  constructor(
+    private dataService: HttpClientConnectionService,
+    private commonService: CommonService,
+    private toastr: ToastrService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
   ngOnInit(): void {
     this.GetAllCategory();
     this.onCategoryChange(0);
-    
   }
   GetAllCategory() {
     this.dataService.GetData('Category/GetAllCategory?take=1000&skip=0').subscribe((data: any) => {
-      this.categoryList = data.data
-    })
+      this.categoryList = data.data;
+    });
   }
   onCategoryChange(catId: any) {
-
     this.dataService.GetData(`Products/GetAllProductByCategoryId?catgoryId=${catId}`).subscribe((data: any) => {
       if (data) {
         this.productList = data.data;
@@ -61,12 +72,10 @@ masterData:OrderVM=new OrderVM();
       } else {
         this.productList = [];
       }
-
-    })
+    });
   }
-  onProductSelect(selectedProduct: any,isUpdate:boolean) {
-
-    var checkExist = this.selectedProductList.find(x => x.purchaseDetailsId == selectedProduct.purchaseDetailsId);
+  onProductSelect(selectedProduct: any, isUpdate: boolean) {
+    var checkExist = this.selectedProductList.find((x) => x.purchaseDetailsId == selectedProduct.purchaseDetailsId);
     if (!checkExist) {
       var newProduct = {
         productName: selectedProduct.name,
@@ -79,33 +88,28 @@ masterData:OrderVM=new OrderVM();
         purchaseDetailsId: selectedProduct.purchaseDetailsId,
         sellDiscount: selectedProduct.sellDiscount,
         vat: selectedProduct.vat ?? 0,
-        actualSellRate:selectedProduct.sellRate
+        actualSellRate: selectedProduct.sellRate
       };
       this.selectedProductList.push(newProduct);
       this.totalAmountCalculate();
     } else {
-      if(isUpdate){
+      if (isUpdate) {
         this.updateQty(selectedProduct, 'add');
       }
-     
     }
-
   }
   onSearchProduct(evt: any) {
-    const searchItem = evt.target.value; 
-    if(searchItem){
-      this.productList = this.productList.filter(product =>
-        product.name.toLowerCase().includes(searchItem.toLowerCase())
-      );
-      if(this.productList.length >0){
-        if(this.productList.length ==1){
-          this.onProductSelect(this.productList[0],false);
+    const searchItem = evt.target.value;
+    if (searchItem) {
+      this.productList = this.productList.filter((product) => product.name.toLowerCase().includes(searchItem.toLowerCase()));
+      if (this.productList.length > 0) {
+        if (this.productList.length == 1) {
+          this.onProductSelect(this.productList[0], false);
         }
       }
-    }else{
-      this.productList = this.allProductList
+    } else {
+      this.productList = this.allProductList;
     }
-  
   }
   totalAmountCalculate() {
     let subTotal = 0;
@@ -126,8 +130,8 @@ masterData:OrderVM=new OrderVM();
     this.masterData.subTotal = subTotal;
     this.masterData.discount = discountTotal;
     this.masterData.netTotal = this.masterData.subTotal - this.masterData.discount;
-    this.masterData.vatAmount = this.calculateVatTotal(this.masterData.vatPercent,this.masterData.netTotal);
-    this.masterData.grandTotal = this.masterData.netTotal + this.masterData.vatAmount ;
+    this.masterData.vatAmount = this.calculateVatTotal(this.masterData.vatPercent, this.masterData.netTotal);
+    this.masterData.grandTotal = this.masterData.netTotal + this.masterData.vatAmount;
     this.masterData.payableAmount = this.masterData.grandTotal;
     this.masterData.givenAmount = this.masterData.grandTotal;
   }
@@ -139,44 +143,62 @@ masterData:OrderVM=new OrderVM();
     return netTotal * (vat / 100);
   }
 
-
   updateQty(selectedProduct: any, action: string) {
-    var checkExist = this.selectedProductList.find(x => x.purchaseDetailsId == selectedProduct.purchaseDetailsId);
-    var checkApiData = this.productList.find(d => d.purchaseDetailsId == selectedProduct.purchaseDetailsId);
+    var checkExist = this.selectedProductList.find((x) => x.purchaseDetailsId == selectedProduct.purchaseDetailsId);
+    var checkApiData = this.productList.find((d) => d.purchaseDetailsId == selectedProduct.purchaseDetailsId);
     if (checkApiData) {
       if (action == 'add') {
-    
         if (checkExist.qty < checkApiData.avaiableQty) {
           if (checkExist) {
             checkExist.qty += 1;
-            
-  
           }
-        
         } else {
-          this.toastr.error('Not Allow ', 'Error !')
+          this.toastr.error('Not Allow ', 'Error !');
         }
-      }
-      else {
+      } else {
         if (checkExist.qty > 1) {
           checkExist.qty -= 1;
         }
-
       }
       checkExist.totalPrice = Number(checkExist.actualSellRate) * Number(checkExist.qty);
       this.totalAmountCalculate();
     }
+  }
+  updateQtyByInput(event: any, selectedProduct: any) {
+    debugger;
+    var inputQty = event.target.value;
+    if (inputQty < 1) {
+      this.toastr.error('Not Allow ', 'Error !');
+      return;
+    }
 
+    var checkExist = this.selectedProductList.find((x) => x.purchaseDetailsId == selectedProduct.purchaseDetailsId);
+    var checkApiData = this.productList.find((d) => d.purchaseDetailsId == selectedProduct.purchaseDetailsId);
+    if (inputQty > checkApiData.avaiableQty) {
+      this.toastr.error('Not Allow ', 'Error !');
+      selectedProduct.qty = checkApiData.avaiableQty;
+      checkExist.qty = checkApiData.avaiableQty;
+      checkExist.totalPrice = Number(checkExist.actualSellRate) * Number(checkExist.qty);
+      this.totalAmountCalculate();
+      event.target.value = checkApiData.avaiableQty;
+      return;
+    }
+    selectedProduct.qty = inputQty;
+    if (checkApiData) {
+      if (checkExist) {
+        checkExist.qty = selectedProduct.qty;
+        checkExist.totalPrice = Number(checkExist.actualSellRate) * Number(checkExist.qty);
+      }
+      this.totalAmountCalculate();
+    }
   }
 
   onDeleteProdcut(purchaseDetailsId: any) {
-    this.selectedProductList = this.selectedProductList.filter(x => x.purchaseDetailsId !== purchaseDetailsId);
+    this.selectedProductList = this.selectedProductList.filter((x) => x.purchaseDetailsId !== purchaseDetailsId);
     this.totalAmountCalculate();
-
   }
 
-  onValueChangedAutoSelect(eventData: { value: any; fieldName?: any, text?: any, showField?: any, emiter?: any }) {
-
+  onValueChangedAutoSelect(eventData: { value: any; fieldName?: any; text?: any; showField?: any; emiter?: any }) {
     this.masterData.customerId = eventData.value;
   }
   handleEvent(functionName: string, event: any) {
@@ -193,16 +215,15 @@ masterData:OrderVM=new OrderVM();
   timerCount: number = 0;
   timerInterval: any;
 
-  onExtraDiscount(){
-    if(this.masterData.extraDiscount <= this.masterData.grandTotal ){
+  onExtraDiscount() {
+    if (this.masterData.extraDiscount <= this.masterData.grandTotal) {
       this.masterData.payableAmount = this.masterData.grandTotal - this.masterData.extraDiscount;
       this.masterData.givenAmount = this.masterData.payableAmount;
-    }else{
-      this.toastr.error("Not Allow",'Error!');
-      this.masterData.extraDiscount =0;
-      this.masterData.payableAmount  = this.masterData.grandTotal;
+    } else {
+      this.toastr.error('Not Allow', 'Error!');
+      this.masterData.extraDiscount = 0;
+      this.masterData.payableAmount = this.masterData.grandTotal;
     }
-    
   }
   SendOtpbtn() {
     this.showOTPInputBox = true;
@@ -242,7 +263,6 @@ masterData:OrderVM=new OrderVM();
 
         this.FormData = new Customer();
         this.isPopupVisible = false;
-
       },
       (err) => {
         this.toastr.error('Please Try Again', 'Invalid Information!!');
@@ -250,63 +270,61 @@ masterData:OrderVM=new OrderVM();
       }
     );
   }
-  onGivenAmount(){
-    this.masterData.dynamicLabelAmount = this.masterData.givenAmount - this.masterData.payableAmount
-    if(this.masterData.dynamicLabelAmount >= 0){
-      this.masterData.dynamicLabel = 'Change'
-    }else{
-      this.masterData.dynamicLabel ='Due'
+  onGivenAmount() {
+    this.masterData.dynamicLabelAmount = this.masterData.givenAmount - this.masterData.payableAmount;
+    if (this.masterData.dynamicLabelAmount >= 0) {
+      this.masterData.dynamicLabel = 'Change';
+    } else {
+      this.masterData.dynamicLabel = 'Due';
     }
   }
 
-
-  onCharge(isPrint:boolean){
+  onCharge(isPrint: boolean) {
     this.SetUpData();
-    if(this.masterData.customerId != 0){
-      this.dataService.PostData('SalesOrder/CreateOrUpdateOrder',this.masterData).subscribe(
-        (res:any) => {
+    if (this.masterData.customerId != 0) {
+      this.dataService.PostData('SalesOrder/CreateOrUpdateOrder', this.masterData).subscribe(
+        (res: any) => {
           this.toastr.success('Successfull', `Customer Information`);
           this.masterData = new OrderVM();
-          this.selectedValue =null
-          if(isPrint){
+          this.selectedValue = null;
+          if (isPrint) {
             debugger;
-            
+
             const newUrl = this.router.serializeUrl(
-              this.router.createUrlTree(['/ReportViewer'], { queryParams: { reportName: 'rptSalesInvoices', do: res.data[0].OrderId,isPrint:isPrint } })
+              this.router.createUrlTree(['/ReportViewer'], {
+                queryParams: { reportName: 'rptSalesInvoices', do: res.data[0].OrderId, isPrint: isPrint }
+              })
             );
-            
+
             // Open in new tab or window
             window.open(newUrl, '_blank');
           }
-          this.onCategoryChange(0) ;
+          this.onCategoryChange(0);
           this.cdr.detectChanges();
           this.masterData = new OrderVM();
           this.selectedProductList = [];
-          
         },
         (err) => {
           this.toastr.error('Please Try Again', 'Invalid Information!!');
           console.log(err);
         }
       );
-    }else{
-      this.toastr.error('Pls Select Customer','Error Customer Selection')
+    } else {
+      this.toastr.error('Pls Select Customer', 'Error Customer Selection');
     }
-  
-
   }
-  SetUpData(){
-    var detailsList:OrderDetailsVM[] = [];
-    this.selectedProductList.forEach(element => {
+  SetUpData() {
+    var detailsList: OrderDetailsVM[] = [];
+    this.selectedProductList.forEach((element) => {
       var details = new OrderDetailsVM();
       details.orderQty = element.qty;
       details.purchaseDetailsId = element.purchaseDetailsId;
-      details.actualSellRate = element.actualSellRate
+      details.actualSellRate = element.actualSellRate;
       detailsList.push(details);
     });
     this.masterData.ordersList = detailsList;
   }
-  onActualSellRateChange(item:any){
+  onActualSellRateChange(item: any) {
     item.totalPrice = Number(item.actualSellRate) * Number(item.qty);
     this.totalAmountCalculate();
   }
