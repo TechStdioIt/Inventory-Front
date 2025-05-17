@@ -63,22 +63,21 @@ constructor(
  
 
         this.gridHandleService.add$
-      .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
-      .subscribe(async (data: NgForm) => {
-        if (!this.isSubmitting) {
-          // Prevent multiple submissions
-          this.isSubmitting = true;
+    .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
+    .subscribe(async (data: NgForm) => {
+      if (!this.isSubmitting) { // Prevent multiple submissions
+        this.isSubmitting = true;
 
-          try {
-            await this.onSubmit(); // Your form submission logic
-            this.gridHandleService.selectedTab = 'List';
-          } catch (error) {
-            console.error('Error during submission:', error);
-          } finally {
-            this.isSubmitting = false; // Reset flag after completion
-          }
+        try {
+          await this.onSubmit(); // Your form submission logic
+          this.gridHandleService.selectedTab = "List";
+        } catch (error) {
+          console.error('Error during submission:', error);
+        } finally {
+          this.isSubmitting = false; // Reset flag after completion
         }
-      });
+      }
+    });
 
 
 

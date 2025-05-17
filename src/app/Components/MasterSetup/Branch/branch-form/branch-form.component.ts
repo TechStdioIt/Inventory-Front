@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { camelCase, mapKeys } from 'lodash';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { Branch } from 'src/app/Models/Category';
 import { CommonService } from 'src/app/Services/common.service';
 @Component({
@@ -30,6 +30,7 @@ export class BranchFormComponent implements OnInit {
     { type: 'text', name: 'contactNumber', label: 'Contact Number', required: true,column:4},
     { type: 'text', name: 'address', label: 'Address', required: false,column:4}
   ];
+    private destroy$ = new Subject<void>();
   constructor(
     private dataService: HttpClientConnectionService,
     private toastr: ToastrService,
@@ -46,17 +47,19 @@ export class BranchFormComponent implements OnInit {
         this.FormData =new Branch();
       }
     });
-    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
-      if (!this.isSubmitting) {
+    this.gridHandleService.add$
+    .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
+    .subscribe(async (data: NgForm) => {
+      if (!this.isSubmitting) { // Prevent multiple submissions
         this.isSubmitting = true;
+
         try {
-          await this.onSubmit(data); 
+          await this.onSubmit(data); // Your form submission logic
           this.gridHandleService.selectedTab = "List";
-          
         } catch (error) {
           console.error('Error during submission:', error);
         } finally {
-          this.isSubmitting = false; // Reset flag when the operation completes or fails
+          this.isSubmitting = false; // Reset flag after completion
         }
       }
     });

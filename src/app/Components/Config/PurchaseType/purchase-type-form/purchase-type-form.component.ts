@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
@@ -6,14 +6,14 @@ import { Location } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { camelCase, mapKeys } from 'lodash';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { PurchaseType } from 'src/app/Models/PurchaseType';
 @Component({
   selector: 'app-purchase-type-form',
   templateUrl: './purchase-type-form.component.html',
   styleUrl: './purchase-type-form.component.scss'
 })
-export class PurchaseTypeFormComponent implements OnInit {
+export class PurchaseTypeFormComponent implements OnInit,OnDestroy {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
@@ -31,7 +31,7 @@ export class PurchaseTypeFormComponent implements OnInit {
 
 
   
-
+  private destroy$ = new Subject<void>();
   constructor(
     private dataService: HttpClientConnectionService,
     private toastr: ToastrService,
@@ -47,24 +47,29 @@ export class PurchaseTypeFormComponent implements OnInit {
         this.FormData =new PurchaseType();
       }
     });
-    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
-      if (!this.isSubmitting) {
+    this.gridHandleService.add$
+    .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
+    .subscribe(async (data: NgForm) => {
+      if (!this.isSubmitting) { // Prevent multiple submissions
         this.isSubmitting = true;
+
         try {
-          await this.onSubmit(data); 
+          this.insertOrUpdate(data); // Your form submission logic
           this.gridHandleService.selectedTab = "List";
-          
         } catch (error) {
           console.error('Error during submission:', error);
         } finally {
-          this.isSubmitting = false; // Reset flag when the operation completes or fails
+          this.isSubmitting = false; // Reset flag after completion
         }
       }
     });
   }
-  ngOnInit(): void {}
-  onSubmit(form: NgForm) {
-    this.insertOrUpdate(form);
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
+ ngOnDestroy(): void {
+     this.destroy$.next();
+    this.destroy$.complete();
   }
   getDataById(id:any){
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{

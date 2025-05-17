@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { camelCase, mapKeys } from 'lodash';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { Unit } from 'src/app/Models/Unit';
 import { Category } from 'src/app/Models/Category';
 @Component({
@@ -32,7 +32,7 @@ export class CatagoryFormComponent implements OnInit {
 
 
   
-
+  private destroy$ = new Subject<void>();
   constructor(
     private dataService: HttpClientConnectionService,
     private toastr: ToastrService,
@@ -48,17 +48,19 @@ export class CatagoryFormComponent implements OnInit {
         this.FormData =new Category();
       }
     });
-    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
-      if (!this.isSubmitting) {
+    this.gridHandleService.add$
+    .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
+    .subscribe(async (data: NgForm) => {
+      if (!this.isSubmitting) { // Prevent multiple submissions
         this.isSubmitting = true;
+
         try {
-          await this.onSubmit(data); 
+          await this.onSubmit(data); // Your form submission logic
           this.gridHandleService.selectedTab = "List";
-          
         } catch (error) {
           console.error('Error during submission:', error);
         } finally {
-          this.isSubmitting = false; // Reset flag when the operation completes or fails
+          this.isSubmitting = false; // Reset flag after completion
         }
       }
     });

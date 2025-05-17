@@ -61,7 +61,7 @@ export class CustomerFormComponent implements OnInit,OnDestroy {
         this.FormData =new Category();
       }
     });
-    this.gridHandleService.add$
+   this.gridHandleService.add$
     .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
     .subscribe(async (data: NgForm) => {
       if (!this.isSubmitting) { // Prevent multiple submissions

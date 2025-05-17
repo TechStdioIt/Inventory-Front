@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Category } from 'src/app/Models/Category';
@@ -7,17 +7,20 @@ import { Location } from '@angular/common';
 import * as CryptoJS from 'crypto-js';
 import { NgForm } from '@angular/forms';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
   styleUrl: './category-form.component.scss'
 })
-export class CategoryFormComponent implements OnInit {
+export class CategoryFormComponent implements OnInit,OnDestroy{
   text: string = '';
   exist: boolean = false;
   FormData: Category = new Category();
   isSubmitting = false;
+
+
+    private destroy$ = new Subject<void>();
   constructor(
     private dataService: HttpClientConnectionService,
     // public service: FloorService,
@@ -38,21 +41,27 @@ export class CategoryFormComponent implements OnInit {
         //this.getLrpNo();
       }
     });
-    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
-      if (!this.isSubmitting) {
+    this.gridHandleService.add$
+    .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
+    .subscribe(async (data: NgForm) => {
+      if (!this.isSubmitting) { // Prevent multiple submissions
         this.isSubmitting = true;
+
         try {
-          await this.onSubmit(data); 
+          await this.onSubmit(data); // Your form submission logic
           this.gridHandleService.selectedTab = "List";
-          
         } catch (error) {
           console.error('Error during submission:', error);
         } finally {
-          this.isSubmitting = false; // Reset flag when the operation completes or fails
+          this.isSubmitting = false; // Reset flag after completion
         }
       }
     });
     
+  }
+  ngOnDestroy(): void {
+     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit(): void {}

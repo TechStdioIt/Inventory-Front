@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Suppliers } from 'src/app/Models/Suppliers';
@@ -8,13 +8,13 @@ import { Location } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { camelCase, mapKeys } from 'lodash';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-suppliers-form',
   templateUrl: './suppliers-form.component.html',
   styleUrl: './suppliers-form.component.scss'
 })
-export class SuppliersFormComponent implements OnInit {
+export class SuppliersFormComponent implements OnInit,OnDestroy {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
@@ -41,7 +41,7 @@ export class SuppliersFormComponent implements OnInit {
 
 
   
-
+  private destroy$ = new Subject<void>();
   constructor(
     private dataService: HttpClientConnectionService,
     private toastr: ToastrService,
@@ -57,20 +57,26 @@ export class SuppliersFormComponent implements OnInit {
         this.FormData =new Suppliers();
       }
     });
-    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
-      if (!this.isSubmitting) {
-        this.isSubmitting = true;
-        try {
-          await this.onSubmit(data); 
-          this.gridHandleService.selectedTab = "List";
-          
-        } catch (error) {
-          console.error('Error during submission:', error);
-        } finally {
-          this.isSubmitting = false; // Reset flag when the operation completes or fails
-        }
-      }
-    });
+    this.gridHandleService.add$
+       .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
+       .subscribe(async (data: NgForm) => {
+         if (!this.isSubmitting) { // Prevent multiple submissions
+           this.isSubmitting = true;
+   
+           try {
+             await this.onSubmit(data); // Your form submission logic
+             this.gridHandleService.selectedTab = "List";
+           } catch (error) {
+             console.error('Error during submission:', error);
+           } finally {
+             this.isSubmitting = false; // Reset flag after completion
+           }
+         }
+       });
+  }
+ ngOnDestroy(): void {
+     this.destroy$.next();
+    this.destroy$.complete();
   }
   ngOnInit(): void {}
   onSubmit(form: NgForm) {
