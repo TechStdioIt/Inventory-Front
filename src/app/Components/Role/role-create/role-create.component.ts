@@ -1,10 +1,10 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { camelCase, mapKeys } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { Role } from 'src/app/Models/Category';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
@@ -14,12 +14,12 @@ import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnecti
   templateUrl: './role-create.component.html',
   styleUrl: './role-create.component.scss'
 })
-export class RoleCreateComponent implements OnInit {
+export class RoleCreateComponent implements OnInit,OnDestroy {
   text: string = '';
   exist: boolean = false;
   FormData: Role = new Role();
   isSubmitting: boolean = false;
-
+  private destroy$ = new Subject<void>();
   constructor(
     private dataService: HttpClientConnectionService,
     // public service: FloorService,
@@ -30,31 +30,37 @@ export class RoleCreateComponent implements OnInit {
     public gridHandleService:GridHandlerService
   ) {
     this.router.queryParams.subscribe((data:any)=>{
-      if(data.role !=undefined && data !=null){
-       this.getDataById(data.role);
+      if(data.do !=undefined && data !=null){
+       this.getDataById(data.do);
         
       }else{
         this.FormData =new Role();
         //this.getLrpNo();
       }
     });
-    this.gridHandleService.add$.pipe(take(1)).subscribe(async (data: NgForm) => {
-      if (!this.isSubmitting) {
+     this.gridHandleService.add$
+    .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
+    .subscribe(async (data: NgForm) => {
+      if (!this.isSubmitting) { // Prevent multiple submissions
         this.isSubmitting = true;
+
         try {
-          await this.onSubmit(data); 
+          await this.onSubmit(data); // Your form submission logic
           this.gridHandleService.selectedTab = "List";
-          
         } catch (error) {
           console.error('Error during submission:', error);
         } finally {
-          this.isSubmitting = false; // Reset flag when the operation completes or fails
+          this.isSubmitting = false; // Reset flag after completion
         }
       }
     });
   }
+  ngOnDestroy(): void {
+     this.destroy$.next();
+    this.destroy$.complete();
+  }
   getDataById(id:any){
-    this.dataService.GetData('Menu/GetRollById?id='+id).subscribe((data:any)=>{
+    this.dataService.GetData('Administrator/GetRoleById?id='+id).subscribe((data:any)=>{
       // this.FormData=data.data;
       this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as Role;
     })

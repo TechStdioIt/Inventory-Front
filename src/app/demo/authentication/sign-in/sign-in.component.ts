@@ -30,8 +30,7 @@ export default class SignInComponent implements OnInit {
   branchList: any[] = [];
   constructor(
     private route: Router,
-    private dataService: HttpClientConnectionService,
-    private commonService: CommonService
+    private dataService: HttpClientConnectionService
   ) {
     this.setPopupWidth();
   }
@@ -88,13 +87,15 @@ export default class SignInComponent implements OnInit {
         localStorage.setItem('token', data.tokenString);
         localStorage.setItem('userId', data.id);
         localStorage.setItem('businessMasterId', data.businessMasterId);
+        this.isPopupVisible = true;
       },
       (error: HttpErrorResponse) => {
+         this.isPopupVisible = false;
         this.showError(error.error.message || 'Login failed');
       })
 
 
-    this.isPopupVisible = !this.isPopupVisible;
+    
   }
 
 

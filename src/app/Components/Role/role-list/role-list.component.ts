@@ -1,87 +1,112 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/app/Models/GridModels';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs';
+import { CommonService } from 'src/app/Services/common.service';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-role-list',
   templateUrl: './role-list.component.html',
   styleUrl: './role-list.component.scss'
 })
-export class RoleListComponent implements OnInit {
-  dataList: any[] = [];
 
-  ///routerData:any;
+export class RoleListComponent implements OnInit {
+  fromHeader: string = 'Role';
+  formRoute: string = '/roleForm';
+  listAPI: string = 'Role/GetAllRole';
+  deleteAPI: string = 'Branch/DeleteBranch';
+  haveQueryPram: boolean = false;
+  pageSize: number = 10;
+  pageSizes: number[] = [5, 10, 20, 50, 100];
+  reloadCount: number = 0;
+  idsValue:string =''
+  SelectedMenuItems : any
+  userColumns = [
+    { caption: 'ID', key: 'id', width: 50, isShow: false },
+    { caption: 'Role Name', key: 'name' }
+  ];
+
+  buttonShow = {
+    edit: {
+      isShow: true,
+      emit: (selectedRecord: any) => this.edit(selectedRecord)
+    },
+    viewDetails: {
+      isShow: true,
+      emit: (selectedRecord: any) => this.details(selectedRecord)
+    },
+    // delete: {
+    //   isShow: true,
+    //   emit: (selectedRecord: any) => this.delete(selectedRecord)
+    // },
+  };
 
   constructor(
-    // public service:FloorService,
-    private dataService:HttpClientConnectionService,
-    private toastr:ToastrService,
-    private commonService:GridHandlerService,
-    private route:ActivatedRoute) { }
+    private dataService: HttpClientConnectionService,
+    private commonService: GridHandlerService,
+    private router: Router,
+    private common:CommonService,
+    private activatedRoute:ActivatedRoute
+  ) {
+    this.commonService.edit$.pipe(take(1)).subscribe(async (data: any) => {
+      this.edit(data);
+    });
+    this.commonService.details$.pipe(take(1)).subscribe(async (data: any) => {
+      this.details(data);
+    });
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.idsValue= params['id'];
+      var data = this.common.decrypt(this.idsValue,"menuPermissionData");
+      this.SelectedMenuItems = JSON.parse(data);
+      this.buttonShow.edit.isShow = this.SelectedMenuItems.isEdit
+      this.buttonShow.viewDetails.isShow = this.SelectedMenuItems.isDetails
+      //this.buttonShow.delete.isShow = this.SelectedMenuItems.permissionDelete
+    });
+  }
 
   ngOnInit(): void {
-
-   this.getData();
-   this.commonService.data$.subscribe(newData => {
-    this.edit(newData);
-  });
-
-  }
-  getData = () => {
-    this.dataService.GetData("Role/GetAllRole").subscribe((data:any)=>{
-      this.dataList=data;
-      this.sendDataCommonGrid();
-    },
-    (error:any)=>{
-      console.log(error);
-      this.toastr.error("failed to Get Data")
-    }
-    )
+    this.commonService.data$.subscribe((newData) => {
+      this.edit(newData);
+    });
   }
 
+  edit(selectedRecord: any) {
+    this.commonService.selectedTab = 'Form';
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
+  }
+  details(selectedRecord: any) {
+    this.commonService.selectedTab = 'Details';
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
+  }
+  delete(selectedRecord: any) {
+    ;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete selected record',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.value) {
+        this.dataService.DeleteData(`${this.deleteAPI}?id=${selectedRecord.id}`).subscribe(
+          (response: any) => {
+             ;
+            this.reloadCount++;
+            Swal.fire('Done', 'Your record is Deleted :)', 'success');
 
-  sendDataCommonGrid(){
-    this.commonService.dataList=[];
-    //Grid Caption 
-    this.commonService.caption = new GridCaption();
-       this.commonService.caption.caption1="Role Id";
-       this.commonService.caption.caption2="Role Name";
-  
-      //PermitForShow or Not
-      this.commonService.isShowData = new GridDataShow()
-       this.commonService.isShowData.caption2=true;
-
-
-       //Permit For Button Show or Not
-       this.commonService.isShowButton =new GridButtonShow()
-       this.commonService.isShowButton.button1=true //edit
-       this.commonService.isShowButton.button2=true //delete
-       this.commonService.isShowButton.button3=true
-        this.commonService.isShowButton.button4=false;
-      
-       //Grid Data 
-   for(let item of this.dataList){
-        this.commonService.dataField = new GridDataModel();
-        this.commonService.dataField.dataField1=item.id;
-        this.commonService.dataField.dataField2=item.name;
-  
-    
-  this.commonService.dataList.push(this.commonService.dataField);
-  this.commonService.dataList=this.commonService.dataList.map((item,index)=>({ ...item,index:index+1}));
-  
-   }
+          },
+          (error: any) => {
+            console.error('Failed to get data:', error);
+          }
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire('Cancelled', 'Your record is safe :)', 'error');
+      }
+    });
   }
   
-  edit(selectedRecord:any){
-    let data=this.findSelectedItem(selectedRecord.row.data.dataField1);
-    if(data !=null || data !=undefined){
-    }
-  }
-  findSelectedItem(selectedItem:any){
-  
-   return this.dataList.find(x=>x.id === selectedItem);
-  }
 }
+

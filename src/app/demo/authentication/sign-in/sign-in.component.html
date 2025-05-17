@@ -35,7 +35,10 @@
 
               <button type="button" class="btn btn-slide w-100" (click)="NextFromLogin()">Click</button>
 
-
+<!-- Error Message -->
+    <div *ngIf="isShowLoginError" class="alert alert-danger mt-2 alert-dismissible fade show" role="alert">
+      {{ loginError }}
+    </div>
               <p class="mb-2 text-muted">
                 Forgot password?
                 <a href="javascriprt:" class="f-w-400">Reset</a>
@@ -79,10 +82,7 @@
       <span *ngIf="!isLoading" >Sign In</span>
     </button>
 
-    <!-- Error Message -->
-    <div *ngIf="isShowLoginError" class="alert alert-danger mt-2 alert-dismissible fade show" role="alert">
-      {{ loginError }}
-    </div>
+    
   </div>
 </dx-popup>
 
