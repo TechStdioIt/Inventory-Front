@@ -99,7 +99,11 @@ constructor(
        this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as AspnetUsers;
       this.fileData= data.data.profileImageUrl;
           if(data.data.roles.length >0){
-        this.selectedTree = data.data.roles.map((x:any)=>x.roleId);
+      this.selectedTree = data.data.roles.map((x: any) => ({ id: x.roleId }));
+
+      }
+      if(data.data.userBranch.length > 0){
+          this.selectedBranch = data.data.userBranch.map((x: any) => ({ id: x.id }));
       }
       
     })
@@ -162,7 +166,7 @@ constructor(
     if(this.selectedTree.length >0){
       datass.append('userRoleId',this.selectedTree.map(item => item.id).join(","));
     }
-    if(this.selectedBranch.length > 0){
+    if(this.FormData.branchList.length > 0){
       datass.append('branchList',this.FormData.branchList.map(x=>x.branchId).join());
     }
 
