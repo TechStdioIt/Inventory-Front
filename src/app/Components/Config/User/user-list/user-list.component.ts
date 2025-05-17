@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs';
 import { GridCaption, GridDataShow, GridButtonShow, GridDataModel } from 'src/app/Models/GridModels';
@@ -23,7 +23,7 @@ export class UserListComponent {
   pageSize: number = 10;
   pageSizes: number[] = [5, 10, 20, 50, 100];
   reloadCount: number = 0;
-
+  idsValue:string =''
   userColumns = [
     { caption: 'User Id', key: 'id', width: 50, isShow: false },
     { caption: 'Profile Image', key: 'ProfileImageUrl',type :'image' },
@@ -47,7 +47,7 @@ export class UserListComponent {
     },
   };
 
-
+ SelectedMenuItems : any
 
 
 
@@ -58,7 +58,8 @@ export class UserListComponent {
     private toastr:ToastrService,
     private gridHandlerService:GridHandlerService,
     private commonService:CommonService,
-    private router:Router
+    private router:Router,
+     private activatedRoute:ActivatedRoute
   ) {
 
     
@@ -68,6 +69,14 @@ export class UserListComponent {
         this.gridHandlerService.details$.pipe(take(1)).subscribe(async (data: any) => {
           this.details(data);
         });
+         this.activatedRoute.queryParams.subscribe(params => {
+      this.idsValue= params['id'];
+      var data = this.commonService.decrypt(this.idsValue,"menuPermissionData");
+      this.SelectedMenuItems = JSON.parse(data);
+      this.buttonShow.edit.isShow = this.SelectedMenuItems.isEdit
+      this.buttonShow.viewDetails.isShow = this.SelectedMenuItems.isDetails
+      this.buttonShow.delete.isShow = this.SelectedMenuItems.permissionDelete
+    });
    }
 
    ngOnInit(): void {
@@ -80,11 +89,11 @@ export class UserListComponent {
 
 edit(selectedRecord: any) {
     this.gridHandlerService.selectedTab = 'Form';
-    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
   }
   details(selectedRecord: any) {
     this.gridHandlerService.selectedTab = 'Details';
-    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
   }
   delete(selectedRecord: any) {
     Swal.fire({

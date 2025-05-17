@@ -83,7 +83,6 @@ export default class SignInComponent implements OnInit {
     this.dataService.PostData('Administrator/Login', this.loginFormData).subscribe(
       (data: any) => {
         this.DD_BusinessMasterId = data.businessList;
-        debugger
         localStorage.setItem('token', data.tokenString);
         localStorage.setItem('userId', data.id);
         localStorage.setItem('businessMasterId', data.businessMasterId);

@@ -101,8 +101,10 @@ constructor(
       this.selectedTree = data.data.roles.map((x: any) => ({ id: x.roleId }));
 
       }
+      this.FormData.branchList =[]
       if(data.data.userBranch.length > 0){
-          this.selectedBranch = data.data.userBranch.map((x: any) => ({ id: x.id }));
+          this.selectedBranch = data.data.userBranch;
+          this.FormData.branchList = data.data.userBranch.map((x: any) => ({ branchId: x.id }));
       }
       
     })
@@ -110,7 +112,7 @@ constructor(
   
   getBranchData = ()=>{
    this.dataService.GetData("Branch/GetBranchList").subscribe((data:any)=>{
-     ;
+      
       this.branchList=data.data;
     },
     (error:any)=>{
@@ -156,6 +158,7 @@ constructor(
     var datass = new FormData();
     datass.append('email',this.FormData.email);
     datass.append('userFName',this.FormData.userFName);
+    datass.append('userLName',this.FormData.userLName);
     datass.append('mobile',this.FormData.mobile);
     datass.append('userName',this.FormData.email);
     datass.append('id',this.FormData.id);
@@ -294,7 +297,6 @@ constructor(
     this.FormData.branchList = [];
   }
   onItemSelect(item: any) {
-     ;
     this.selectedBranch.push(item.id);
     var businessDetails = new UserBranch();
     businessDetails.branchId = item.id;

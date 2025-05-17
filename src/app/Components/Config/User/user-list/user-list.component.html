@@ -1,11 +1,15 @@
-<main id="main" class="main">
+
+
+ <main id="main" class="main">
     <div class="pagetitle">
-       
+       <h1>
+        <i class="ri-ball-pen-line"></i>
+        {{fromHeader}} Set Up</h1>
        <nav>
           <ol class="breadcrumb">
              <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
              <li class="breadcrumb-item">Basic Information</li>
-             <li class="breadcrumb-item active">Role</li>
+             <li class="breadcrumb-item active">{{fromHeader}}</li>
           </ol>
        </nav>
     </div>
@@ -13,8 +17,7 @@
           <div class="row">
              <div class="col-lg-12">
                 <div class="card">
-
-                  <div class="card-body">                     
+                   <div class="card-body">                     
                      <app-dynamic-grid-with-pagination
                      [columns]="userColumns"
                      [buttonShow]="buttonShow"
@@ -25,14 +28,6 @@
                      [reloadCount]="reloadCount"
                      ></app-dynamic-grid-with-pagination>
                    </div>
-
-
-                   <!-- <div class="card-body">
-                     <app-common-data-grid></app-common-data-grid>                     
-                     
-
-                     
-                   </div> -->
                 </div>
              </div>
           </div>
