@@ -74,7 +74,7 @@
         <div class="row mb-3">
           <dx-tree-view [items]="RoleList" [parentIdExpr]="'parentId'" [displayExpr]="'name'" [width]="400"
             [searchEnabled]="true" [selectByClick]="true" [showCheckBoxesMode]="'normal'" [selectionMode]="'multiple'"
-            [keyExpr]="'id'" (onSelectionChanged)="treeViewSelectionChanged($event)">
+            [keyExpr]="'id'" (onSelectionChanged)="treeViewSelectionChanged($event)"  [selectNodesRecursive]="true"(onContentReady)="treeViewContentReadyRole($event)"> 
           </dx-tree-view>
         </div>
       </div>

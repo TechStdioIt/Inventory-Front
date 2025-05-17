@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DxTreeViewTypes } from 'devextreme-angular/ui/tree-view';
 import { mapKeys, camelCase } from 'lodash';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ToastrService } from 'ngx-toastr';
@@ -94,10 +95,12 @@ constructor(
   }
  getDataById(id:any){
     this.dataService.GetData('Administrator/GetUserById?id='+id).subscribe((data:any)=>{
-
       // this.FormData=data.data;
        this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as AspnetUsers;
       this.fileData= data.data.profileImageUrl;
+          if(data.data.roles.length >0){
+        this.selectedTree = data.data.roles.map((x:any)=>x.roleId);
+      }
       
     })
   }
@@ -237,7 +240,15 @@ constructor(
     this.selectedTree = treeView.getSelectedNodes()
       .map((node: any) => node.itemData);
   }
-  
+    treeViewContentReadyRole(e: DxTreeViewTypes.ContentReadyEvent) {
+    setTimeout(() => {
+      if(this.selectedTree.length >0){
+        this.selectedTree.forEach(element => {
+          e.component.selectItem(element.id);
+        });
+       }
+    }, 1000); // Give a small delay before attempting to select items
+  }
   triggerFileInput() {
     this.fileInput.nativeElement.click();
   }
