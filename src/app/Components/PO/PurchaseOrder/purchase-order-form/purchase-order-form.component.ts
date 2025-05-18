@@ -37,7 +37,7 @@ private destroy$ = new Subject<void>();
     { type: 'number', name: 'totalDiscount', label: 'Total Discount', required: true ,column:4,isReadOnly:true},
     { type: 'number', name: 'tax', label: 'Total Tax', required: true ,column:4,isReadOnly:true},
     { type: 'number', name: 'totalAmount', label: 'Total Amount', required: true ,column:4,isReadOnly:true},
-    
+     { type: 'select', name: 'warehouseId', label: 'Warehouse Name', required: true,column:4,options:[],optionText:'name',optionValue:'id',isApiCall:true,api:'WareHouse/GetAllWareHouse?take=1000&skip=0'}
   ];
   constructor(
     private dataService: HttpClientConnectionService,

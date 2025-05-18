@@ -1,4 +1,10 @@
-<ul class="navbar-nav ms-auto">
+<div class="d-flex flex-wrap align-items-center justify-content-between w-100">
+  <!-- Marquee Section -->
+  <span>
+    Current Branch : {{this.loggedUserInfo.currentBranch.branchName}} 
+  </span>
+
+<ul class="navbar-nav ms-auto" style="margin-bottom: 0;">
   <li>
     <div class="dropdown" ngbDropdown placement="auto">
       <a ngbDropdownToggle href="javascript:">
@@ -146,3 +152,8 @@
     <app-chat-msg (ChatToggle)="this.chatMessage = !this.chatMessage" [friendId]="friendId"></app-chat-msg>
   </section>
 }
+
+  </div>
+
+
+

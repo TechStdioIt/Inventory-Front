@@ -7,6 +7,7 @@ import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnecti
 // import * as CryptoJS from 'crypto-js';
 import * as CryptoJS from 'crypto-js';
 import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/app/Models/GridModels';
+import { CommonService } from 'src/app/Services/common.service';
 
 @Component({
   selector: 'app-store-type-list',
@@ -15,7 +16,8 @@ import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/ap
 })
 export class StoreTypeListComponent implements OnInit {
   dataList: StoreType[] = [];
-
+ idsValue:string =''
+   SelectedMenuItems : any
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
     { caption: 'Name', key: 'name' },
@@ -38,7 +40,8 @@ export class StoreTypeListComponent implements OnInit {
     private toastr:ToastrService,
     private commonService:GridHandlerService,
     private route:ActivatedRoute,
-    private router:Router
+    private router:Router,
+    private common:CommonService
   ) { }
 
   ngOnInit(): void {
@@ -47,7 +50,12 @@ export class StoreTypeListComponent implements OnInit {
    this.commonService.data$.subscribe(newData => {
     this.edit(newData);
   });
-
+   this.route.queryParams.subscribe(params => {
+      this.idsValue= params['id'];
+      var data = this.common.decrypt(this.idsValue,"menuPermissionData");
+      this.SelectedMenuItems = JSON.parse(data);
+      this.buttonShow.edit.isShow = this.SelectedMenuItems.isEdit
+    });
   }
   getData = () => {
     this.dataService.GetData("Administrator/GetDropdownData?flag=2").subscribe((data:any)=>{
@@ -100,7 +108,7 @@ export class StoreTypeListComponent implements OnInit {
       this.commonService.selectedTab='Form';
         var jsonString=JSON.stringify(data);
         const encodeValue = CryptoJS.AES.encrypt(jsonString, "values").toString();
-      this.router.navigate(['/storetypeForm'],{ queryParams: { storeType: encodeValue } });
+      this.router.navigate(['/storetypeForm'],{ queryParams: { storeType: encodeValue,id:this.idsValue } });
     }
   }
   findSelectedItem(selectedItem:any){

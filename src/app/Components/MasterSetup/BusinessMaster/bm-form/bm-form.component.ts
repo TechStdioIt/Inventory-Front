@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Suppliers } from 'src/app/Models/Suppliers';
@@ -15,7 +15,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './bm-form.component.html',
   styleUrl: './bm-form.component.scss'
 })
-export class BmFormComponent implements OnInit {
+export class BmFormComponent implements OnInit,OnDestroy {
   [key: string]: any;
    @ViewChild('fileInput') fileInput!: ElementRef;
   text: string = '';
@@ -75,15 +75,19 @@ export class BmFormComponent implements OnInit {
       }
     });
   }
+    ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngOnInit(): void {}
   onSubmit(form: NgForm) {
     this.insertOrUpdate(form);
   }
   getDataById(id:any){
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{
-      ;
-      // this.FormData=data.data;
-      this.FormData = mapKeys(data.data, (_, key) => camelCase(key)) as Suppliers;
+      this.FormData = mapKeys(data.data.result, (_, key) => camelCase(key)) as Suppliers;
+      this.fileData= data.data.logo.result;
     })
   }
   insertOrUpdate(form: NgForm) {

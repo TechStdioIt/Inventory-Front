@@ -9,7 +9,6 @@
                   Update
                 }
                 Store Type</h5>
-                <form novalidate #form = "ngForm" (submit)="onSubmit(form)">
                    <div class="row mb-3">
                       <label for="inputText" class="col-sm-2 col-form-label">Store Type Name: </label>
                       <div class="col-sm-7"> 
@@ -18,17 +17,8 @@
                            <span class="text-danger">Already Exist</span>
                         </ng-container>
                      </div>
-                      <div class="col-sm-2">
-                        <ng-container *ngIf="FormData.id == 0">
-                           <input type="submit" class="btn btn-primary btn-sm" value="Create" [disabled]="form.invalid || exist"/>
-                        </ng-container>  
-                          <ng-container *ngIf="FormData.id != 0">
-                           <input type="submit" class="btn btn-primary btn-sm" value="Update" [disabled]="form.invalid"/>
-                        </ng-container>                       
-                          <button (click)="onBack()" class="btn btn-warning btn-sm"><i class="ri-arrow-go-back-fill"></i> Back</button>
-                     </div>
+                      
                    </div>
-                </form>
              </div>
           </div>
        </div>

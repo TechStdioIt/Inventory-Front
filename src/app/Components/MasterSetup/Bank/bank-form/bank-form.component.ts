@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Suppliers } from 'src/app/Models/Suppliers';
@@ -14,7 +14,7 @@ import { Subject, take, takeUntil } from 'rxjs';
   templateUrl: './bank-form.component.html',
   styleUrl: './bank-form.component.scss'
 })
-export class BankFormComponent implements OnInit {
+export class BankFormComponent implements OnInit,OnDestroy {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
@@ -67,6 +67,10 @@ export class BankFormComponent implements OnInit {
         }
       }
     });
+  }
+   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   ngOnInit(): void {}
   onSubmit(form: NgForm) {

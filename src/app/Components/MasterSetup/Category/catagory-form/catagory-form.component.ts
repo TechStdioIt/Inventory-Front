@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
@@ -14,7 +14,7 @@ import { Category } from 'src/app/Models/Category';
   templateUrl: './catagory-form.component.html',
   styleUrl: './catagory-form.component.scss'
 })
-export class CatagoryFormComponent implements OnInit {
+export class CatagoryFormComponent implements OnInit,OnDestroy {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
@@ -64,6 +64,10 @@ export class CatagoryFormComponent implements OnInit {
         }
       }
     });
+  }
+   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   ngOnInit(): void {}
   onSubmit(form: NgForm) {
