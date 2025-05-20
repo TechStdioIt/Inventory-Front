@@ -155,6 +155,7 @@ import { DueCustomerListComponent } from './Components/Customer/due-customer-lis
 import { DueCustomerFormComponent } from './Components/Customer/due-customer-form/due-customer-form.component';
 import { BarcodeGeneratorComponent } from './Components/barcode-generator/barcode-generator.component';
 import { BusinessDashboardComponent } from './Components/business-dashboard/business-dashboard.component';
+import { AvdsupListComponent } from './Components/Suppliers/avdsup-list/avdsup-list.component';
 
 @NgModule({
   declarations: [
@@ -266,7 +267,8 @@ import { BusinessDashboardComponent } from './Components/business-dashboard/busi
     DueCustomerListComponent,
     DueCustomerFormComponent,
     BarcodeGeneratorComponent,
-    BusinessDashboardComponent
+    BusinessDashboardComponent,
+    AvdsupListComponent
 
   ],
   imports: [
