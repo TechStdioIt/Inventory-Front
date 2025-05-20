@@ -25,5 +25,7 @@ export class PurchaseOrder {
     tax: number =0;
     totalDiscount: number =0;
     paymentMethodId: number =0;
+    isAdvance: boolean  = false;
+    isDelivered: boolean  = true;
     purchasList: PurchaseItem[] =[];
 }

@@ -19,7 +19,7 @@ export class PurchaseOrderFormComponent implements OnInit,OnDestroy {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
-   FormData: any = new PurchaseOrder();
+  FormData: any = new PurchaseOrder();
   isSubmitting: boolean = false;
   fromHeader: string = 'Purchase Order';
   insertOrUpdateAPI: string = 'PurchasOrder/CreateOrUpdatePurchaseOrder';
@@ -33,11 +33,32 @@ private destroy$ = new Subject<void>();
     { type: 'select', name: 'supplierId', label: 'Supplier Name', required: true,column:4,options:[],optionText:'companyName',optionValue:'id',isApiCall:true,api:'Suppliers/GetAllSuppliers?take=1000&skip=0'},
     { type: 'date', name: 'orderDate', label: 'Order Date', required: true ,column:4},
     { type: 'number', name: 'shippingCost', label: 'Shipping Cost', required: true ,column:4},
-    { type: 'select', name: 'paymentMethodId', label: 'Payment Method', required: true ,column:4,options:[],optionText:'name',optionValue:'id',isApiCall:false,flag:6},
+    { type: 'select', name: 'paymentMethodId', label: 'Payment Method', required: true ,column:4,options:[],optionText:'name',optionValue:'id',isApiCall:false,flag:6,
+      // eventEmit:{
+      //   change:"onPaymentMethodChange",
+      // }
+    },
+    { type: 'number', name: 'givenAmount', label: 'Given Amount', required: true ,column:4,
+            eventEmit:{
+        keyup:"onGiventAmountChange",
+      }
+    },
+
+    { type: 'number', name: 'dueAmount', label: 'Due Amount', required: true ,column:4},
     { type: 'number', name: 'totalDiscount', label: 'Total Discount', required: true ,column:4,isReadOnly:true},
     { type: 'number', name: 'tax', label: 'Total Tax', required: true ,column:4,isReadOnly:true},
     { type: 'number', name: 'totalAmount', label: 'Total Amount', required: true ,column:4,isReadOnly:true},
-     { type: 'select', name: 'warehouseId', label: 'Warehouse Name', required: true,column:4,options:[],optionText:'name',optionValue:'id',isApiCall:true,api:'WareHouse/GetAllWareHouse?take=1000&skip=0'}
+    { type: 'select', name: 'warehouseId', label: 'Warehouse Name', required: true,column:4,options:[],optionText:'name',optionValue:'id',isApiCall:true,api:'WareHouse/GetAllWareHouse?take=1000&skip=0'},
+    { type: 'checkbox', name: 'isAdvance', label: 'Is Advance', required: true ,column:2,
+      eventEmit:{
+        change:"onIsAdvanceChange",
+      }
+    },
+    { type: 'checkbox', name: 'isDelivered', label: 'Is Delivered', required: true ,column:2,
+      eventEmit:{
+        change:"onIsDeliveredChange",
+      }
+    },
   ];
   constructor(
     private dataService: HttpClientConnectionService,
@@ -73,6 +94,10 @@ private destroy$ = new Subject<void>();
     });
   }
   ngOnInit(): void {
+    this.FormData.isDelivered = true;
+    this.FormData.givenAmount = 0;
+    this.FormData.dueAmount = 0;
+    // this.FormData.isAdvance = false;
     this.getProductList();
   }
   ngOnDestroy(): void {
@@ -211,6 +236,7 @@ private destroy$ = new Subject<void>();
     this.FormData.totalAmount += item.netTotal || 0;
     this.FormData.totalDiscount += item.discount || 0;
     this.FormData.tax += item.tax || 0;
+    this.FormData.givenAmount = this.FormData.totalAmount;
   });
 
   }
@@ -264,7 +290,10 @@ private destroy$ = new Subject<void>();
     this.totalAmountCalculate();
   }
 
-
+onGiventAmountChange(event: any) {
+  
+  this.FormData.dueAmount = this.FormData.totalAmount - this.FormData.givenAmount;
+}
         
   onRowRemoved(event: any) {
      ;
@@ -305,5 +334,21 @@ private destroy$ = new Subject<void>();
     }
 
     return parsedDate.toISOString().split('T')[0]; // Extract YYYY-MM-DD
+  }
+
+  onIsAdvanceChange(event: any) {
+    debugger;
+    const isChecked = !!event.target.checked; // Explicit boolean
+    this.FormData.isAdvance = isChecked;
+    this.FormData.isDelivered = !isChecked;
+    this.FormData.givenAmount = this.FormData.totalAmount;
+    this.FormData.dueAmount = 0;
+
+  }
+  onIsDeliveredChange(event: any) {
+    debugger;
+    const isChecked = !!event.target.checked;
+    this.FormData.isDelivered = isChecked;  
+    this.FormData.isAdvance = !isChecked;
   }
 }

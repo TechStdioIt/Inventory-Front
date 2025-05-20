@@ -7,8 +7,10 @@
         <div class="row mb-3">
 
           <div class="mb-3" *ngFor="let field of formdata" [class]="'col-lg-' + (field.column || 6)">
-            <label [for]="field.name" class="col-sm-12 col-form-label">
+            <label [for]="field.name"  class="col-sm-12 col-form-label">
+              <ng-container *ngIf="field.type != 'checkbox'">
               {{ field.label }}
+              </ng-container> 
             </label>
             <!-- Text, Email, Date, Time, Number, File Inputs -->
             <input
@@ -63,6 +65,7 @@
                 </label>
               </div>
             </div>
+ 
 
             <!-- Checkbox -->
             <div *ngIf="field.type === 'checkbox'" class="form-check">
@@ -72,6 +75,8 @@
                 class="form-check-input"
                 [name]="field.name"
                 [(ngModel)]="FormData[field.name]"
+                [checked]="FormData[field.name]"
+                (change)="field.eventEmit?.change ? handleEvent(field.eventEmit.change, $event) : null"
               />
               <label [for]="field.name" class="form-check-label">
                 {{ field.label }}
