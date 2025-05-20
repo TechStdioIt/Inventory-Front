@@ -156,6 +156,7 @@ import { DueCustomerFormComponent } from './Components/Customer/due-customer-for
 import { BarcodeGeneratorComponent } from './Components/barcode-generator/barcode-generator.component';
 import { BusinessDashboardComponent } from './Components/business-dashboard/business-dashboard.component';
 import { AvdsupListComponent } from './Components/Suppliers/avdsup-list/avdsup-list.component';
+import { RouterlistComponent } from './Components/mikrotik/routerlist/routerlist.component';
 
 @NgModule({
   declarations: [
@@ -268,7 +269,8 @@ import { AvdsupListComponent } from './Components/Suppliers/avdsup-list/avdsup-l
     DueCustomerFormComponent,
     BarcodeGeneratorComponent,
     BusinessDashboardComponent,
-    AvdsupListComponent
+    AvdsupListComponent,
+    RouterlistComponent
 
   ],
   imports: [
