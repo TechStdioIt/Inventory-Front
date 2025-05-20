@@ -157,6 +157,7 @@ import { BarcodeGeneratorComponent } from './Components/barcode-generator/barcod
 import { BusinessDashboardComponent } from './Components/business-dashboard/business-dashboard.component';
 import { AvdsupListComponent } from './Components/Suppliers/avdsup-list/avdsup-list.component';
 import { RouterlistComponent } from './Components/mikrotik/routerlist/routerlist.component';
+import { pppoeCustomerlistComponent } from './Components/mikrotik/customerlist/pppoecustomerlist.component';
 
 @NgModule({
   declarations: [
@@ -270,7 +271,8 @@ import { RouterlistComponent } from './Components/mikrotik/routerlist/routerlist
     BarcodeGeneratorComponent,
     BusinessDashboardComponent,
     AvdsupListComponent,
-    RouterlistComponent
+    RouterlistComponent,
+    pppoeCustomerlistComponent
 
   ],
   imports: [

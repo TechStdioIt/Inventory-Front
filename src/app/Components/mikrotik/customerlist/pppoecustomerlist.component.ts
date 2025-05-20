@@ -7,14 +7,14 @@ import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnecti
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-routerlist',
-  templateUrl: './routerlist.component.html',
-  styleUrl: './routerlist.component.scss'
+  selector: 'app-pppoecustomerlist',
+  templateUrl: './pppoecustomerlist.component.html',
+  styleUrl: './pppoecustomerlist.component.scss'
 })
-export class RouterlistComponent implements OnInit{
-  fromHeader: string = 'Router';
+export class pppoeCustomerlistComponent implements OnInit{
+ fromHeader: string = 'Customer';
    formRoute: string = '/';
-   listAPI: string = 'Mikrotik/GetAllRoutersWithTakeSkip';
+   listAPI: string = 'Mikrotik/GetAllCustomersWithTakeSkip';
    deleteAPI: string = '';
    haveQueryPram: boolean = false;
    reloadCount: number = 0;
@@ -23,7 +23,10 @@ export class RouterlistComponent implements OnInit{
    userColumns = [
      { caption: 'ID', key: 'id', width: 50, isShow: false },
      { caption: 'Name', key: 'name' },
-     { caption: 'IpAddress', key: 'ipAddress' }
+     { caption: 'Service', key: 'service' },
+     { caption: 'Profile', key: 'profile' },
+     { caption: 'Disabled', key: 'disabled' },
+     { caption: 'Comment', key: 'comment' },
    ];
  
    buttonShow = {

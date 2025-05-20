@@ -85,6 +85,7 @@ import { BarcodeGeneratorComponent } from './Components/barcode-generator/barcod
 import { BusinessDashboardComponent } from './Components/business-dashboard/business-dashboard.component';
 import { AvdsupListComponent } from './Components/Suppliers/avdsup-list/avdsup-list.component';
 import { RouterlistComponent } from './Components/mikrotik/routerlist/routerlist.component';
+import { pppoeCustomerlistComponent } from './Components/mikrotik/customerlist/pppoecustomerlist.component';
 
 const routes: Routes = [
   {
@@ -433,6 +434,10 @@ const routes: Routes = [
       {
         path:"routerList",
         component:RouterlistComponent
+      },
+       {
+        path:"pppoecustomerList",
+        component:pppoeCustomerlistComponent
       },
 
 
