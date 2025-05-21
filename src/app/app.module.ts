@@ -161,7 +161,6 @@ import { pppoeCustomerlistComponent } from './Components/mikrotik/customerlist/p
 import { RouterformComponent } from './Components/mikrotik/routerform/routerform.component';
 
 import { CookieService } from 'ngx-cookie-service';
-import { RouterformComponent } from './Components/mikrotik/routerform/routerform.component';
 
 
 
