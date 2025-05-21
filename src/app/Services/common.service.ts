@@ -16,11 +16,22 @@ export class CommonService {
   // Declaration of all Dropdown List start
   DD_Menu: DD_Menu[] = [];
   // Declaration of all Dropdown List end
-
+permisionData: any = [];
   iSButtonManagementComponentFormShow: boolean = true;
 
-  constructor(private location: Location, private http: HttpClient, private toastr: ToastrService,private datePipe:DatePipe) {}
-
+  constructor(private location: Location, private http: HttpClient, private toastr: ToastrService,private datePipe:DatePipe) {
+   
+  }
+getPermissionData(route:string){
+    var uri = createUrl(`ManageMenuPermission/PermisionGetByRoute?route=${route}`);
+    return this.http.get(`${uri}`).pipe(
+      catchError((error) => {
+        console.error('API error:', error);
+        this.toastr.error('An error occurred while fetching data', 'Error');
+        return throwError(() => error);
+      })
+    );
+}
   // Back button logic
   BackButton() {
     this.location.back();

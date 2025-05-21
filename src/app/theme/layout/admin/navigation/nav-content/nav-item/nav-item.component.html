@@ -1,7 +1,7 @@
 @if (item.url && !item.external) {
   <li [ngClass]="item.classes" [routerLinkActive]="['active']">
     
-    <a class="nav-link" *ngIf="!item.url.startsWith('/ReportViewer')" [target]="item.target ? '_blank' : '_self'" [routerLink]="[item.url]" [queryParams]="{id:this.menuPermissionData}" (click)="closeOtherMenu($event)">
+    <a class="nav-link" *ngIf="!item.url.startsWith('/ReportViewer')" [target]="item.target ? '_blank' : '_self'" [routerLink]="[item.url]"  (click)="closeOtherMenu($event)">
       @if (item.icon) {
         <span class="pcoded-micon"><i class="feather" [ngClass]="item.icon"></i></span>
       }
@@ -11,7 +11,7 @@
         {{ item.title }}
       }
     </a>
-    <a class="nav-link" *ngIf="item.url.startsWith('/ReportViewer')" [target]="item.target ? '_blank' : '_self'" [routerLink]="[getLink(item.url)]" [queryParams]="getParamsObj(item.url)" (click)="closeOtherMenu($event)">
+    <a class="nav-link" *ngIf="item.url.startsWith('/ReportViewer')" [target]="item.target ? '_blank' : '_self'" [routerLink]="[getLink(item.url)]"  (click)="closeOtherMenu($event)">
       @if (item.icon) {
         <span class="pcoded-micon"><i class="feather" [ngClass]="item.icon"></i></span>
       }

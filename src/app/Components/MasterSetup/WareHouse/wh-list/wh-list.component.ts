@@ -1,7 +1,7 @@
 
 
 
-import {Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { CommonService } from 'src/app/Services/common.service';
@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
   templateUrl: './wh-list.component.html',
   styleUrl: './wh-list.component.scss'
 })
-export class WhListComponent  implements OnInit {
+export class WhListComponent  implements OnInit, AfterViewInit {
   fromHeader: string = 'WareHouse';
   formRoute: string = '/wareHouseForm';
   listAPI: string = 'WareHouse/GetAllWareHouse';
@@ -23,8 +23,7 @@ export class WhListComponent  implements OnInit {
   pageSize: number = 10;
   pageSizes: number[] = [5, 10, 20, 50, 100];
   reloadCount: number = 0;
-  idsValue:string =''
-  SelectedMenuItems : any
+
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
     { caption: 'Name', key: 'name' },
@@ -59,14 +58,7 @@ export class WhListComponent  implements OnInit {
     this.commonService.details$.pipe(take(1)).subscribe(async (data: any) => {
       this.details(data);
     });
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.idsValue= params['id'];
-      var data = this.common.decrypt(this.idsValue,"menuPermissionData");
-      this.SelectedMenuItems = JSON.parse(data);
-      this.buttonShow.edit.isShow = this.SelectedMenuItems.isEdit
-      this.buttonShow.viewDetails.isShow = this.SelectedMenuItems.isDetails
-      this.buttonShow.delete.isShow = this.SelectedMenuItems.permissionDelete
-    });
+    
   }
 
   ngOnInit(): void {
@@ -74,14 +66,21 @@ export class WhListComponent  implements OnInit {
       this.edit(newData);
     });
   }
+   ngAfterViewInit(): void {
+    this.common.getPermissionData(this.router.url.split('?')[0]).subscribe((data: any) => {
+      this.buttonShow.edit.isShow = data.data.IsEdit
+      this.buttonShow.viewDetails.isShow = data.data.IsDetails
+      this.buttonShow.delete.isShow = data.data.IsDelete
+    });
+  }
 
   edit(selectedRecord: any) {
     this.commonService.selectedTab = 'Form';
-    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }
   details(selectedRecord: any) {
     this.commonService.selectedTab = 'Details';
-    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }
   delete(selectedRecord: any) {
     Swal.fire({

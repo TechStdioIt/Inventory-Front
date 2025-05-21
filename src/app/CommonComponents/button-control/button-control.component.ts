@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DxTabsComponent } from 'devextreme-angular';
 import { CommonService } from 'src/app/Services/common.service';
@@ -11,14 +11,12 @@ import Swal from 'sweetalert2';
   templateUrl: './button-control.component.html',
   styleUrls: ['./button-control.component.css']
 })
-export class ButtonControlComponent implements OnInit {
+export class ButtonControlComponent implements OnInit, AfterViewInit {
 
   @Input() isAdd:boolean=true;
   @Input() isEdit:boolean=true;
   @Input() isDelete:boolean=true;
   @Input() isDetails:boolean=true;
-  SelectedMenuItems : any ;
-  idsValue:string ='';
   @ViewChild('withText') withText!: DxTabsComponent;
 
   @ViewChild('withIconAndText') withIconAndText!: DxTabsComponent;
@@ -62,10 +60,14 @@ export class ButtonControlComponent implements OnInit {
   };
 
   currentRoute:string ='';
-  constructor(private dataService: HttpClientConnectionService, private router: Router, public gridHandlerService: GridHandlerService,private activatedRoute: ActivatedRoute,private commonService:CommonService ) {
+  constructor(private dataService: HttpClientConnectionService, private router: Router, public gridHandlerService: GridHandlerService,private activatedRoute: ActivatedRoute,public commonService:CommonService ) {
       this.currentRoute = this.router.url;
         this.router.events.subscribe((event) => {
           if (event instanceof NavigationEnd) {
+            if(event.url.endsWith('List')){
+             
+            this.getPermissionData();
+            }
             this.currentRoute = event.url;
             if(this.currentRoute == '/orderPList' || this.currentRoute == '/deliveryOrderPList'){
               this.gridHandlerService.selectedTab = 'PList'
@@ -75,13 +77,20 @@ export class ButtonControlComponent implements OnInit {
             }
           }
         });
-        this.activatedRoute.queryParams.subscribe(params => {
-          this.idsValue= params['id'];
-          var data = this.commonService.decrypt(this.idsValue,"menuPermissionData");
-          this.SelectedMenuItems = JSON.parse(data);
-        });
+      
         
   }
+  ngAfterViewInit(): void {
+ this.getPermissionData();
+  }
+getPermissionData(){
+    this.commonService.getPermissionData(this.router.url.split('?')[0]).subscribe((data:any)=>{
+
+       this.commonService.permisionData = data.data;
+         
+    });
+
+ }
   ngOnInit(): void {
     
     if(this.currentRoute == '/orderPList' || this.currentRoute == '/deliveryOrderPList'){
@@ -155,7 +164,7 @@ export class ButtonControlComponent implements OnInit {
       //   minorTab='List'
       // }
      var redirectRoute= routeSegment.replace(minorTab, tab);
-      this.router.navigate(['/'+ redirectRoute],{queryParams:{id:this.idsValue}});
+      this.router.navigate(['/'+ redirectRoute]);
     }
     if(tab !== 'Approve'){
       this.gridHandlerService.selectedTab = tab;

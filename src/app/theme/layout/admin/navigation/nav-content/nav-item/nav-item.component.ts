@@ -6,6 +6,7 @@ import { NavigationItem } from '../../navigation';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { Router } from '@angular/router';
 import { CommonService } from 'src/app/Services/common.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-nav-item',
@@ -13,16 +14,16 @@ import { CommonService } from 'src/app/Services/common.service';
   styleUrls: ['./nav-item.component.scss']
 })
 export class NavItemComponent implements AfterViewInit {
-  constructor(private gridService:GridHandlerService,private router:Router,private commonService:CommonService){
+  constructor(private gridService:GridHandlerService,private router:Router,private commonService:CommonService,private cookieService: CookieService){
    
   }
   ngAfterViewInit(): void {
-    var json = JSON.stringify(this.item);
-    this.menuPermissionData= this.commonService.encrypt(json,'menuPermissionData');
+
+
+    // this.cookieService.set(this.item.url!, json);
   }
   // public props
   @Input() item!: NavigationItem;
-  menuPermissionData:any =''
   // public method
   closeOtherMenu(event: MouseEvent) {
     const ele = event.target as HTMLElement;
@@ -58,7 +59,7 @@ export class NavItemComponent implements AfterViewInit {
     }else{
       this.gridService.selectedTab = 'List';
     }
-     this.router.navigate([uri],{queryParams:{id:this.menuPermissionData}});
+     this.router.navigate([uri]);
    
   }
 getLink(uri: string) {

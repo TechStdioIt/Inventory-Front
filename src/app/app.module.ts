@@ -158,6 +158,7 @@ import { BusinessDashboardComponent } from './Components/business-dashboard/busi
 import { AvdsupListComponent } from './Components/Suppliers/avdsup-list/avdsup-list.component';
 import { RouterlistComponent } from './Components/mikrotik/routerlist/routerlist.component';
 import { pppoeCustomerlistComponent } from './Components/mikrotik/customerlist/pppoecustomerlist.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -322,7 +323,7 @@ import { pppoeCustomerlistComponent } from './Components/mikrotik/customerlist/p
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    DatePipe
+    DatePipe, CookieService
   ],
   bootstrap: [AppComponent],
   exports: [DxReportViewerModule]
