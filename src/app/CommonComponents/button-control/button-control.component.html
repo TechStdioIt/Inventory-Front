@@ -14,7 +14,7 @@
         <a class="nav-link"  [class.active]="gridHandlerService.selectedTab === 'Approve'" >
           <i class="fa fa-edit" aria-hidden="true"></i>&nbsp;Approve
         </a>
-      </li>
+      </li> 
       
       <li class="nav-item hoverEffect"  (click)="selectTab('List')" >
         <a class="nav-link" aria-current="page"   [class.active]="gridHandlerService.selectedTab === 'List'">
@@ -40,7 +40,7 @@
       
       
 
-      <li class="nav-item hoverEffect"  (click)="selectTab('Save')"  *ngIf="(this.commonService.permisionData.IsAdd || this.commonService.permisionData.IsEdit) && gridHandlerService.selectedTab !='Details'">
+      <li class="nav-item hoverEffect"  (click)="selectTab('Save')"  *ngIf="(this.commonService.permisionData.IsAdd || this.commonService.permisionData.IsEdit) && gridHandlerService.selectedTab != 'Details' && gridHandlerService.selectedTab != 'Delete' && gridHandlerService.selectedTab != 'List'">
         <a class="nav-link"  [class.active]="gridHandlerService.selectedTab === 'Save'" >
           <i class="fa fa-file" aria-hidden="true"></i>&nbsp;Save
         </a>
