@@ -86,6 +86,7 @@ import { BusinessDashboardComponent } from './Components/business-dashboard/busi
 import { AvdsupListComponent } from './Components/Suppliers/avdsup-list/avdsup-list.component';
 import { RouterlistComponent } from './Components/mikrotik/routerlist/routerlist.component';
 import { pppoeCustomerlistComponent } from './Components/mikrotik/customerlist/pppoecustomerlist.component';
+import { RouterformComponent } from './Components/mikrotik/routerform/routerform.component';
 
 const routes: Routes = [
   {
@@ -439,7 +440,10 @@ const routes: Routes = [
         path:"pppoecustomerList",
         component:pppoeCustomerlistComponent
       },
-
+       {
+        path:"routerForm",
+        component:RouterformComponent
+      },
 
 
     ]

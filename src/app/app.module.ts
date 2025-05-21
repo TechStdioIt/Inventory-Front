@@ -158,7 +158,11 @@ import { BusinessDashboardComponent } from './Components/business-dashboard/busi
 import { AvdsupListComponent } from './Components/Suppliers/avdsup-list/avdsup-list.component';
 import { RouterlistComponent } from './Components/mikrotik/routerlist/routerlist.component';
 import { pppoeCustomerlistComponent } from './Components/mikrotik/customerlist/pppoecustomerlist.component';
+
 import { CookieService } from 'ngx-cookie-service';
+import { RouterformComponent } from './Components/mikrotik/routerform/routerform.component';
+
+
 
 @NgModule({
   declarations: [
@@ -273,7 +277,8 @@ import { CookieService } from 'ngx-cookie-service';
     BusinessDashboardComponent,
     AvdsupListComponent,
     RouterlistComponent,
-    pppoeCustomerlistComponent
+    pppoeCustomerlistComponent,
+    RouterformComponent
 
   ],
   imports: [

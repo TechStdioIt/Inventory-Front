@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class RouterlistComponent implements OnInit{
   fromHeader: string = 'Router';
-   formRoute: string = '/';
+   formRoute: string = '/routerForm';
    listAPI: string = 'Mikrotik/GetAllRoutersWithTakeSkip';
    deleteAPI: string = '';
    haveQueryPram: boolean = false;
