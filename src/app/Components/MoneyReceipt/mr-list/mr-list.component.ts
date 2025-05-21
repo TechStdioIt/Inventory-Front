@@ -1,6 +1,7 @@
-import {Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit } from '@angular/core';
 import {Router } from '@angular/router';
 import { take } from 'rxjs';
+import { CommonService } from 'src/app/Services/common.service';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import Swal from 'sweetalert2';
@@ -13,15 +14,14 @@ import Swal from 'sweetalert2';
   // imports: [CommonDataGridComponent],
 
 })
-export class MrListComponent implements OnInit {
+export class MrListComponent implements OnInit, AfterViewInit {
   fromHeader: string = 'Approve Money Receipt List';
   formRoute: string = '/mrForm';
   listAPI: string = 'MoneyReceipt/GetAllMoneyReceipt';
   deleteAPI: string = 'MoneyReceipt/DeleteMoneyReceipt';
   haveQueryPram: boolean = false;
   pageSize: number = 10;
-  pageSizes: number[] = [5, 10, 20, 50, 100];
-  reloadCount: number = 0;
+  
 
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
@@ -54,15 +54,19 @@ export class MrListComponent implements OnInit {
     private dataService: HttpClientConnectionService,
     private commonService: GridHandlerService,
     private router: Router,
+    private common : CommonService
   ) {
-    this.commonService.edit$.pipe(take(1)).subscribe(async (data: any) => {
-      this.edit(data);
-    });
-    this.commonService.details$.pipe(take(1)).subscribe(async (data: any) => {
-      this.details(data);
-    });
+    
   }
 
+
+  ngAfterViewInit(): void {
+    this.common.getPermissionData(this.router.url.split('?')[0]).subscribe((data: any) => {
+      this.buttonShow.edit.isShow = data.data.IsEdit
+      this.buttonShow.viewDetails.isShow = data.data.IsDetails
+      this.buttonShow.delete.isShow = data.data.IsDelete
+    });
+  }
   ngOnInit(): void {
     this.commonService.data$.subscribe((newData) => {
       this.edit(newData);
@@ -89,7 +93,7 @@ export class MrListComponent implements OnInit {
       if (result.value) {
         this.dataService.DeleteData(`${this.deleteAPI}?id=${selectedRecord.id}`).subscribe(
           (response: any) => {
-            this.reloadCount++;
+            
             Swal.fire('Done', 'Your record is Deleted :)', 'success');
 
           },

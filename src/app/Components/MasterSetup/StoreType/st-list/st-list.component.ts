@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
+import { CommonService } from 'src/app/Services/common.service';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import Swal from 'sweetalert2';
@@ -10,7 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './st-list.component.html',
   styleUrl: './st-list.component.scss'
 })
-export class StListComponent implements OnInit {
+export class StListComponent implements OnInit, AfterViewInit {
   fromHeader: string = 'Supplier';
   formRoute: string = '/suppliersForm';
   listAPI: string = 'Suppliers/GetAllSuppliers';
@@ -43,6 +44,7 @@ export class StListComponent implements OnInit {
     private dataService: HttpClientConnectionService,
     private commonService: GridHandlerService,
     private router: Router,
+    private common : CommonService
   ) {
     this.commonService.edit$.pipe(take(1)).subscribe(async (data: any) => {
       this.edit(data);
@@ -51,7 +53,13 @@ export class StListComponent implements OnInit {
       this.details(data);
     });
   }
-
+ngAfterViewInit(): void {
+    this.common.getPermissionData(this.router.url.split('?')[0]).subscribe((data: any) => {
+      this.buttonShow.edit.isShow = data.data.IsEdit
+      this.buttonShow.viewDetails.isShow = data.data.IsDetails
+      this.buttonShow.delete.isShow = data.data.IsDelete
+    });
+  }
   ngOnInit(): void {
     this.commonService.data$.subscribe((newData) => {
       this.edit(newData);

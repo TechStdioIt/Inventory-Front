@@ -1,7 +1,8 @@
 
-import {Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit } from '@angular/core';
 import {Router } from '@angular/router';
 import { take } from 'rxjs';
+import { CommonService } from 'src/app/Services/common.service';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import Swal from 'sweetalert2';
@@ -14,7 +15,7 @@ import Swal from 'sweetalert2';
   // imports: [CommonDataGridComponent],
 
 })
-export class PendingorderListComponent implements OnInit {
+export class PendingorderListComponent implements OnInit, AfterViewInit {
   fromHeader: string = 'Order';
   formRoute: string = '/mrForm';
   listAPI: string = 'SalesOrder/GetAllPendingData';
@@ -53,6 +54,7 @@ export class PendingorderListComponent implements OnInit {
     private dataService: HttpClientConnectionService,
     private commonService: GridHandlerService,
     private router: Router,
+    private common : CommonService
   ) {
     this.commonService.edit$.pipe(take(1)).subscribe(async (data: any) => {
       this.edit(data);
@@ -74,6 +76,13 @@ export class PendingorderListComponent implements OnInit {
   SendMr(selectedRecord:any){
     this.commonService.selectedTab = 'Form';
     this.router.navigate([this.formRoute]);
+  }
+  ngAfterViewInit(): void {
+    this.common.getPermissionData(this.router.url.split('?')[0]).subscribe((data: any) => {
+      this.buttonShow.edit.isShow = data.data.IsEdit
+      this.buttonShow.viewDetails.isShow = data.data.IsDetails
+      this.buttonShow.delete.isShow = data.data.IsDelete
+    });
   }
   ngOnInit(): void {
     this.commonService.data$.subscribe((newData) => {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import { IMSMenu } from 'src/app/Models/IMSMenu';
@@ -13,7 +13,7 @@ import { GridButtonShow, GridCaption, GridDataModel, GridDataShow } from 'src/ap
   
 
 })
-export class MenuListComponent  implements OnInit{
+export class MenuListComponent  implements OnInit, AfterViewInit{
 
 
 
@@ -25,6 +25,9 @@ export class MenuListComponent  implements OnInit{
     private gridHandlerService:GridHandlerService,
     private router:Router
   ) { }
+  ngAfterViewInit(): void {
+    throw new Error('Method not implemented.');
+  }
 
    ngOnInit(): void {
   

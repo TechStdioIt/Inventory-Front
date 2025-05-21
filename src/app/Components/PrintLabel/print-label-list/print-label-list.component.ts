@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
@@ -14,7 +14,7 @@ import { OrderVM } from 'src/app/Models/SalesInvoice';
   templateUrl: './print-label-list.component.html',
   styleUrl: './print-label-list.component.scss'
 })
-export class PrintLabelListComponent implements OnInit {
+export class PrintLabelListComponent implements OnInit, AfterViewInit {
   [key: string]: any;
   text: string = '';
   exist: boolean = false;
@@ -102,6 +102,10 @@ export class PrintLabelListComponent implements OnInit {
       }
     });
   }
+  ngAfterViewInit(): void {
+    throw new Error('Method not implemented.');
+  }
+  
   ngOnInit(): void {
 
    

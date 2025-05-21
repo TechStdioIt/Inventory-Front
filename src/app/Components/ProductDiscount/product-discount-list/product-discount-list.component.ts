@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
+import { CommonService } from 'src/app/Services/common.service';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import Swal from 'sweetalert2';
@@ -10,7 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './product-discount-list.component.html',
   styleUrl: './product-discount-list.component.scss'
 })
-export class ProductDiscountListComponent implements OnInit{
+export class ProductDiscountListComponent implements OnInit, AfterViewInit{
   fromHeader: string = 'Discount Product';
   formRoute: string = '/productWiseDiscountForm';
   listAPI: string = 'ProductDiscount/GetAllProductDis';
@@ -48,6 +49,7 @@ export class ProductDiscountListComponent implements OnInit{
     private dataService: HttpClientConnectionService,
     private commonService: GridHandlerService,
     private router: Router,
+    private common : CommonService
   ) {
     this.commonService.edit$.pipe(take(1)).subscribe(async (data: any) => {
       this.edit(data);
@@ -56,7 +58,13 @@ export class ProductDiscountListComponent implements OnInit{
       this.details(data);
     });
   }
-
+ngAfterViewInit(): void {
+    this.common.getPermissionData(this.router.url.split('?')[0]).subscribe((data: any) => {
+      this.buttonShow.edit.isShow = data.data.IsEdit
+      this.buttonShow.viewDetails.isShow = data.data.IsDetails
+      this.buttonShow.delete.isShow = data.data.IsDelete
+    });
+  }
   ngOnInit(): void {
     this.commonService.data$.subscribe((newData) => {
       this.edit(newData);
