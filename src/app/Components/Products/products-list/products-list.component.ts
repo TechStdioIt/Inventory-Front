@@ -62,16 +62,16 @@ export class ProductsListComponent implements OnInit , AfterViewInit{
     this.commonService.details$.pipe(take(1)).subscribe(async (data: any) => {
       this.details(data);
     });
-    this.ngAfterViewInit(): void {
+    
+  }
+
+  
+  ngAfterViewInit(): void {
     this.common.getPermissionData(this.router.url.split('?')[0]).subscribe((data: any) => {
       this.buttonShow.edit.isShow = data.data.IsEdit
       this.buttonShow.viewDetails.isShow = data.data.IsDetails
       this.buttonShow.delete.isShow = data.data.IsDelete
     });
-  }
-  }
-  ngAfterViewInit(): void {
-    throw new Error('Method not implemented.');
   }
   
 

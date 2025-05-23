@@ -21,6 +21,8 @@ export class MrListComponent implements OnInit, AfterViewInit {
   deleteAPI: string = 'MoneyReceipt/DeleteMoneyReceipt';
   haveQueryPram: boolean = false;
   pageSize: number = 10;
+  reloadCount: number = 0;
+
   
 
   userColumns = [

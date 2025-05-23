@@ -63,7 +63,7 @@ ngAfterViewInit(): void {
     this.common.getPermissionData(this.router.url.split('?')[0]).subscribe((data: any) => {
       this.buttonShow.edit.isShow = data.data.IsEdit
       this.buttonShow.viewDetails.isShow = data.data.IsDetails
-      this.buttonShow.delete.isShow = data.data.IsDelete
+      //this.buttonShow.delete.isShow = data.data.IsDelete
     });
   }
   ngOnInit(): void {
