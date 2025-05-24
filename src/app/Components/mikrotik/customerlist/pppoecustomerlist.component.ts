@@ -21,11 +21,11 @@ export class pppoeCustomerlistComponent implements OnInit, AfterViewInit{
    
    userColumns = [
      { caption: 'ID', key: 'id', width: 50, isShow: false },
-     { caption: 'Name', key: 'name' },
-     { caption: 'Service', key: 'service' },
+     { caption: 'User Name', key: 'username' },
+     { caption: 'Payment Status', key: 'paymentStatus' },
      { caption: 'Profile', key: 'profile' },
      { caption: 'Disabled', key: 'disabled' },
-     { caption: 'Comment', key: 'comment' },
+     { caption: 'Router', key: 'routerName' },
    ];
  
    buttonShow = {

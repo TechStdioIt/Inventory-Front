@@ -26,11 +26,11 @@ export class RouterformComponent implements OnInit{
 
   formdata: any[] = [
     { type: 'text', name: 'name', label: 'Router Name', required: true,column:4,placeHolder:"Enter Router Name"},
-    { type: 'text', name: 'ipAddress', label: 'IpAddress', required: true ,column:4},
-    { type: 'text', name: 'apiPort', label: 'ApiPort', required: true ,column:4},
+    { type: 'text', name: 'ipAddress', label: 'Ip Address', required: true ,column:4},
+    { type: 'text', name: 'apiPort', label: 'Api Port', required: true ,column:4},
     { type: 'text', name: 'username', label: 'Username', required: true,column:4},
-    { type: 'text', name: 'passwordEnc', label: 'PasswordEnc', required: true ,column:4 },
-    { type: 'text', name: 'routerLocation', label: 'RouterLocation', required: true,column:4 },
+    { type: 'text', name: 'passwordEnc', label: 'Password', required: true ,column:4 },
+    { type: 'text', name: 'routerLocation', label: 'Router Location', required: true,column:4 },
     { type: 'text', name: 'comment', label: 'Comment', required: true,column:4 },
     
   ];
