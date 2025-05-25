@@ -44,7 +44,7 @@ private destroy$ = new Subject<void>();
       }
     },
 
-    { type: 'number', name: 'dueAmount', label: 'Due Amount', required: true ,column:4},
+    { type: 'number', name: 'dueAmount', label: 'Due Amount', required: true ,column:4,isReadOnly:true},
     { type: 'number', name: 'totalDiscount', label: 'Total Discount', required: true ,column:4,isReadOnly:true},
     { type: 'number', name: 'tax', label: 'Total Tax', required: true ,column:4,isReadOnly:true},
     { type: 'number', name: 'totalAmount', label: 'Total Amount', required: true ,column:4,isReadOnly:true},
