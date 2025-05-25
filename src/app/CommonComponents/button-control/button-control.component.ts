@@ -63,6 +63,7 @@ export class ButtonControlComponent implements OnInit, AfterViewInit {
   constructor(private dataService: HttpClientConnectionService, private router: Router, public gridHandlerService: GridHandlerService,private activatedRoute: ActivatedRoute,public commonService:CommonService ) {
       this.currentRoute = this.router.url;
         this.router.events.subscribe((event) => {
+          debugger;
           if (event instanceof NavigationEnd) {
             if(event.url.endsWith('List')){
              
@@ -73,6 +74,21 @@ export class ButtonControlComponent implements OnInit, AfterViewInit {
               this.gridHandlerService.selectedTab = 'PList'
             }
             else if(this.currentRoute.endsWith('List')){
+              this.gridHandlerService.selectedTab = "List";
+            }
+            
+          }else{
+            // this.currentRoute = this.router.url;
+               if(this.currentRoute.endsWith('List')){
+              this.gridHandlerService.selectedTab = "List";
+            }
+            else if(this.currentRoute.endsWith('Form')){
+              this.gridHandlerService.selectedTab = "Form";
+            }
+            else if(this.currentRoute.endsWith('PList')){
+              this.gridHandlerService.selectedTab = "PList";
+            }
+            else{
               this.gridHandlerService.selectedTab = "List";
             }
           }

@@ -5,6 +5,7 @@ import { camelCase, mapKeys } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { Routers } from 'src/app/Models/Routers';
+import { CommonService } from 'src/app/Services/common.service';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 
@@ -44,7 +45,8 @@ export class RouterformComponent implements OnInit{
     private toastr: ToastrService,
     private router:ActivatedRoute,
     private route:Router,
-    public gridHandleService:GridHandlerService
+    public gridHandleService:GridHandlerService,
+    private common:CommonService
   ) {
     this.router.queryParams.subscribe((data:any)=>{
       if(data.do !=undefined && data !=null){
@@ -60,8 +62,14 @@ export class RouterformComponent implements OnInit{
            this.isSubmitting = true;
    
            try {
-             await this.onSubmit(data); // Your form submission logic
-             this.gridHandleService.selectedTab = "List";
+             const isSuccess = await this.onSubmit(data); // Your form submission logic
+             if (isSuccess) {
+               this.gridHandleService.selectedTab = "List";
+             }
+             else {
+               this.gridHandleService.selectedTab = "Form";
+             }
+             
            } catch (error) {
              console.error('Error during submission:', error);
            } finally {
@@ -76,7 +84,7 @@ export class RouterformComponent implements OnInit{
   }
   ngOnInit(): void {}
   onSubmit(form: NgForm) {
-    this.insertOrUpdate(form);
+    return this.insertOrUpdate(form);
   }
   getDataById(id:any){
     this.dataService.GetData(`${this.getDataByIdAPI}?id=`+id).subscribe((data:any)=>{
@@ -86,9 +94,17 @@ export class RouterformComponent implements OnInit{
     })
   }
   insertOrUpdate(form: NgForm) {
+    const isValid = this.common.validateFormData(this.formdata, this.FormData);
+    if (!isValid) {
+      
+      // this.toastr.error('Please fill all required fields', 'Invalid Information!!');
+      return false;
+    }
+
     this.dataService.PostData(this.insertOrUpdateAPI, this.FormData).subscribe(
       (res) => {
         this.toastr.success('Successfull', `${this.fromHeader} Information`);
+        // this.toastr.clear();
        this.FormData = new Routers();
        this.route.navigate([this.listRoute]);
        this.gridHandleService.selectedTab = "List";
@@ -98,6 +114,7 @@ export class RouterformComponent implements OnInit{
         console.log(err);
       }
     );
+    return true; // Indicate success
   }
 
   handleEvent(functionName: string, event: any) {
