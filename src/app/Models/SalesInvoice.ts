@@ -33,6 +33,8 @@ export class SalesInvoice {
     vatPercent: number = 0;
     grandTotal: number = 0;
     extraDiscount: number  =0;
+    deliveryCharge: number  =0;
+    othersCost: number  =0;
     payableAmount: number  = 0;
     givenAmount: number  = 0;
     dynamicLabel: string  = 'Change'

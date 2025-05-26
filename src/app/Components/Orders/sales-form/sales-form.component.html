@@ -15,11 +15,12 @@
   <div class="row">
     <!-- Product List Section -->
     <div class="col-lg-6 col-md-12 col-sm-12">
-      <input type="text" class="form-control mb-3" placeholder="Search All" (keyup)="onSearchProduct($event)"/>
+      <input type="text" class="form-control mb-3" placeholder="Search All" (keyup)="onSearchProduct($event)" />
       <div class="row g-3">
         <div *ngIf="productList.length > 0; else noData">
           <div class="row g-3">
-            <div class="col-lg-4 col-md-4 col-sm-6" *ngFor="let field of productList" (click)="onProductSelect(field,true)">
+            <div class="col-lg-4 col-md-4 col-sm-6" *ngFor="let field of productList"
+              (click)="onProductSelect(field,true)">
               <div class="product card" style="height: 150px; overflow-y: auto;">
                 <div class="card-body text-center">
                   <img class="imageSet" [src]="field.imageUrl" alt="Product Image" />
@@ -58,41 +59,33 @@
       <div class="row mb-3">
         <div class="col-6">
 
-          <app-common-auto-complete-api
-          [dataSource]=""
-          [searchExprOption]="['name']"
-          [selectedValue]="selectedValue"
-          [isReadOnly]="false"
-          [flag]="1"
-          [valueExpr]="'id'"
-          [displayExpr]="'name'"
-          [showFieldName]="''"
-          [minSearchLengthOption]="4"
-          [placeholder]="'customer Mobile No.'"
-          (valueChange)="onValueChangedAutoSelect($event)"
-          >
+          <app-common-auto-complete-api [dataSource]="" [searchExprOption]="['name']" [selectedValue]="selectedValue"
+            [isReadOnly]="false" [flag]="1" [valueExpr]="'id'" [displayExpr]="'name'" [showFieldName]="''"
+            [minSearchLengthOption]="4" [placeholder]="'customer Mobile No.'"
+            (valueChange)="onValueChangedAutoSelect($event)">
           </app-common-auto-complete-api>
 
 
         </div>
         <div class="col-2">
-          <button class="btn btn-outline-primary " (click)="ShowCusAddPopUp()">Add <i
-              class="fa fa-plus"></i></button>
+          <button class="btn btn-outline-primary " (click)="ShowCusAddPopUp()">Add <i class="fa fa-plus"></i></button>
         </div>
-        
+
         <div class="col-2">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" [value]="masterData.isAdvance" [checked]="masterData.isAdvance" id="isAdvance" (change)="onIsAdvanceChange($event)">
+            <input class="form-check-input" type="checkbox" [value]="masterData.isAdvance"
+              [checked]="masterData.isAdvance" id="isAdvance" (change)="onIsAdvanceChange($event)">
             <label class="form-check-label" for="isAdvance">
               Is Advance
             </label>
           </div>
-          
+
 
         </div>
         <div class="col-2">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" [value]="masterData.isDelivered" [checked]="masterData.isDelivered" id="isDelivered" (change)="onIsDeliveredChange($event)">
+            <input class="form-check-input" type="checkbox" [value]="masterData.isDelivered"
+              [checked]="masterData.isDelivered" id="isDelivered" (change)="onIsDeliveredChange($event)">
             <label class="form-check-label" for="isDelivered">
               Is Delivered
             </label>
@@ -115,7 +108,8 @@
                 </div>
 
                 <!-- Qty -->
-                <div class="col-1 text-center"><input type="number" style="width: 60px;" (keyup)="updateQtyByInput($event,item)" [value]="item.qty"></div>
+                <div class="col-1 text-center"><input type="number" style="width: 60px;"
+                    (keyup)="updateQtyByInput($event,item)" [value]="item.qty"></div>
 
                 <!-- Controls -->
                 <div class="col-3 d-flex justify-content-between">
@@ -131,12 +125,12 @@
                 </div>
                 <div class="col-2 text-center">
                   <input style="width: 80%;" type="number" [value]="item.actualSellRate" name="sellRate"
-                  [(ngModel)]="item.actualSellRate" (keyup)="onActualSellRateChange(item)">
+                    [(ngModel)]="item.actualSellRate" (keyup)="onActualSellRateChange(item)">
                 </div>
                 <!-- Price -->
                 <div class="col-2 text-end">=৳{{ item.totalPrice }}</div>
-                
-              
+
+
               </div>
             </li>
             }
@@ -157,7 +151,7 @@
             <strong class="mb-0">Discount:</strong>
             <strong class="mb-0">৳{{ masterData.discount }}</strong>
           </div>
-          
+
           <div class="d-flex justify-content-between mb-2">
             <strong class="mb-0">Net Total:</strong>
             <strong class="mb-0">৳{{ masterData.netTotal }}</strong>
@@ -168,34 +162,62 @@
             <!-- Left side: Label and input -->
             <div class="d-flex align-items-center">
               <strong class="mb-0 me-2">Vat (%):</strong>
-              <input type="text" class="form-control form-control-sm text-end" style="width: 40px;"  [(ngModel)]="masterData.vatPercent" (keyup)="totalAmountCalculate()"  placeholder="%">
+              <input type="text" class="form-control form-control-sm text-end" style="width: 40px;"
+                [(ngModel)]="masterData.vatPercent" (keyup)="totalAmountCalculate()" placeholder="%">
             </div>
-          
+
             <!-- Right side: Total display -->
             <strong class="mb-0">৳{{ masterData.vatAmount }}</strong>
           </div>
-          
+
 
           <div class="d-flex justify-content-between mb-2">
             <strong class="mb-0">Grand Total:</strong>
             <strong class="mb-0">৳{{ masterData.grandTotal }}</strong>
           </div>
 
-
-
-          <div class="d-flex justify-content-between mb-2">
-            <strong class="mb-0">Extra Discount:</strong>
-            <input type="text" class="form-control form-control-sm w-50 text-end ms-2" placeholder="Enter amount"  [(ngModel)]="masterData.extraDiscount" (keyup)="onExtraDiscount()">
+          <div class="d-flex justify-content-between">
+            <strong class="mb-0">Delivery Charge:</strong>
+            <div class="input-group input-group-sm w-25 ms-2">
+              <span class="input-group-text">৳</span>
+              <input type="text" class="form-control text-end" placeholder="Enter amount"
+                [(ngModel)]="masterData.deliveryCharge" (keyup)="onDeliveryCharge()">
+            </div>
           </div>
+
+          <div class="d-flex justify-content-between">
+            <strong class="mb-0">Others Cost:</strong>
+            <div class="input-group input-group-sm w-25 ms-2">
+              <span class="input-group-text">৳</span>
+              <input type="text" class="form-control text-end" placeholder="Enter amount"
+                [(ngModel)]="masterData.othersCost" (keyup)="onOthersCost()">
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <strong class="mb-0">Extra Discount:</strong>
+            <div class="input-group input-group-sm w-25 ms-2">
+              <span class="input-group-text">$</span>
+              <input type="text" class="form-control text-end" placeholder="Enter amount"
+                [(ngModel)]="masterData.extraDiscount" (keyup)="onExtraDiscount()">
+            </div>
+          </div>
+
+
           <div class="d-flex justify-content-between mb-2">
             <strong class="mb-0">Payable Amount:</strong>
             <strong class="mb-0">৳{{ masterData.payableAmount }}</strong>
           </div>
 
-          <div class="d-flex justify-content-between mb-2">
+          <div class="d-flex justify-content-between">
             <strong class="mb-0">Given Amount:</strong>
-            <input type="text" class="form-control form-control-sm w-50 text-end ms-2" placeholder="Enter amount" [(ngModel)]="masterData.givenAmount" (keyup)="onGivenAmount()">
+            <div class="input-group input-group-sm w-25 ms-2">
+              <span class="input-group-text">৳</span>
+              <input type="text" class="form-control text-end" placeholder="Enter amount"
+                [(ngModel)]="masterData.givenAmount" (keyup)="onGivenAmount()">
+            </div>
           </div>
+
 
 
           <div class="d-flex justify-content-between mb-2">
@@ -214,7 +236,7 @@
             <button class="btn btn-secondary w-50" (click)="onCharge(true)">Save & Print</button>
           </div>
 
-        </div> 
+        </div>
       </div>
 
 
@@ -225,7 +247,7 @@
 </div>
 
 <dx-popup [(visible)]="isPopupVisible" [showTitle]="true" [dragEnabled]="true" [closeOnOutsideClick]="true"
-  [width]="700" [height]="800" [closeOnOutsideClick]="false"[showCloseButton]="true">
+  [width]="700" [height]="800" [closeOnOutsideClick]="false" [showCloseButton]="true">
 
   <div *dxTemplate="let data of 'content'">
     <div *ngIf="!showOTPInputBox">
@@ -247,29 +269,19 @@
           [id]="field.name" class="form-control" [class]="field.class? field.class : null" [name]="field.name"
           [(ngModel)]="FormData[field.name]" [required]="field.required" [min]="field.min || null"
           [max]="field.max || null" [accept]="field.type === 'file' ? field.accept || '*' : null"
-          [class.invalid]="field.name.invalid && field.name.touched"
-          [readOnly]=" field.isReadOnly == true"
+          [class.invalid]="field.name.invalid && field.name.touched" [readOnly]=" field.isReadOnly == true"
           [placeholder]="field.placeHolder? field.placeHolder : field.name === 'password' ? 'Enter password' : field.label"
           (keyup)="field.eventEmit?.keyup ? handleEvent(field.eventEmit.keyup, $event) : null"
           (click)="field.eventEmit?.click ? handleEvent(field.eventEmit.click, $event) : null"
           (change)="field.eventEmit?.change ? handleEvent(field.eventEmit.change, $event) : null" />
 
 
-       
 
-          <app-common-select-box 
-          *ngIf="field.type === 'select'"
-          [dataList]="field.options" 
-          [id]="field.optionValue" 
-          [name]="field.optionText" 
-          (valueChange)="onValueReceived($event)" 
-          [searchExprOption]="[field.optionText]" 
-          [disabled]="field.isReadOnly == true"  
-          [selectedValue]="FormData[field.name]"
-          [fieldName]="field.name"
-          [isApiCall]="field.isApiCall"
-          [flag]="field.flag"
-          >
+
+        <app-common-select-box *ngIf="field.type === 'select'" [dataList]="field.options" [id]="field.optionValue"
+          [name]="field.optionText" (valueChange)="onValueReceived($event)" [searchExprOption]="[field.optionText]"
+          [disabled]="field.isReadOnly == true" [selectedValue]="FormData[field.name]" [fieldName]="field.name"
+          [isApiCall]="field.isApiCall" [flag]="field.flag">
         </app-common-select-box>
 
         <!-- Radio Buttons -->
@@ -338,4 +350,3 @@
     </div>
   </div>
 </dx-popup>
-

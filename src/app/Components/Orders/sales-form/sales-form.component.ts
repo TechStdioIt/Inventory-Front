@@ -225,6 +225,29 @@ export class SalesFormComponent implements OnInit {
       this.masterData.payableAmount = this.masterData.grandTotal;
     }
   }
+  onDeliveryCharge(){
+    if (this.masterData.deliveryCharge >= 0) {
+      
+      this.masterData.payableAmount = this.masterData.grandTotal + Number(this.masterData.deliveryCharge) + Number(this.masterData.othersCost);
+      this.masterData.givenAmount = this.masterData.payableAmount;
+    } else {
+      this.toastr.error('Not Allow', 'Error!');
+      this.masterData.deliveryCharge = 0;
+      this.masterData.payableAmount = this.masterData.grandTotal + Number(this.masterData.deliveryCharge) + Number(this.masterData.othersCost);
+    }
+  }
+  onOthersCost() {
+    if (this.masterData.othersCost >= 0) {
+      this.masterData.payableAmount = this.masterData.grandTotal + Number(this.masterData.deliveryCharge)+ Number(this.masterData.othersCost);
+      this.masterData.givenAmount = this.masterData.payableAmount;
+    } else {
+      this.toastr.error('Not Allow', 'Error!');
+      this.masterData.othersCost = 0;
+      this.masterData.payableAmount = this.masterData.grandTotal + Number(this.masterData.deliveryCharge) + Number(this.masterData.othersCost);
+    }
+  }
+
+
   SendOtpbtn() {
     this.showOTPInputBox = true;
     this.startTimer();
