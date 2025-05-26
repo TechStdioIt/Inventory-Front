@@ -87,6 +87,7 @@ import { AvdsupListComponent } from './Components/Suppliers/avdsup-list/avdsup-l
 import { RouterlistComponent } from './Components/mikrotik/routerlist/routerlist.component';
 import { pppoeCustomerlistComponent } from './Components/mikrotik/customerlist/pppoecustomerlist.component';
 import { RouterformComponent } from './Components/mikrotik/routerform/routerform.component';
+import { UserProfileComponent } from './Components/User/user-profile/user-profile.component';
 
 const routes: Routes = [
   {
@@ -443,6 +444,10 @@ const routes: Routes = [
        {
         path:"routerForm",
         component:RouterformComponent
+      },
+       {
+        path:"userProfile",
+        component:UserProfileComponent
       },
 
 

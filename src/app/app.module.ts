@@ -161,6 +161,7 @@ import { pppoeCustomerlistComponent } from './Components/mikrotik/customerlist/p
 import { RouterformComponent } from './Components/mikrotik/routerform/routerform.component';
 
 import { CookieService } from 'ngx-cookie-service';
+import { UserProfileComponent } from './Components/User/user-profile/user-profile.component';
 
 
 
@@ -278,7 +279,8 @@ import { CookieService } from 'ngx-cookie-service';
     AvdsupListComponent,
     RouterlistComponent,
     pppoeCustomerlistComponent,
-    RouterformComponent
+    RouterformComponent,
+    UserProfileComponent
 
   ],
   imports: [
