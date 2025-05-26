@@ -1,4 +1,4 @@
-import {Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit } from '@angular/core';
 import {Router } from '@angular/router';
 import { take } from 'rxjs';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   // imports: [CommonDataGridComponent],
 
 })
-export class InvListComponent implements OnInit {
+export class InvListComponent implements OnInit , AfterViewInit {
   fromHeader: string = 'Completed Invoice List';
   formRoute: string = '/invForm';
   listAPI: string = 'Invoice/GetAll';
@@ -61,6 +61,9 @@ export class InvListComponent implements OnInit {
     this.commonService.details$.pipe(take(1)).subscribe(async (data: any) => {
       this.details(data);
     });
+  }
+  ngAfterViewInit(): void {
+    throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {

@@ -29,7 +29,8 @@ export class OrderListComponent implements OnInit {
     { caption: 'Customer Name', key: 'customerName' },
     { caption: 'Order Amount', key: 'payableAmount' },
     { caption: 'Due/Paid', key: 'isDue' },
-    { caption: 'Due Amount', key: 'dueAmount' }
+    { caption: 'Due Amount', key: 'dueAmount' },
+    { caption: 'Status', key: 'orderStatus' }
   ];
 
   buttonShow = {

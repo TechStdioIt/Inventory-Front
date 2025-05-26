@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { CommonService } from 'src/app/Services/common.service';
@@ -11,15 +11,14 @@ import Swal from 'sweetalert2';
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.scss'
 })
-export class CustomerListComponent implements OnInit {
+export class CustomerListComponent implements OnInit, AfterViewInit {
 fromHeader: string = 'Customer';
   formRoute: string = '/customerForm';
   listAPI: string = 'Customer/GetAllCustomer';
   deleteAPI: string = 'Customer/DeleteCustomer';
   haveQueryPram: boolean = false;
   reloadCount: number = 0;
-  idsValue:string =''
-  SelectedMenuItems : any
+  
   userColumns = [
     { caption: 'ID', key: 'id', width: 50, isShow: false },
     { caption: 'Customer Name', key: 'name' },
@@ -60,14 +59,13 @@ fromHeader: string = 'Customer';
       this.details(data);
     });
 
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.idsValue= params['id'];
-       
-      var data = this.common.decrypt(this.idsValue,"menuPermissionData");
-      this.SelectedMenuItems = JSON.parse(data);
-      this.buttonShow.edit.isShow = this.SelectedMenuItems.isEdit
-      this.buttonShow.viewDetails.isShow = this.SelectedMenuItems.isDetails
-      this.buttonShow.delete.isShow = this.SelectedMenuItems.permissionDelete
+   
+  }
+  ngAfterViewInit(): void {
+    this.common.getPermissionData(this.router.url.split('?')[0]).subscribe((data: any) => {
+      this.buttonShow.edit.isShow = data.data.IsEdit
+      this.buttonShow.viewDetails.isShow = data.data.IsDetails
+      this.buttonShow.delete.isShow = data.data.IsDelete
     });
   }
 
@@ -79,11 +77,11 @@ fromHeader: string = 'Customer';
 
   edit(selectedRecord: any) {
     this.commonService.selectedTab = 'Form';
-    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }
   details(selectedRecord: any) {
     this.commonService.selectedTab = 'Details';
-    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id,id:this.idsValue } });
+    this.router.navigate([this.formRoute], { queryParams: { do: selectedRecord.id } });
   }
   delete(selectedRecord: any) {
     Swal.fire({

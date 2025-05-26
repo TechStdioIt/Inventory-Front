@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { table } from 'console';
 import { take } from 'rxjs';
+import { CommonService } from 'src/app/Services/common.service';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { HttpClientConnectionService } from 'src/app/Services/HttpClientConnection.service';
 import { json } from 'stream/consumers';
@@ -14,7 +15,7 @@ import Swal from 'sweetalert2';
   styleUrl: './dopending-list.component.scss'
   // imports: [CommonDataGridComponent],
 })
-export class DopendingListComponent implements OnInit {
+export class DopendingListComponent implements OnInit , AfterViewInit{
   fromHeader: string = 'Pending Delivery Order';
   formRoute: string = '/deliveryOrderForm';
   listAPI: string = 'DeliveryOrder/GetAllDOIncompleteOrderData';
@@ -44,6 +45,7 @@ export class DopendingListComponent implements OnInit {
   constructor(
     private dataService: HttpClientConnectionService,
     private commonService: GridHandlerService,
+    private common : CommonService,
     private router: Router
   ) {
     this.commonService.edit$.pipe(take(1)).subscribe(async (data: any) => {
@@ -59,7 +61,11 @@ export class DopendingListComponent implements OnInit {
       this.details(data);
     });
   }
-
+ngAfterViewInit(): void {
+    this.common.getPermissionData(this.router.url.split('?')[0]).subscribe((data: any) => {
+      this.buttonShow.edit.isShow = data.data.IsEdit
+    });
+  }
   ngOnInit(): void {
     this.commonService.data$.subscribe((newData) => {
       this.edit(newData);

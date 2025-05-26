@@ -1,6 +1,6 @@
 
 
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { CommonService } from 'src/app/Services/common.service';
@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   templateUrl: './brand-list.component.html',
   styleUrl: './brand-list.component.scss'
 })
-export class BrandListComponent implements OnInit {
+export class BrandListComponent implements OnInit, AfterViewInit {
   fromHeader: string = 'Brand';
   formRoute: string = '/brandForm';
   listAPI: string = 'Brand/GetAll';
@@ -63,6 +63,9 @@ export class BrandListComponent implements OnInit {
       this.buttonShow.viewDetails.isShow = this.SelectedMenuItems.isDetails
       this.buttonShow.delete.isShow = this.SelectedMenuItems.permissionDelete
     });
+  }
+  ngAfterViewInit(): void {
+    throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {

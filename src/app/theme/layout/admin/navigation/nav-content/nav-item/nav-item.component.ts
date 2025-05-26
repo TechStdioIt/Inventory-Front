@@ -63,6 +63,7 @@ export class NavItemComponent implements AfterViewInit {
    
   }
 getLink(uri: string) {
+  debugger;
     const data = this.getParams(uri);
     return data.path;
   }

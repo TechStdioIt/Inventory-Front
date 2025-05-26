@@ -5,6 +5,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { GridHandlerService } from 'src/app/Services/GridHandler.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { camelCase } from 'lodash';
+
 
 @Component({
   selector: 'app-dynamic-grid-with-pagination',
@@ -185,10 +187,10 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
       (response: any) => {
         if (response) {
           if (response.data) {
-            this.data = response.data;
+            this.data = this.toCamelCase(response.data);
             this.totalRecords = response.data[0]?.totalRecords ?? response.data.length;
           } else {
-            this.data = response;
+            this.data = this.toCamelCase(response);
             this.totalRecords = response[0]?.totalRecords ?? response.length;
           }
           // this.pageSizes.push('All');
@@ -206,6 +208,21 @@ export class DynamicGridWithPaginationComponent<T> implements OnInit {
       }
     );
   };
+
+  toCamelCase(obj: any): any {
+    if (Array.isArray(obj)) {
+      return obj.map((item) => this.toCamelCase(item));
+    } else if (obj !== null && typeof obj === 'object') {
+      return Object.keys(obj).reduce((result: any, key: string) => {
+        const camelKey = camelCase(key);
+        result[camelKey] = this.toCamelCase(obj[key]);
+        return result;
+      }, {});
+    }
+    return obj;
+  }
+
+
   // Navigate to a specific page
   goToPage(page: any) {
     if (page !== '...') {
