@@ -117,6 +117,18 @@ dx-popup {
   width: 100%;
 }
 
+.otp-container {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.otp-box {
+  width: 40px;
+  text-align: center;
+}
+
+
 /* Mobile-friendly adjustments */
 @media (max-width: 768px) {
   .input-group {

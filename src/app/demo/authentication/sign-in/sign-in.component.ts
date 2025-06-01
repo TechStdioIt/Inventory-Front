@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { DxPopupModule, DxSelectBoxModule } from 'devextreme-angular';
+import { DxNumberBoxModule, DxPopupModule, DxSelectBoxModule, DxTextBoxComponent, DxTextBoxModule } from 'devextreme-angular';
 import { Login } from 'src/app/Models/Category';
 import { DD_BusinessMasterId } from 'src/app/Models/drodown.model';
 import { CommonService } from 'src/app/Services/common.service';
@@ -11,7 +11,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [SharedModule, RouterModule, DxSelectBoxModule, DxPopupModule],
+  imports: [SharedModule, RouterModule, DxSelectBoxModule, DxPopupModule, DxTextBoxModule,DxNumberBoxModule],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
@@ -27,7 +27,17 @@ export default class SignInComponent implements OnInit {
   loginFormData: Login = new Login();
   isCheckingAuth: boolean = false; // Prevent UI flashing
   DD_BusinessMasterId: DD_BusinessMasterId[] = [];
+  isPopupVisibleResetPass: boolean = false;
   branchList: any[] = [];
+  showOTPInputBox: boolean = false;
+// 6 zeros
+otp: number[] = Array(6);
+// Array to hold OTP digits
+
+     @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
+
+  timerCount: number = 0;
+  timerInterval: any;
   constructor(
     private route: Router,
     private dataService: HttpClientConnectionService
@@ -53,6 +63,34 @@ export default class SignInComponent implements OnInit {
   ngOnInit(): void {
     //this.checkAuthentication();
 
+  }
+
+onOtpInput(event: any, index: number) {
+  debugger;
+    var value = event.event.originalEvent.data;
+
+    // Keep only 1 character
+    this.otp[index] = value.slice(0, 1);
+    value = this.otp[index];
+
+    // Move focus to next input
+    if (value && index < this.otp.length - 1) {
+      var otpInputList = document.getElementById('otpContainer');
+      if (otpInputList) {
+     const inputs = otpInputList.querySelectorAll('input:not([type="hidden"])');
+    var nextInput = inputs[index + 1] as HTMLInputElement;
+        if (nextInput) {
+          nextInput.value = '';
+          nextInput.onmouseenter = () => {
+          //  nextInput.mou
+          }
+           
+        }
+      }
+            // const nextInput = this.otpInputs.get(index + 1)
+      // nextInput?.nativeElement?.focusStateEnabled(); // Focus the next input if it exists
+      // //nextInput.nativeElement.value = ''; // Clear the next input
+    }
   }
 
   // Check if user is already authenticated
@@ -97,6 +135,44 @@ export default class SignInComponent implements OnInit {
     
   }
 
+
+  ResetBtn(){
+    this.isPopupVisibleResetPass = true;
+  }
+   SendOtpbtn() {
+    this.showOTPInputBox = true;
+    this.startTimer();
+    // Logic to send OTP
+  }
+
+   resendOTP() {
+    this.startTimer();
+    // Logic to resend OTP
+  }
+ backBtn() {
+    this.showOTPInputBox = false;
+  }
+  submitOTPBtn(){
+    // Logic to submit OTP
+    // You can add your logic here to verify the OTP entered by the user
+    // For example, you might want to call an API to verify the OTP
+    this.isPopupVisibleResetPass = false;
+    this.showOTPInputBox = false;
+    this.startTimer();
+  }
+  startTimer() {
+    this.timerCount = 10;
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+
+    this.timerInterval = setInterval(() => {
+      this.timerCount--;
+      if (this.timerCount <= 0) {
+        clearInterval(this.timerInterval);
+      }
+    }, 1000);
+  }
 
 
   // Toggle password visibility
